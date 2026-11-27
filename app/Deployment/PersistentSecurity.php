@@ -9,6 +9,37 @@ use RuntimeException;
 
 final class PersistentSecurity
 {
+    public function authority(array $target): array
+    {
+        $sets = [];
+        foreach (['legacy_owner_roles', 'retired_runtime_roles'] as $field) {
+            $names = $target[$field] ?? null;
+            if (! is_array($names) || ! array_is_list($names) || count(array_unique($names)) !== count($names)) {
+                throw new RuntimeException('Retirement identity sets must be explicit unique lists.');
+            }
+            sort($names);
+            $sets[$field] = [];
+            foreach ($names as $name) {
+                if (! is_string($name) || ! preg_match('/^[a-z][a-z0-9_]{2,62}$/D', $name)) {
+                    throw new RuntimeException('Invalid retirement identity.');
+                }
+                $role = DB::selectOne('SELECT oid::text AS oid,rolname AS name FROM pg_roles WHERE rolname=?', [$name]);
+                if (! $role) {
+                    throw new RuntimeException('Retirement identity no longer exists.');
+                }
+                $sets[$field][] = (array) $role;
+            }
+        }
+        if (array_intersect($target['legacy_owner_roles'], $target['retired_runtime_roles'])) {
+            throw new RuntimeException('Owner/runtime classification is not disjoint.');
+        }
+        $identity = DB::selectOne('SELECT current_database() AS database, (SELECT oid::text FROM pg_database WHERE datname=current_database()) AS database_oid,
+            (SELECT system_identifier::text FROM pg_control_system()) AS cluster,session_user AS bootstrap_role,
+            (SELECT oid::text FROM pg_roles WHERE rolname=session_user) AS bootstrap_oid');
+
+        return ['target' => (array) $identity, 'host' => $target['host'], 'port' => (string) $target['port'], 'retirement' => $sets];
+    }
+
     public function preflight(array $target, bool $installed): array
     {
         $owners = $target['legacy_owner_roles'] ?? null;
@@ -33,8 +64,13 @@ final class PersistentSecurity
         if (DB::selectOne("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='deployment_control') OR EXISTS(SELECT 1 FROM pg_default_acl) AS unsafe")->unsafe) {
             throw new RuntimeException('Unregistered control schema or default privilege drift.');
         }
-        $expected = json_decode(file_get_contents(database_path('deployment/security-contract.json')), true, 128, JSON_THROW_ON_ERROR);
+        $expected = SecurityCatalog::contract();
         $actual = app(SecurityCatalog::class)->snapshot($target['bootstrap_role']);
+        foreach (['system_routine_security', 'system_relation_security'] as $family) {
+            if ($actual[$family] !== $expected[$family]) {
+                throw new RuntimeException('Unsupported stock system-catalog deviation.');
+            }
+        }
         $allowed = array_merge(['@bootstrap', 'PUBLIC', 'pg_database_owner'], $owners, $runtime);
         foreach (['schemas', 'relations', 'columns', 'routines', 'types', 'constraints', 'triggers'] as $section) {
             $known = array_column($expected[$section], null, 'name');

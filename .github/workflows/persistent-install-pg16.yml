@@ -1,7 +1,7 @@
 name: Persistent installation - PG16 fresh and upgrade
 on:
   push:
-    branches: [candidate/ot-persistent-deployment-r1, candidate/ot-persistent-deployment-r2]
+    branches: [candidate/ot-persistent-deployment-r1, candidate/ot-persistent-deployment-r2, candidate/ot-persistent-deployment-r3]
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,11 +33,15 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y postgresql-16
+      - name: Independently regenerate the canonical guarded policy contract
+        run: python3 tests/Manual/persistent-install-rehearsal.py --compare-contract --pg-bin /usr/lib/postgresql/16/bin --output "$RUNNER_TEMP/policy-derivation"
       - name: Fresh and preserved-administrator upgrade on new loopback clusters
         run: python3 tests/Manual/persistent-install-rehearsal.py --pg-bin /usr/lib/postgresql/16/bin --output "$RUNNER_TEMP/persistent-evidence"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: persistent-install-evidence
-          path: ${{ runner.temp }}/persistent-evidence/persistent-rehearsal.json
+          path: |
+            ${{ runner.temp }}/persistent-evidence/persistent-rehearsal.json
+            ${{ runner.temp }}/policy-derivation/*.json
           if-no-files-found: error

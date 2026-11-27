@@ -1,0 +1,902 @@
+[
+  {
+    "name": "public.payroll_entries.net_pay",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.other_deductions",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.pagibig",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.payroll_period_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.philhealth",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'processed'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.total_deductions",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.withholding_tax",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_payroll_period_id_employee_id_unique.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_payroll_period_id_employee_id_unique.payroll_period_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.approved_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.calculation_mode",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'prototype'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.dtr_period_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('payroll_periods_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.label",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.period_end",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.period_start",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.processed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.released_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.source_notes",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'draft'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_periods_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.employee_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.evaluator_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('performance_records_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.period_end",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.period_start",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.rating",
+    "type": "numeric(8,3)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.rating_scale",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.reviewed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'recorded'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.summary",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_employee_id_period_end_index.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_employee_id_period_end_index.period_end",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_period_end_index.period_end",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_period_start_index.period_start",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.performance_records_status_index.status",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_bindings_edition_role_revision_unique.plan_edition_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_bindings_edition_role_revision_unique.revision_no",
+    "type": "integer",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_bindings_edition_role_revision_unique.role",
+    "type": "character varying(16)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.actor_id",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.details",
+    "type": "jsonb",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.event_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.event_type",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('plan_custody_events_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.office_id",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.plan_custody_generation_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events.service_identity",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events_event_id_unique.event_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_events_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.actor_id",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.custody_state",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'QUARANTINED'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.generation_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('plan_custody_generations_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.idempotency_key_hash",
+    "type": "character(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.integrity_status",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'VERIFIED'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.media_type",
+    "type": "character varying(96)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.office_id",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.service_identity",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.sha256",
+    "type": "character(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.size_bytes",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.storage_disk",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations.storage_locator",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_generation_id_unique.generation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_idempotency_key_hash_unique.idempotency_key_hash",
+    "type": "character(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_generations_storage_locator_unique.storage_locator",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.decision",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.engine_version",
+    "type": "character varying(128)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.evidence_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.evidence_signature_hash",
+    "type": "character(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('plan_custody_scan_evidence_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_generation_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

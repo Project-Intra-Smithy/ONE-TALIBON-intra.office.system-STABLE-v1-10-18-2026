@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint plan_custody_scan_evidence_evidence_id_unique on table plan_custody_scan_evidence",
+    "reference": "column evidence_id of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_evidence_pkey on table plan_custody_scan_evidence",
+    "reference": "column id of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_evidence_plan_custody_generation_id_foreign on table plan_custody_scan_evidence",
+    "reference": "column id of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_scan_evidence_plan_custody_generation_id_foreign on table plan_custody_scan_evidence",
+    "reference": "column plan_custody_generation_id of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_evidence_plan_custody_generation_id_foreign on table plan_custody_scan_evidence",
+    "reference": "index plan_custody_generations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_scan_generation_evidence_unique on table plan_custody_scan_evidence",
+    "reference": "column evidence_id of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_generation_evidence_unique on table plan_custody_scan_evidence",
+    "reference": "column plan_custody_generation_id of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_sha_check on table plan_custody_scan_evidence",
+    "reference": "column scanned_sha256 of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_sha_check on table plan_custody_scan_evidence",
+    "reference": "column scanned_sha256 of table plan_custody_scan_evidence",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_scan_size_check on table plan_custody_scan_evidence",
+    "reference": "column scanned_size_bytes of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_size_check on table plan_custody_scan_evidence",
+    "reference": "column scanned_size_bytes of table plan_custody_scan_evidence",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_scan_trusted_check on table plan_custody_scan_evidence",
+    "reference": "column trusted of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_trusted_check on table plan_custody_scan_evidence",
+    "reference": "column trusted of table plan_custody_scan_evidence",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_bindings_document_id_foreign on table plan_document_bindings",
+    "reference": "column document_id of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_document_bindings_document_id_foreign on table plan_document_bindings",
+    "reference": "column id of table documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_bindings_document_id_foreign on table plan_document_bindings",
+    "reference": "index documents_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_bindings_document_id_unique on table plan_document_bindings",
+    "reference": "column document_id of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_document_bindings_pkey on table plan_document_bindings",
+    "reference": "column id of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_document_bindings_plan_edition_id_foreign on table plan_document_bindings",
+    "reference": "column id of table plan_editions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_bindings_plan_edition_id_foreign on table plan_document_bindings",
+    "reference": "column plan_edition_id of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_document_bindings_plan_edition_id_foreign on table plan_document_bindings",
+    "reference": "index plan_editions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_origin_receipts_document_id_foreign on table plan_document_origin_receipts",
+    "reference": "column document_id of table plan_document_origin_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_document_origin_receipts_document_id_foreign on table plan_document_origin_receipts",
+    "reference": "column id of table documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_origin_receipts_document_id_foreign on table plan_document_origin_receipts",
+    "reference": "index documents_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_document_origin_receipts_pkey on table plan_document_origin_receipts",
+    "reference": "column document_id of table plan_document_origin_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_editions_family_label_unique on table plan_editions",
+    "reference": "column edition_label of table plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_editions_family_label_unique on table plan_editions",
+    "reference": "column plan_family_id of table plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_editions_pkey on table plan_editions",
+    "reference": "column id of table plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_editions_plan_family_id_foreign on table plan_editions",
+    "reference": "column id of table plan_families",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_editions_plan_family_id_foreign on table plan_editions",
+    "reference": "column plan_family_id of table plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_editions_plan_family_id_foreign on table plan_editions",
+    "reference": "index plan_families_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_editions_public_id_unique on table plan_editions",
+    "reference": "column public_id of table plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_families_pkey on table plan_families",
+    "reference": "column id of table plan_families",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_families_public_id_unique on table plan_families",
+    "reference": "column public_id of table plan_families",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_origin_receipt_only_check on table plan_document_origin_receipts",
+    "reference": "column origin of table plan_document_origin_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_origin_receipt_only_check on table plan_document_origin_receipts",
+    "reference": "column origin of table plan_document_origin_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_actor_user_id_foreign on table planning_attachment_reconciliations",
+    "reference": "column actor_user_id of table planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_actor_user_id_foreign on table planning_attachment_reconciliations",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_actor_user_id_foreign on table planning_attachment_reconciliations",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_attachment_id_foreign on table planning_attachment_reconciliations",
+    "reference": "column attachment_id of table planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_attachment_id_foreign on table planning_attachment_reconciliations",
+    "reference": "column id of table planning_attachments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_attachment_id_foreign on table planning_attachment_reconciliations",
+    "reference": "index planning_attachments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_attachment_id_unique on table planning_attachment_reconciliations",
+    "reference": "column attachment_id of table planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachment_reconciliations_pkey on table planning_attachment_reconciliations",
+    "reference": "column id of table planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachments_owner_department_id_foreign on table planning_attachments",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachments_owner_department_id_foreign on table planning_attachments",
+    "reference": "column owner_department_id of table planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachments_owner_department_id_foreign on table planning_attachments",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachments_pkey on table planning_attachments",
+    "reference": "column id of table planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachments_public_id_unique on table planning_attachments",
+    "reference": "column public_id of table planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachments_uploaded_by_user_id_foreign on table planning_attachments",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_attachments_uploaded_by_user_id_foreign on table planning_attachments",
+    "reference": "column uploaded_by_user_id of table planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_attachments_uploaded_by_user_id_foreign on table planning_attachments",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_created_by_user_id_foreign on table planning_maps",
+    "reference": "column created_by_user_id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_created_by_user_id_foreign on table planning_maps",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_created_by_user_id_foreign on table planning_maps",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_development_plan_id_foreign on table planning_maps",
+    "reference": "column development_plan_id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_development_plan_id_foreign on table planning_maps",
+    "reference": "column id of table development_plans",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_development_plan_id_foreign on table planning_maps",
+    "reference": "index development_plans_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_lead_department_id_foreign on table planning_maps",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_lead_department_id_foreign on table planning_maps",
+    "reference": "column lead_department_id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_lead_department_id_foreign on table planning_maps",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_map_code_unique on table planning_maps",
+    "reference": "column map_code of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_pkey on table planning_maps",
+    "reference": "column id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_plate_attachment_id_foreign on table planning_maps",
+    "reference": "column id of table planning_attachments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_plate_attachment_id_foreign on table planning_maps",
+    "reference": "column plate_attachment_id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_plate_attachment_id_foreign on table planning_maps",
+    "reference": "index planning_attachments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_updated_by_user_id_foreign on table planning_maps",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_maps_updated_by_user_id_foreign on table planning_maps",
+    "reference": "column updated_by_user_id of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_maps_updated_by_user_id_foreign on table planning_maps",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_plan_map_links_development_plan_id_foreign on table planning_plan_map_links",
+    "reference": "column development_plan_id of table planning_plan_map_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_plan_map_links_development_plan_id_foreign on table planning_plan_map_links",
+    "reference": "column id of table development_plans",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_plan_map_links_development_plan_id_foreign on table planning_plan_map_links",
+    "reference": "index development_plans_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_plan_map_links_pkey on table planning_plan_map_links",
+    "reference": "column development_plan_id of table planning_plan_map_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_plan_map_links_pkey on table planning_plan_map_links",
+    "reference": "column planning_map_id of table planning_plan_map_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_plan_map_links_planning_map_id_foreign on table planning_plan_map_links",
+    "reference": "column id of table planning_maps",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_plan_map_links_planning_map_id_foreign on table planning_plan_map_links",
+    "reference": "column planning_map_id of table planning_plan_map_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_plan_map_links_planning_map_id_foreign on table planning_plan_map_links",
+    "reference": "index planning_maps_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint planning_ppa_identifiers_pkey on table planning_ppa_identifiers",
+    "reference": "column code of table planning_ppa_identifiers",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint planning_reference_counters_pkey on table planning_reference_counters",
+    "reference": "column year of table planning_reference_counters",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_department_id_foreign on table platform_notifications",
+    "reference": "column department_id of table platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_department_id_foreign on table platform_notifications",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint platform_notifications_department_id_foreign on table platform_notifications",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint platform_notifications_pkey on table platform_notifications",
+    "reference": "column id of table platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_user_id_event_key_unique on table platform_notifications",
+    "reference": "column event_key of table platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_user_id_event_key_unique on table platform_notifications",
+    "reference": "column user_id of table platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_user_id_foreign on table platform_notifications",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint platform_notifications_user_id_foreign on table platform_notifications",
+    "reference": "column user_id of table platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint platform_notifications_user_id_foreign on table platform_notifications",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint portal_presence_sessions_pkey on table portal_presence_sessions",
+    "reference": "column id of table portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint portal_presence_sessions_user_id_foreign on table portal_presence_sessions",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint portal_presence_sessions_user_id_foreign on table portal_presence_sessions",
+    "reference": "column user_id of table portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint portal_presence_sessions_user_id_foreign on table portal_presence_sessions",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint portal_presence_sessions_user_id_session_hash_unique on table portal_presence_sessions",
+    "reference": "column session_hash of table portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint portal_presence_sessions_user_id_session_hash_unique on table portal_presence_sessions",
+    "reference": "column user_id of table portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_created_by_user_id_foreign on table ppa_records",
+    "reference": "column created_by_user_id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_created_by_user_id_foreign on table ppa_records",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_created_by_user_id_foreign on table ppa_records",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_development_plan_id_foreign on table ppa_records",
+    "reference": "column development_plan_id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_development_plan_id_foreign on table ppa_records",
+    "reference": "column id of table development_plans",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_development_plan_id_foreign on table ppa_records",
+    "reference": "index development_plans_pkey",
+    "deptype": "n"
+  }
+]

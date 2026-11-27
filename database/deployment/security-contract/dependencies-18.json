@@ -1,0 +1,502 @@
+[
+  {
+    "object": "index legacy_custody.operation_events_pkey",
+    "reference": "constraint operation_events_pkey on table legacy_custody.operation_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_gates_pkey",
+    "reference": "constraint operation_gates_pkey on table legacy_custody.operation_gates",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_generation_id_key",
+    "reference": "constraint operation_items_generation_id_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_namespace_id_locator_key",
+    "reference": "constraint operation_items_namespace_id_locator_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_operation_id_ordinal_generation_id_namespac_key",
+    "reference": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_pkey",
+    "reference": "constraint operation_items_pkey on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_namespace_id_actor_user_id_office_id_service_ide_key",
+    "reference": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_operation_id_actor_user_id_office_id_correlation_key",
+    "reference": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_operation_id_namespace_id_epoch_key",
+    "reference": "constraint operations_operation_id_namespace_id_epoch_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_pkey",
+    "reference": "constraint operations_pkey on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.ownership_links_pkey",
+    "reference": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.ownership_links_public_document_link_id_key",
+    "reference": "constraint ownership_links_public_document_link_id_key on table legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.terminal_receipts_pkey",
+    "reference": "constraint terminal_receipts_pkey on table legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.terminal_receipts_receipt_uuid_key",
+    "reference": "constraint terminal_receipts_receipt_uuid_key on table legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.watermark_checkpoints_pkey",
+    "reference": "constraint watermark_checkpoints_pkey on table legacy_custody.watermark_checkpoints",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_agenda_items_pkey",
+    "reference": "constraint legislative_agenda_items_pkey on table legislative_agenda_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_agenda_items_status_index",
+    "reference": "column status of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_agenda_sequence_unique",
+    "reference": "constraint legislative_agenda_sequence_unique on table legislative_agenda_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_records_approved_at_index",
+    "reference": "column approved_at of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_pkey",
+    "reference": "constraint legislative_records_pkey on table legislative_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_records_record_number_unique",
+    "reference": "constraint legislative_records_record_number_unique on table legislative_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_records_record_type_index",
+    "reference": "column record_type of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_record_type_year_status_index",
+    "reference": "column record_type of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_record_type_year_status_index",
+    "reference": "column status of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_record_type_year_status_index",
+    "reference": "column year of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_status_index",
+    "reference": "column status of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_records_year_index",
+    "reference": "column year of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_sessions_pkey",
+    "reference": "constraint legislative_sessions_pkey on table legislative_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_sessions_scheduled_at_index",
+    "reference": "column scheduled_at of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_sessions_session_code_unique",
+    "reference": "constraint legislative_sessions_session_code_unique on table legislative_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index legislative_sessions_session_type_index",
+    "reference": "column session_type of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "index legislative_sessions_status_index",
+    "reference": "column status of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "index memo_recipients_acknowledged_at_index",
+    "reference": "column acknowledged_at of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "index memo_recipients_memorandum_id_user_id_unique",
+    "reference": "constraint memo_recipients_memorandum_id_user_id_unique on table memo_recipients",
+    "deptype": "i"
+  },
+  {
+    "object": "index memo_recipients_pkey",
+    "reference": "constraint memo_recipients_pkey on table memo_recipients",
+    "deptype": "i"
+  },
+  {
+    "object": "index memo_recipients_user_id_viewed_at_index",
+    "reference": "column user_id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "index memo_recipients_user_id_viewed_at_index",
+    "reference": "column viewed_at of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "index memo_recipients_viewed_at_index",
+    "reference": "column viewed_at of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "index memoranda_expires_at_index",
+    "reference": "column expires_at of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "index memoranda_memo_number_unique",
+    "reference": "constraint memoranda_memo_number_unique on table memoranda",
+    "deptype": "i"
+  },
+  {
+    "object": "index memoranda_pkey",
+    "reference": "constraint memoranda_pkey on table memoranda",
+    "deptype": "i"
+  },
+  {
+    "object": "index memoranda_published_at_index",
+    "reference": "column published_at of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "index memoranda_status_index",
+    "reference": "column status of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "index migrations_pkey",
+    "reference": "constraint migrations_pkey on table migrations",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_audit_tuple",
+    "reference": "constraint n03_audit_tuple on table audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_correspondence_event_tuple",
+    "reference": "constraint n03_correspondence_event_tuple on table correspondence_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_document_binding_tuple",
+    "reference": "constraint n03_document_binding_tuple on table documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_document_item_unique",
+    "reference": "constraint n03_document_item_unique on table documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_document_op_unique",
+    "reference": "constraint n03_document_op_unique on table documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_link_tuple",
+    "reference": "constraint n03_link_tuple on table document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_marked_audit_operation",
+    "reference": "column custody_operation_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index n03_marked_audit_operation",
+    "reference": "column custody_operation_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index n03_one_marked_upload",
+    "reference": "column custody_operation_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index n03_one_marked_upload",
+    "reference": "column entity_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index n03_transaction_event_tuple",
+    "reference": "constraint n03_transaction_event_tuple on table transaction_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index n03_travel_event_tuple",
+    "reference": "constraint n03_travel_event_tuple on table travel_order_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index offboarding_cases_employee_id_status_index",
+    "reference": "column employee_id of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "index offboarding_cases_employee_id_status_index",
+    "reference": "column status of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "index offboarding_cases_pkey",
+    "reference": "constraint offboarding_cases_pkey on table offboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "index offboarding_tasks_offboarding_case_id_task_key_unique",
+    "reference": "constraint offboarding_tasks_offboarding_case_id_task_key_unique on table offboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "index offboarding_tasks_pkey",
+    "reference": "constraint offboarding_tasks_pkey on table offboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "index onboarding_cases_employee_id_unique",
+    "reference": "constraint onboarding_cases_employee_id_unique on table onboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "index onboarding_cases_pkey",
+    "reference": "constraint onboarding_cases_pkey on table onboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "index onboarding_cases_planned_start_date_index",
+    "reference": "column planned_start_date of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "index onboarding_cases_status_index",
+    "reference": "column status of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "index onboarding_tasks_category_index",
+    "reference": "column category of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index onboarding_tasks_due_at_index",
+    "reference": "column due_at of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index onboarding_tasks_is_required_index",
+    "reference": "column is_required of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index onboarding_tasks_onboarding_case_id_task_key_unique",
+    "reference": "constraint onboarding_tasks_onboarding_case_id_task_key_unique on table onboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "index onboarding_tasks_pkey",
+    "reference": "constraint onboarding_tasks_pkey on table onboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "index onboarding_tasks_status_index",
+    "reference": "column status of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_department_id_status_index",
+    "reference": "column department_id of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_department_id_status_index",
+    "reference": "column status of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_item_type_index",
+    "reference": "column item_type of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_item_type_status_index",
+    "reference": "column item_type of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_item_type_status_index",
+    "reference": "column status of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_pkey",
+    "reference": "constraint operational_items_pkey on table operational_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index operational_items_priority_index",
+    "reference": "column priority of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_reference_no_unique",
+    "reference": "constraint operational_items_reference_no_unique on table operational_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index operational_items_status_index",
+    "reference": "column status of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index operational_items_target_date_index",
+    "reference": "column target_date of table operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "index ops009_close_audit_bindings_operation_id_key",
+    "reference": "constraint ops009_close_audit_bindings_operation_id_key on table ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_close_audit_bindings_pkey",
+    "reference": "constraint ops009_close_audit_bindings_pkey on table ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_close_audit_bindings_transaction_event_id_key",
+    "reference": "constraint ops009_close_audit_bindings_transaction_event_id_key on table ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_close_audit_bindings_transaction_id_key",
+    "reference": "constraint ops009_close_audit_bindings_transaction_id_key on table ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exception_action_exception_id_action_key",
+    "reference": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table ops009_origin_delivery_exception_actions",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exception_actions_pkey",
+    "reference": "constraint ops009_origin_delivery_exception_actions_pkey on table ops009_origin_delivery_exception_actions",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exceptions_operation_id_key",
+    "reference": "constraint ops009_origin_delivery_exceptions_operation_id_key on table ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exceptions_pkey",
+    "reference": "constraint ops009_origin_delivery_exceptions_pkey on table ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exceptions_transaction_event_id_key",
+    "reference": "constraint ops009_origin_delivery_exceptions_transaction_event_id_key on table ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "index ops009_origin_delivery_exceptions_transaction_id_key",
+    "reference": "constraint ops009_origin_delivery_exceptions_transaction_id_key on table ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "index outbox_messages_available_at_index",
+    "reference": "column available_at of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index outbox_messages_pkey",
+    "reference": "constraint outbox_messages_pkey on table outbox_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "index outbox_messages_public_id_unique",
+    "reference": "constraint outbox_messages_public_id_unique on table outbox_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "index outbox_messages_status_index",
+    "reference": "column status of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index outbox_pending_dispatch_idx",
+    "reference": "column available_at of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index outbox_pending_dispatch_idx",
+    "reference": "column status of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index password_reset_tokens_pkey",
+    "reference": "constraint password_reset_tokens_pkey on table password_reset_tokens",
+    "deptype": "i"
+  },
+  {
+    "object": "index payroll_entries_payroll_period_id_employee_id_unique",
+    "reference": "constraint payroll_entries_payroll_period_id_employee_id_unique on table payroll_entries",
+    "deptype": "i"
+  },
+  {
+    "object": "index payroll_entries_pkey",
+    "reference": "constraint payroll_entries_pkey on table payroll_entries",
+    "deptype": "i"
+  }
+]

@@ -1,0 +1,602 @@
+[
+  {
+    "rolname": "n03_command",
+    "name": "public.integration_clients",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.integration_idempotency_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.integration_proof_writes",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.leave_credit_accounts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.leave_credit_transactions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.leave_requests",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.leave_types",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.legislative_agenda_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.legislative_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.legislative_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.memo_recipients",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.memoranda",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.migrations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.offboarding_cases",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.offboarding_tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.onboarding_cases",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.onboarding_tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.operational_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.ops009_close_audit_bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.ops009_origin_delivery_exception_actions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.ops009_origin_delivery_exceptions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.outbox_messages",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.password_reset_tokens",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.payroll_entries",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.payroll_periods",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.performance_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_custody_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_custody_generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_custody_scan_evidence",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_document_bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_document_origin_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_editions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.plan_families",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_attachment_reconciliations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_attachments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_maps",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_plan_map_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_ppa_identifiers",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.planning_reference_counters",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.platform_notifications",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.portal_presence_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.ppa_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.prototype_messages",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.staff_activation_invitations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.task_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control._installations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._classification_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._command_results",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._compensation_outcomes",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._compensation_tombstones",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._namespaces",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._operation_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._operation_gates",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._operation_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._operations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._ownership_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._terminal_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody._watermark_checkpoints",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.classification_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.command_results",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.compensation_outcomes",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.compensation_tombstones",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.namespaces",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.operation_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.operation_gates",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.operation_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.operations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.ownership_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.terminal_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.watermark_checkpoints",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_assignments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_disposals",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_inventory_scans",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_inventory_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_maintenance_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._asset_reconciliations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._assets",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._attendance_logs",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._audit_logs",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._calendar_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._correspondence_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._correspondence_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._correspondence_reference_counters",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._departments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._designated_planning_staff",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._development_plans",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public._document_links",
+    "usage": true,
+    "grantable": false
+  }
+]

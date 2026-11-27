@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.visibility",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.authority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.barangays",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.category",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.center_lat",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.center_lng",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.coverage",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.crs",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.default_zoom",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.development_plan_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.effective_period",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.lead_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.legend_notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.map_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.plan_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.plate_attachment_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.provenance_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.related_plan_codes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.related_ppa_codes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.scale",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.source_attribution",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.updated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_maps.updated_year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_plan_map_links.development_plan_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_plan_map_links.planning_map_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_ppa_identifiers.code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_ppa_identifiers.observation_source",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_ppa_identifiers.observed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_reference_counters.last_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_reference_counters.year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.acknowledged_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.action_url",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.event_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.expires_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.message",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.priority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.read_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.requires_acknowledgement",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.source_domain",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.source_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.source_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.platform_notifications.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.last_seen_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.session_hash",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.portal_presence_sessions.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.aip_reference_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.appropriation_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.barangay",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.climate_adaptation_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.climate_mitigation_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.co_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.covered_barangays",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.development_plan_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.drrm_tagged",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.expected_outputs",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.funding_source",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.gad_attributed",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.implementation_context",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.implementing_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.location",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.map_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.mooe_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.planning_map_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.ppa_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.priority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.provenance_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.ps_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.related_development_plan",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.related_project_count",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.responsible_office",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.schedule_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.schedule_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.sector",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.target_quarter",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.updated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.ppa_records.year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.prototype_messages.body",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.prototype_messages.channel",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.prototype_messages.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

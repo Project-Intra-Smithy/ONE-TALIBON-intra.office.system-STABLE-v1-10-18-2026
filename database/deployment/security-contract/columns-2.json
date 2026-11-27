@@ -1,0 +1,902 @@
+[
+  {
+    "name": "legacy_custody.terminal_receipts_pkey.operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.terminal_receipts_receipt_uuid_key.receipt_uuid",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.actor_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.checkpoint_seq",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.epoch",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.event_kind",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.namespace_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.recorded_at",
+    "type": "timestamp with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "now()",
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.state_anchor_digest",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints_pkey.checkpoint_seq",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.assigned_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.assignment_type",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.condition_at_issue",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.condition_at_return",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.department_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_assignments_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.reference_no",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.returned_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_assignment_type_index.assignment_type",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_assignments_returned_at_index.returned_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.authority_reference",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.decided_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.decided_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_disposals_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.method",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.proceeds",
+    "type": "numeric(14,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.reason",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.recommended_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.recommended_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'recommended'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_disposals_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.actor_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.event_type",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.from_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.from_employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_events_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.metadata",
+    "type": "json",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.remarks",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.to_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events.to_employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events_event_type_index.event_type",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_events_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scan_unique.asset_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scan_unique.asset_inventory_session_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_session_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_inventory_scans_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.observed_condition",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.observed_location",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.remarks",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.scan_value",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.scanned_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.scanned_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans.verification_status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'verified'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_scans_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.closed_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.closed_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_inventory_sessions_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.inventory_date",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.notes",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.session_code",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.started_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'open'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.title",
+    "type": "character varying(180)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_inventory_sessions_session_code_unique.session_code",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.actual_cost",
+    "type": "numeric(14,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.completed_on",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

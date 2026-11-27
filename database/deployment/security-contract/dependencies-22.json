@@ -1,0 +1,502 @@
+[
+  {
+    "object": "table document_links",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table documents",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table dtr_daily_summaries",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table dtr_periods",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employee_development_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employee_health_access_grants",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employee_health_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employee_movement_tasks",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employee_movements",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table employees",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table initial_admin_bootstraps",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table integration_client_credentials",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table integration_clients",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table integration_idempotency_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table integration_proof_writes",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table leave_credit_accounts",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table leave_credit_transactions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table leave_requests",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table leave_types",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.bindings",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.classification_events",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.command_results",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.compensation_outcomes",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.compensation_tombstones",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.generations",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.namespaces",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_events",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_gates",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_items",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operations",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.ownership_links",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.terminal_receipts",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.watermark_checkpoints",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legislative_agenda_items",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table legislative_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table legislative_sessions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table memo_recipients",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table memoranda",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table migrations",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table offboarding_cases",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table offboarding_tasks",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table onboarding_cases",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table onboarding_tasks",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table operational_items",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table ops009_close_audit_bindings",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table ops009_origin_delivery_exception_actions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table ops009_origin_delivery_exceptions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table outbox_messages",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table password_reset_tokens",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table payroll_entries",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table payroll_periods",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table performance_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_custody_events",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_custody_generations",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_custody_scan_evidence",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_document_bindings",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_document_origin_receipts",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_editions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table plan_families",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_attachment_reconciliations",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_attachments",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_maps",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_plan_map_links",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_ppa_identifiers",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table planning_reference_counters",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table platform_notifications",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table portal_presence_sessions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table ppa_records",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table prototype_messages",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table staff_activation_invitations",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table task_events",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table tasks",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table transaction_events",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table transactions",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table travel_order_employee",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table travel_order_events",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table travel_orders",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table users",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table audit_logs",
+    "reference": "function legacy_custody.public_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table audit_logs",
+    "reference": "table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table document_links",
+    "reference": "function legacy_custody.public_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table document_links",
+    "reference": "table document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table documents",
+    "reference": "function legacy_custody.public_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger a_n03_public_guard on table documents",
+    "reference": "table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_custody_event_append_only_trigger on table plan_custody_events",
+    "reference": "function kirion_plan_custody_append_only_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_custody_event_append_only_trigger on table plan_custody_events",
+    "reference": "table plan_custody_events",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_custody_generation_guard_trigger on table plan_custody_generations",
+    "reference": "function kirion_plan_custody_generation_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_custody_generation_guard_trigger on table plan_custody_generations",
+    "reference": "table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_custody_scan_append_only_trigger on table plan_custody_scan_evidence",
+    "reference": "function kirion_plan_custody_append_only_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_custody_scan_append_only_trigger on table plan_custody_scan_evidence",
+    "reference": "table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_custody_scan_guard_trigger on table plan_custody_scan_evidence",
+    "reference": "function kirion_plan_custody_scan_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_custody_scan_guard_trigger on table plan_custody_scan_evidence",
+    "reference": "table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_document_guard_trigger on table documents",
+    "reference": "function kirion_plan_document_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_document_guard_trigger on table documents",
+    "reference": "table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_generic_link_guard_trigger on table document_links",
+    "reference": "function kirion_plan_generic_link_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_generic_link_guard_trigger on table document_links",
+    "reference": "table document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_receipt_guard_trigger on table plan_document_origin_receipts",
+    "reference": "function kirion_plan_origin_receipt_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_receipt_guard_trigger on table plan_document_origin_receipts",
+    "reference": "table plan_document_origin_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_stamp_origin_trigger on table documents",
+    "reference": "column security_domain of table documents",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_stamp_origin_trigger on table documents",
+    "reference": "function kirion_plan_stamp_origin()",
+    "deptype": "n"
+  }
+]

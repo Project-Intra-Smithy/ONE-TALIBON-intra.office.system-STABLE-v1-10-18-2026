@@ -1,0 +1,2302 @@
+[
+  {
+    "name": "to_char(double precision,text)",
+    "owner": "@bootstrap",
+    "prosrc": "float8_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "int4_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(interval,text)",
+    "owner": "@bootstrap",
+    "prosrc": "interval_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(numeric,text)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(real,text)",
+    "owner": "@bootstrap",
+    "prosrc": "float4_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(timestamp with time zone,text)",
+    "owner": "@bootstrap",
+    "prosrc": "timestamptz_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_char(timestamp without time zone,text)",
+    "owner": "@bootstrap",
+    "prosrc": "timestamp_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_date(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_date",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_hex(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "to_hex64",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_hex(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "to_hex32",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_json(anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "to_json",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_jsonb(anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "to_jsonb",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_number(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_to_number",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regclass(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regclass",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regcollation(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regcollation",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regnamespace(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regnamespace",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regoper(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regoper",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regoperator(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regoperator",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regproc(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regproc",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regprocedure(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regprocedure",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regrole(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regrole",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_regtype(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_regtype",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_timestamp(double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "float8_timestamptz",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_timestamp(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_timestamp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsquery(regconfig,text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_tsquery_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsquery(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_tsquery",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(json)",
+    "owner": "@bootstrap",
+    "prosrc": "json_string_to_tsvector",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(jsonb)",
+    "owner": "@bootstrap",
+    "prosrc": "jsonb_string_to_tsvector",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(regconfig,json)",
+    "owner": "@bootstrap",
+    "prosrc": "json_string_to_tsvector_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(regconfig,jsonb)",
+    "owner": "@bootstrap",
+    "prosrc": "jsonb_string_to_tsvector_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(regconfig,text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_tsvector_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "to_tsvector(text)",
+    "owner": "@bootstrap",
+    "prosrc": "to_tsvector",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "transaction_timestamp()",
+    "owner": "@bootstrap",
+    "prosrc": "now",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "translate(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "translate",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trigger_in(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "trigger_in",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trigger_out(trigger)",
+    "owner": "@bootstrap",
+    "prosrc": "trigger_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trim_array(anyarray,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "trim_array",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trim_scale(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_trim_scale",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trunc(double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "dtrunc",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trunc(macaddr)",
+    "owner": "@bootstrap",
+    "prosrc": "macaddr_trunc",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trunc(macaddr8)",
+    "owner": "@bootstrap",
+    "prosrc": "macaddr8_trunc",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trunc(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "trunc(numeric,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_trunc",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_debug(regconfig,text)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_debug(text)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_delete(tsvector,text)",
+    "owner": "@bootstrap",
+    "prosrc": "tsvector_delete_str",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_delete(tsvector,text[])",
+    "owner": "@bootstrap",
+    "prosrc": "tsvector_delete_arr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_filter(tsvector,\"char\"[])",
+    "owner": "@bootstrap",
+    "prosrc": "tsvector_filter",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(json,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_json",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(json,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_json_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(jsonb,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_jsonb",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(jsonb,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_jsonb_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,json,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_json_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,json,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_json_byid_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,jsonb,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_jsonb_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,jsonb,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_jsonb_byid_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,text,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(regconfig,text,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_byid_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(text,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_headline(text,tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_headline_opt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_lexize(regdictionary,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_lexize",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_match_qv(tsquery,tsvector)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_match_qv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_match_tq(text,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_match_tq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_match_tt(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_match_tt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_match_vq(tsvector,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_match_vq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_parse(oid,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_parse_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_parse(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_parse_byname",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank(real[],tsvector,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rank_wtt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank(real[],tsvector,tsquery,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rank_wttf",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank(tsvector,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rank_tt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank(tsvector,tsquery,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rank_ttf",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank_cd(real[],tsvector,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rankcd_wtt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank_cd(real[],tsvector,tsquery,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rankcd_wttf",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank_cd(tsvector,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rankcd_tt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rank_cd(tsvector,tsquery,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_rankcd_ttf",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rewrite(tsquery,text)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_rewrite_query",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_rewrite(tsquery,tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_rewrite",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_stat(text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_stat1",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_stat(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_stat2",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_token_type(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_token_type_byid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_token_type(text)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_token_type_byname",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ts_typanalyze(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "ts_typanalyze",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsm_handler_in(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "tsm_handler_in",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsm_handler_out(tsm_handler)",
+    "owner": "@bootstrap",
+    "prosrc": "tsm_handler_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsmatchjoinsel(internal,oid,internal,smallint,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "tsmatchjoinsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsmatchsel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "tsmatchsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsmultirange()",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor0",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsmultirange(tsrange)",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor1",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsmultirange(tsrange[])",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor2",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsq_mcontained(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsq_mcontained",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsq_mcontains(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsq_mcontains",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_and(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_and",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_cmp(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_cmp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_eq(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_eq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_ge(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_ge",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_gt(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_gt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_le(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_le",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_lt(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_lt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_ne(tsquery,tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_ne",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "tsquery_not(tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_not",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

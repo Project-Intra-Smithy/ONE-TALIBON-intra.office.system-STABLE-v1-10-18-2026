@@ -1,0 +1,902 @@
+[
+  {
+    "name": "public.legislative_records.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records.year",
+    "type": "smallint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_approved_at_index.approved_at",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_record_number_unique.record_number",
+    "type": "character varying(100)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_record_type_index.record_type",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_record_type_year_status_index.record_type",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_record_type_year_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_record_type_year_status_index.year",
+    "type": "smallint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_records_year_index.year",
+    "type": "smallint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('legislative_sessions_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.location",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.notes",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.scheduled_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.session_code",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.session_type",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'scheduled'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_scheduled_at_index.scheduled_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_session_code_unique.session_code",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_session_type_index.session_type",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.legislative_sessions_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.acknowledged_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.delivered_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('memo_recipients_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.memorandum_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients.viewed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_acknowledged_at_index.acknowledged_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_memorandum_id_user_id_unique.memorandum_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_memorandum_id_user_id_unique.user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_user_id_viewed_at_index.user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_user_id_viewed_at_index.viewed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memo_recipients_viewed_at_index.viewed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.audience_type",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'all'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.body",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.classification",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'internal'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.expires_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('memoranda_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.issued_by_department_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.issued_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.memo_number",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.published_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.requires_acknowledgement",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "false",
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.status",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'published'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_expires_at_index.expires_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_memo_number_unique.memo_number",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_published_at_index.published_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.memoranda_status_index.status",
+    "type": "character varying(24)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations.batch",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations.id",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('migrations_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.migrations.migration",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.migrations_pkey.id",
+    "type": "integer",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_audit_tuple.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_audit_tuple.entity_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_audit_tuple.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.actor_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.correlation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.correspondence_record_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.event",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.n03_municipal_actor",
+    "type": "boolean",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple.office_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_binding_tuple.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_binding_tuple.custody_ordinal",
+    "type": "integer",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_binding_tuple.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_binding_tuple.public_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_item_unique.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_item_unique.custody_ordinal",
+    "type": "integer",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_op_unique.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_document_op_unique.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_link_tuple.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_link_tuple.document_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_link_tuple.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.n03_link_tuple.linkable_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

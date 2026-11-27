@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reader",
+    "name": "public.payroll_periods.processed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.payroll_periods.released_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.payroll_periods.source_notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.payroll_periods.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.payroll_periods.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.evaluator_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.period_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.period_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.rating",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.rating_scale",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.reviewed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.performance_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.actor_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.details",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.occurred_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.office_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.plan_custody_generation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_events.service_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.actor_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.custody_state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.generation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.idempotency_key_hash",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.integrity_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.media_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.office_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.service_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.size_bytes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.storage_disk",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_generations.storage_locator",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.decision",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.engine_version",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.evidence_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.evidence_signature_hash",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.plan_custody_generation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.received_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.scanned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.scanned_sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.scanned_size_bytes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.scanner_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.signature_version",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_custody_scan_evidence.trusted",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.binding_state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.document_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.plan_edition_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.revision_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.role",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_bindings.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_origin_receipts.document_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_origin_receipts.origin",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_document_origin_receipts.sealed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.edition_label",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.plan_family_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_editions.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_families.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_families.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_families.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_families.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.plan_families.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.attachment_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.evidence_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachment_reconciliations.parent_record_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.archived_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.category",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.checksum_sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.file_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.mime_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.owner_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.parent_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.parent_record_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.parent_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.size_bytes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.storage_disk",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.storage_path",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.planning_attachments.uploaded_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

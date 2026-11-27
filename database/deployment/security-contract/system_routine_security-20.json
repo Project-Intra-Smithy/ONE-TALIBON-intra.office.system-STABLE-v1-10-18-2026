@@ -1,0 +1,2266 @@
+[
+  {
+    "name": "percentile_cont(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont(double precision,interval)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont(double precision[],double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont(double precision[],interval)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont_float8_final(internal,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_cont_float8_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont_float8_multi_final(internal,double precision[])",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_cont_float8_multi_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont_interval_final(internal,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_cont_interval_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_cont_interval_multi_final(internal,double precision[])",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_cont_interval_multi_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_disc(double precision,anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_disc(double precision[],anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_disc_final(internal,double precision,anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_disc_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percentile_disc_multi_final(internal,double precision[],anyelement)",
+    "owner": "@bootstrap",
+    "prosrc": "percentile_disc_multi_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_lock(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_lock_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_lock(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_lock_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_lock_shared(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_lock_shared_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_lock_shared(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_lock_shared_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_unlock(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_unlock_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_unlock(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_unlock_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_unlock_all()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_unlock_all",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_unlock_shared(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_unlock_shared_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_unlock_shared(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_unlock_shared_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_xact_lock(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_xact_lock_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_xact_lock(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_xact_lock_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_xact_lock_shared(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_xact_lock_shared_int8",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_advisory_xact_lock_shared(integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_advisory_xact_lock_shared_int4",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_available_extension_versions()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_available_extension_versions",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_available_extensions()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_available_extensions",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_backend_pid()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_backend_pid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_backup_start(text,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_backup_start",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_backup_stop(boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_backup_stop",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_blocking_pids(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_blocking_pids",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_cancel_backend(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_cancel_backend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_char_to_encoding(name)",
+    "owner": "@bootstrap",
+    "prosrc": "PG_char_to_encoding",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_client_encoding()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_client_encoding",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_collation_actual_version(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_collation_actual_version",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_collation_for(\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "pg_collation_for",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_collation_is_visible(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_collation_is_visible",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_column_compression(\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "pg_column_compression",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_column_is_updatable(regclass,smallint,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_column_is_updatable",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_column_size(\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "pg_column_size",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_conf_load_time()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_conf_load_time",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_config()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_config",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_control_checkpoint()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_control_checkpoint",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_control_init()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_control_init",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_control_recovery()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_control_recovery",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_control_system()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_control_system",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_conversion_is_visible(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_conversion_is_visible",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_copy_logical_replication_slot(name,name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_copy_logical_replication_slot_c",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_copy_logical_replication_slot(name,name,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_copy_logical_replication_slot_b",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_copy_logical_replication_slot(name,name,boolean,name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_copy_logical_replication_slot_a",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_copy_physical_replication_slot(name,name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_copy_physical_replication_slot_b",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_copy_physical_replication_slot(name,name,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_copy_physical_replication_slot_a",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_create_logical_replication_slot(name,name,boolean,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_create_logical_replication_slot",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_create_physical_replication_slot(name,boolean,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_create_physical_replication_slot",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_create_restore_point(text)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_create_restore_point",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_logfile()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_logfile",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_logfile(text)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_logfile_1arg",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_snapshot()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_snapshot",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_wal_flush_lsn()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_wal_flush_lsn",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_wal_insert_lsn()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_wal_insert_lsn",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_wal_lsn()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_wal_lsn",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_xact_id()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_xact_id",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_current_xact_id_if_assigned()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_current_xact_id_if_assigned",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_cursor()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_cursor",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_database_collation_actual_version(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_database_collation_actual_version",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_database_size(name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_database_size_name",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_database_size(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_database_size_oid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_ddl_command_in(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_ddl_command_in",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_ddl_command_out(pg_ddl_command)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_ddl_command_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_ddl_command_recv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_ddl_command_recv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_ddl_command_send(pg_ddl_command)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_ddl_command_send",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_dependencies_in(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_dependencies_in",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_dependencies_out(pg_dependencies)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_dependencies_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_dependencies_recv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_dependencies_recv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_dependencies_send(pg_dependencies)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_dependencies_send",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_describe_object(oid,oid,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_describe_object",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_drop_replication_slot(name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_drop_replication_slot",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_encoding_max_length(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_encoding_max_length_sql",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_encoding_to_char(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "PG_encoding_to_char",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_event_trigger_ddl_commands()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_event_trigger_ddl_commands",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_event_trigger_dropped_objects()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_event_trigger_dropped_objects",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_event_trigger_table_rewrite_oid()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_event_trigger_table_rewrite_oid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_event_trigger_table_rewrite_reason()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_event_trigger_table_rewrite_reason",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_export_snapshot()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_export_snapshot",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_extension_config_dump(regclass,text)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_extension_config_dump",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_extension_update_paths(name)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_extension_update_paths",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_filenode_relation(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_filenode_relation",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_function_is_visible(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_function_is_visible",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_backend_memory_contexts()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_backend_memory_contexts",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "pg_read_all_stats",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_catalog_foreign_keys()",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_catalog_foreign_keys",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_constraintdef(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_constraintdef",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_constraintdef(oid,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_constraintdef_ext",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_expr(pg_node_tree,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_expr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_expr(pg_node_tree,oid,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_expr_ext",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_function_arg_default(oid,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_function_arg_default",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_function_arguments(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_function_arguments",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_function_identity_arguments(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_function_identity_arguments",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_function_result(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_function_result",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_function_sqlbody(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_function_sqlbody",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_get_functiondef(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "pg_get_functiondef",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

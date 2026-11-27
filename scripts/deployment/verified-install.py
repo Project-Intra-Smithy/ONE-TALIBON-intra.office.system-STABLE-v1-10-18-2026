@@ -24,6 +24,8 @@ def refuse(message):
 def secure_path(path, secret=False):
     global _windows_actor
     path = Path(path)
+    if path.is_file() and path.stat().st_nlink != 1:
+        refuse('Hard-linked deployment inputs are unsupported')
     if path.is_symlink() or not path.exists() or (os.name == 'nt' and path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT):
         refuse('Missing or symbolic deployment input')
     if os.name != 'nt':
@@ -47,7 +49,7 @@ def secure_path(path, secret=False):
     try:
         # Current user's SID is supplied by the OS token through a constant, profile-free query.
         if _windows_actor is None:
-            _windows_actor = subprocess.check_output(['whoami', '/user', '/fo', 'csv', '/nh'], text=True).strip().split(',')[-1].strip('"')
+            _windows_actor = subprocess.check_output([str(Path(os.environ.get('SystemRoot',r'C:\Windows'))/'System32/whoami.exe'), '/user', '/fo', 'csv', '/nh'], text=True).strip().split(',')[-1].strip('"')
         allowed = {_windows_actor, 'S-1-5-18', 'S-1-5-32-544'}
         owner_sid = sid_text(owner)
         if owner_sid not in allowed:
@@ -93,6 +95,8 @@ def verify(package, manifest_file, digest):
         for name in dirs+files:
             path = Path(directory)/name
             if path.is_file():
+                if path.name == '.env' or path.name.startswith('.env.'):
+                    refuse('Dotenv files are unsupported executable configuration inputs')
                 files_to_hash.append(path)
             elif path.is_dir():
                 secure_path(path)
@@ -119,9 +123,18 @@ def main():
     ap.add_argument('--target', type=Path, required=True)
     ap.add_argument('--credentials', type=Path, required=True)
     ap.add_argument('--php', required=True)
+    ap.add_argument('--php-sha256', required=True)
+    ap.add_argument('--ini-sha256', required=True)
     ap.add_argument('--ini', type=Path, help='Private, independently controlled provisioning-only PHP configuration')
     ap.add_argument('--verify-only', action='store_true')
     args = ap.parse_args()
+    # One canonical namespace is carried from verification into execution.
+    args.package = args.package.resolve(strict=True)
+    args.php = str(Path(args.php).resolve(strict=True))
+    if not Path(args.php).is_absolute() or not args.ini or not args.ini.is_absolute():
+        refuse('Absolute trusted PHP executable and explicit private INI are required')
+    if hashlib.sha256(Path(args.php).read_bytes()).hexdigest()!=args.php_sha256 or hashlib.sha256(args.ini.read_bytes()).hexdigest()!=args.ini_sha256:
+        refuse('Independent PHP runtime/configuration digest mismatch')
     manifest = verify(args.package, args.manifest, args.sha256)
     for path in [args.target, args.credentials]:
         secure_path(path.parent, True)
@@ -131,8 +144,36 @@ def main():
     if args.verify_only:
         print('VERIFIED_PACKAGE')
         return
-    env = dict(os.environ)
-    if any(env.get(name) for name in ['PHPRC','PHP_INI_SCAN_DIR','PHP_VALUE','PHP_ADMIN_VALUE','LD_PRELOAD','LD_AUDIT','LD_LIBRARY_PATH','DYLD_INSERT_LIBRARIES']):
+    ambient = os.environ
+    # Finite provisioning inputs only. Never pass ambient Laravel/Composer/libpq/cache controls.
+    allowed = ['APP_ENV','APP_DEBUG','APP_KEY','DB_CONNECTION','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD','DB_SSLMODE','DB_SSLROOTCERT']
+    env = {name: ambient[name] for name in allowed if name in ambient}
+    if env.get('APP_ENV') not in ['staging','production'] or env.get('APP_DEBUG','false').lower() not in ['false','0']:
+        refuse('Unsupported provisioning application environment')
+    import re
+    host=env.get('DB_HOST','')
+    if not re.fullmatch(r'[A-Za-z0-9_.:-]+',host) and not (host.startswith('/') and re.fullmatch(r'/[A-Za-z0-9_./-]+',host)):
+        refuse('Unsupported database endpoint')
+    if not re.fullmatch(r'[0-9]{1,5}',env.get('DB_PORT','')) or not 1<=int(env['DB_PORT'])<=65535:
+        refuse('Unsupported database port')
+    for name in ['DB_DATABASE','DB_USERNAME']:
+        if not re.fullmatch(r'[a-z][a-z0-9_]{2,62}',env.get(name,'')):
+            refuse('Unsupported database identity')
+    if env.get('DB_SSLMODE')!='verify-full' and not host.startswith('/'):
+        refuse('TCP bootstrap requires verified TLS')
+    if any(ch in env.get('DB_SSLROOTCERT','') for ch in ["'",';','\n','\r']):
+        refuse('Unsupported TLS trust path')
+    env.update(APP_DEBUG='false',APP_URL='https://deployment.invalid',DB_CONNECTION='pgsql',CACHE_STORE='array',SESSION_DRIVER='array',QUEUE_CONNECTION='sync',LOG_CHANNEL='stderr',APP_RUNNING_IN_CONSOLE='true')
+    if os.name == 'nt':
+        system = Path(ambient.get('SystemRoot',r'C:\Windows')).resolve(strict=True)
+        if system.name.lower() != 'windows':
+            refuse('Unsupported Windows system root')
+        env['SystemRoot'] = str(system)
+        env['WINDIR'] = str(system)
+    # OS executable lookup is unnecessary: PHP is an absolute, operator-trusted runtime.
+    # The old override negatives remain refusals, but correctness relies on the finite map.
+
+    if any(ambient.get(name) for name in ['PGOPTIONS','PHPRC','PHP_INI_SCAN_DIR','PHP_VALUE','PHP_ADMIN_VALUE','LD_PRELOAD','LD_AUDIT','LD_LIBRARY_PATH','DYLD_INSERT_LIBRARIES']):
         refuse('Unsupported runtime configuration override')
     php_command=[args.php]
     if args.ini:
@@ -160,7 +201,7 @@ def main():
     if env.get('DB_SSLROOTCERT'):
         secure_path(env['DB_SSLROOTCERT'])
     # No source-supplied php.ini, prepend/preload, stale opcode cache or ambient APM enrollment.
-    if any(k.startswith(('OTEL_', 'DD_', 'BLACKFIRE_', 'NEW_RELIC_')) and v for k,v in env.items()):
+    if any(k.startswith(('OTEL_', 'DD_', 'BLACKFIRE_', 'NEW_RELIC_')) and v for k,v in ambient.items()):
         refuse('Unsupported instrumentation environment')
     # This bootstrap is generated from trusted launcher bytes, never from package-controlled PHP.
     bootstrap = r'''<?php
@@ -174,6 +215,12 @@ def main():
     require $argv[2].'/vendor/autoload.php';
     $app=require $argv[2].'/bootstrap/app.php';
     $app->useStoragePath($argv[3]);
+    $app->useEnvironmentPath($argv[3].'/environment');
+    $app->loadEnvironmentFrom('.env');
+    foreach (['getCachedServicesPath','getCachedPackagesPath','getCachedConfigPath','getCachedRoutesPath','getCachedEventsPath'] as $method) {
+      $path=$app->$method();
+      if(str_starts_with($path,$argv[2].DIRECTORY_SEPARATOR)===false) { exit(83); }
+    }
     $kernel=$app->make(Illuminate\Contracts\Console\Kernel::class);
     $kernel->bootstrap();
     $status=$kernel->call('deploy:persistent',['manifest'=>$argv[4],'credentials'=>$argv[5]]);
@@ -189,6 +236,20 @@ def main():
         (root/'storage').mkdir()
         for name in ['framework/cache','framework/sessions','framework/views','logs','app/private']:
             (root/'storage'/name).mkdir(parents=True,exist_ok=True)
+        for name in ['HOME','USERPROFILE','APPDATA','TMP','TEMP','TMPDIR']:
+            env[name]=str(root)
+        env['APP_BASE_PATH']=str(args.package)
+        env['LARAVEL_STORAGE_PATH']=str(root/'storage')
+        for suffix,relative in [('SERVICES','services.php'),('PACKAGES','packages.php'),('CONFIG','config.php'),('ROUTES','routes-v7.php'),('EVENTS','events.php')]:
+            env['APP_'+suffix+'_CACHE']='bootstrap/cache/'+relative
+        (root/'storage/environment').mkdir()
+        # libpq has no ambient service/passfile/certificate fallback in this private home.
+        env['PGPASSFILE']=str(root/'absent-passfile')
+        env['PGSERVICEFILE']=str(root/'absent-service')
+        env['PGGSSENCMODE']='disable'
+        env['PGSSLCERT']=str(root/'absent-client.crt')
+        env['PGSSLKEY']=str(root/'absent-client.key')
+        env['PGREQUIREAUTH']='scram-sha-256'
         env['LOG_CHANNEL']='stderr'
         result = subprocess.run([*php_command,'-d','opcache.enable_cli=0',str(root/'bootstrap.php'),str(root/'attestation.json'),str(args.package.resolve()),str(root/'storage'),str(args.target.resolve()),str(args.credentials.resolve())],env=env,cwd=args.package)
         if result.returncode:

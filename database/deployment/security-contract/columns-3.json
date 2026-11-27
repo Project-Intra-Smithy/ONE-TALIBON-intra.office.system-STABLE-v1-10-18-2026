@@ -1,0 +1,1192 @@
+[
+  {
+    "name": "public.asset_maintenance_records.condition_after",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.condition_before",
+    "type": "character varying(40)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.estimated_cost",
+    "type": "numeric(14,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_maintenance_records_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.issue_description",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.maintenance_type",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.service_provider",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.started_on",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'open'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_maintenance_records_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.accounting_reference",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.asset_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.book_value",
+    "type": "numeric(14,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('asset_reconciliations_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.notes",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.reconciled_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.reconciled_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.asset_reconciliations_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.accountable_employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.acquisition_cost",
+    "type": "numeric(14,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.acquisition_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.category",
+    "type": "character varying(120)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.condition",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'good'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.assets.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.current_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.description",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.funding_source",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.ics_reference",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('assets_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.assets.par_reference",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.physical_location",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.property_number",
+    "type": "character varying(120)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.qr_value",
+    "type": "character varying(180)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.reconciliation_status",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'unreconciled'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.assets.serial_number",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.status",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'available'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.assets.supplier",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets.warranty_until",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_category_index.category",
+    "type": "character varying(120)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_condition_index.condition",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_property_number_unique.property_number",
+    "type": "character varying(120)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_qr_value_unique.qr_value",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_reconciliation_status_index.reconciliation_status",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_serial_number_index.serial_number",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_status_index.status",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.assets_warranty_until_index.warranty_until",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.employee_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.event_type",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.external_reference",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('attendance_logs_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs.source",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'manual_import'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_employee_id_occurred_at_index.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_employee_id_occurred_at_index.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_event_type_index.event_type",
+    "type": "character varying(24)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_external_reference_index.external_reference",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_occurred_at_index.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.attendance_logs_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs.action",
+    "type": "character varying(100)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.actor_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.actor_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.correlation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "CURRENT_TIMESTAMP",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.entity_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.entity_type",
+    "type": "character varying(100)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('audit_logs_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.integration_client_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.ip_address",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.outcome",
+    "type": "character varying(20)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'allowed'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.summary",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs.user_agent",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs_action_index.action",
+    "type": "character varying(100)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_correlation_id_index.correlation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_created_at_index.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_entity_id_index.entity_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_entity_type_index.entity_type",
+    "type": "character varying(100)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

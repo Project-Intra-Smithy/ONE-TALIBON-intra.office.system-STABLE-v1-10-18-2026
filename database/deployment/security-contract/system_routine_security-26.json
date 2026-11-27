@@ -1,0 +1,2302 @@
+[
+  {
+    "name": "regexnesel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexnesel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_count(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_count_no_start",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_count(text,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_count_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_count(text,text,integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_count",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr_no_start",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr_no_n",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr_no_endoption",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text,integer,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text,integer,integer,integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr_no_subexpr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_instr(text,text,integer,integer,integer,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_instr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_like(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_like_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_like(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_like",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_match(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_match_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_match(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_match",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_matches(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_matches_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_matches(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_matches",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_replace(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "textregexreplace_noopt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_replace(text,text,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "textregexreplace_extended_no_n",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_replace(text,text,text,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "textregexreplace_extended_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_replace(text,text,text,integer,integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "textregexreplace_extended",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_replace(text,text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "textregexreplace",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_split_to_array(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_split_to_array_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_split_to_array(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_split_to_array",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_split_to_table(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_split_to_table_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_split_to_table(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_split_to_table",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_substr(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_substr_no_start",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_substr(text,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_substr_no_n",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_substr(text,text,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_substr_no_flags",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_substr(text,text,integer,integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_substr_no_subexpr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regexp_substr(text,text,integer,integer,text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "regexp_substr",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regnamespacein(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regnamespacein",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regnamespaceout(regnamespace)",
+    "owner": "@bootstrap",
+    "prosrc": "regnamespaceout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regnamespacerecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regnamespacerecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regnamespacesend(regnamespace)",
+    "owner": "@bootstrap",
+    "prosrc": "regnamespacesend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperatorin(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperatorin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperatorout(regoperator)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperatorout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperatorrecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperatorrecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperatorsend(regoperator)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperatorsend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperin(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperout(regoper)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regoperrecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regoperrecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regopersend(regoper)",
+    "owner": "@bootstrap",
+    "prosrc": "regopersend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocedurein(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocedurein",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocedureout(regprocedure)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocedureout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocedurerecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocedurerecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regproceduresend(regprocedure)",
+    "owner": "@bootstrap",
+    "prosrc": "regproceduresend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocin(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocout(regproc)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocrecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocrecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regprocsend(regproc)",
+    "owner": "@bootstrap",
+    "prosrc": "regprocsend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_avgx(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_avgy(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_count(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_intercept(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_r2(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_slope(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_sxx(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_sxy(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regr_syy(double precision,double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regrolein(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regrolein",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regroleout(regrole)",
+    "owner": "@bootstrap",
+    "prosrc": "regroleout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regrolerecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regrolerecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regrolesend(regrole)",
+    "owner": "@bootstrap",
+    "prosrc": "regrolesend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regtypein(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "regtypein",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regtypeout(regtype)",
+    "owner": "@bootstrap",
+    "prosrc": "regtypeout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regtyperecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "regtyperecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "regtypesend(regtype)",
+    "owner": "@bootstrap",
+    "prosrc": "regtypesend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "repeat(text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "repeat",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "replace(text,text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "replace_text",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "reverse(text)",
+    "owner": "@bootstrap",
+    "prosrc": "text_reverse",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "round(double precision)",
+    "owner": "@bootstrap",
+    "prosrc": "dround",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "round(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "round(numeric,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_round",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "row_number()",
+    "owner": "@bootstrap",
+    "prosrc": "window_row_number",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "row_security_active(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "row_security_active",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "row_security_active(text)",
+    "owner": "@bootstrap",
+    "prosrc": "row_security_active_name",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "row_to_json(record)",
+    "owner": "@bootstrap",
+    "prosrc": "row_to_json",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "row_to_json(record,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "row_to_json_pretty",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "rpad(text,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "rpad(text,integer,text)",
+    "owner": "@bootstrap",
+    "prosrc": "rpad",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "rtrim(bytea,bytea)",
+    "owner": "@bootstrap",
+    "prosrc": "byteartrim",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "rtrim(text)",
+    "owner": "@bootstrap",
+    "prosrc": "rtrim1",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "rtrim(text,text)",
+    "owner": "@bootstrap",
+    "prosrc": "rtrim",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "satisfies_hash_partition(oid,integer,integer,\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "satisfies_hash_partition",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalargejoinsel(internal,oid,internal,smallint,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "scalargejoinsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalargesel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "scalargesel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalargtjoinsel(internal,oid,internal,smallint,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "scalargtjoinsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalargtsel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "scalargtsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalarlejoinsel(internal,oid,internal,smallint,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "scalarlejoinsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalarlesel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "scalarlesel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalarltjoinsel(internal,oid,internal,smallint,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "scalarltjoinsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scalarltsel(internal,oid,internal,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "scalarltsel",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "scale(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_scale",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "schema_to_xml(name,boolean,boolean,text)",
+    "owner": "@bootstrap",
+    "prosrc": "schema_to_xml",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "schema_to_xml_and_xmlschema(name,boolean,boolean,text)",
+    "owner": "@bootstrap",
+    "prosrc": "schema_to_xml_and_xmlschema",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "schema_to_xmlschema(name,boolean,boolean,text)",
+    "owner": "@bootstrap",
+    "prosrc": "schema_to_xmlschema",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "set_bit(bit,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "bitsetbit",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "set_bit(bytea,bigint,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "byteaSetBit",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "set_byte(bytea,integer,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "byteaSetByte",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "set_config(text,text,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "set_config_by_name",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint installations_tree_sha_check on table deployment_control.installations",
+    "reference": "column tree_sha of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_client_credentials_integration_client_id_foreign on table integration_client_credentials",
+    "reference": "column id of table integration_clients",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_client_credentials_integration_client_id_foreign on table integration_client_credentials",
+    "reference": "column integration_client_id of table integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_client_credentials_integration_client_id_foreign on table integration_client_credentials",
+    "reference": "index integration_clients_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_client_credentials_issued_by_user_id_foreign on table integration_client_credentials",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_client_credentials_issued_by_user_id_foreign on table integration_client_credentials",
+    "reference": "column issued_by_user_id of table integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_client_credentials_issued_by_user_id_foreign on table integration_client_credentials",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_client_credentials_pkey on table integration_client_credentials",
+    "reference": "column id of table integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_client_credentials_public_id_unique on table integration_client_credentials",
+    "reference": "column public_id of table integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_clients_created_by_user_id_foreign on table integration_clients",
+    "reference": "column created_by_user_id of table integration_clients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_clients_created_by_user_id_foreign on table integration_clients",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_clients_created_by_user_id_foreign on table integration_clients",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_clients_pkey on table integration_clients",
+    "reference": "column id of table integration_clients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_clients_public_id_unique on table integration_clients",
+    "reference": "column public_id of table integration_clients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_credential_i on table integration_idempotency_records",
+    "reference": "column id of table integration_client_credentials",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_credential_i on table integration_idempotency_records",
+    "reference": "column integration_client_credential_id of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_credential_i on table integration_idempotency_records",
+    "reference": "index integration_client_credentials_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_id_foreign on table integration_idempotency_records",
+    "reference": "column id of table integration_clients",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_id_foreign on table integration_idempotency_records",
+    "reference": "column integration_client_id of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_records_integration_client_id_foreign on table integration_idempotency_records",
+    "reference": "index integration_clients_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_idempotency_records_pkey on table integration_idempotency_records",
+    "reference": "column id of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_scope_unique on table integration_idempotency_records",
+    "reference": "column idempotency_key_hash of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_scope_unique on table integration_idempotency_records",
+    "reference": "column integration_client_credential_id of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_scope_unique on table integration_idempotency_records",
+    "reference": "column integration_client_id of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_idempotency_scope_unique on table integration_idempotency_records",
+    "reference": "column operation of table integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_credential_id_forei on table integration_proof_writes",
+    "reference": "column id of table integration_client_credentials",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_credential_id_forei on table integration_proof_writes",
+    "reference": "column integration_client_credential_id of table integration_proof_writes",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_credential_id_forei on table integration_proof_writes",
+    "reference": "index integration_client_credentials_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_id_foreign on table integration_proof_writes",
+    "reference": "column id of table integration_clients",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_id_foreign on table integration_proof_writes",
+    "reference": "column integration_client_id of table integration_proof_writes",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_proof_writes_integration_client_id_foreign on table integration_proof_writes",
+    "reference": "index integration_clients_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint integration_proof_writes_pkey on table integration_proof_writes",
+    "reference": "column id of table integration_proof_writes",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint integration_proof_writes_public_id_unique on table integration_proof_writes",
+    "reference": "column public_id of table integration_proof_writes",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_accounts_employee_id_foreign on table leave_credit_accounts",
+    "reference": "column employee_id of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_accounts_employee_id_foreign on table leave_credit_accounts",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_accounts_employee_id_foreign on table leave_credit_accounts",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_accounts_employee_id_leave_type_id_unique on table leave_credit_accounts",
+    "reference": "column employee_id of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_accounts_employee_id_leave_type_id_unique on table leave_credit_accounts",
+    "reference": "column leave_type_id of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_accounts_leave_type_id_foreign on table leave_credit_accounts",
+    "reference": "column id of table leave_types",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_accounts_leave_type_id_foreign on table leave_credit_accounts",
+    "reference": "column leave_type_id of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_accounts_leave_type_id_foreign on table leave_credit_accounts",
+    "reference": "index leave_types_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_accounts_pkey on table leave_credit_accounts",
+    "reference": "column id of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_transactions_actor_user_id_foreign on table leave_credit_transactions",
+    "reference": "column actor_user_id of table leave_credit_transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_transactions_actor_user_id_foreign on table leave_credit_transactions",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_transactions_actor_user_id_foreign on table leave_credit_transactions",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_transactions_leave_credit_account_id_foreign on table leave_credit_transactions",
+    "reference": "column id of table leave_credit_accounts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_transactions_leave_credit_account_id_foreign on table leave_credit_transactions",
+    "reference": "column leave_credit_account_id of table leave_credit_transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_credit_transactions_leave_credit_account_id_foreign on table leave_credit_transactions",
+    "reference": "index leave_credit_accounts_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_credit_transactions_pkey on table leave_credit_transactions",
+    "reference": "column id of table leave_credit_transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_requests_employee_id_foreign on table leave_requests",
+    "reference": "column employee_id of table leave_requests",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_requests_employee_id_foreign on table leave_requests",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_requests_employee_id_foreign on table leave_requests",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_requests_leave_type_id_foreign on table leave_requests",
+    "reference": "column id of table leave_types",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_requests_leave_type_id_foreign on table leave_requests",
+    "reference": "column leave_type_id of table leave_requests",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_requests_leave_type_id_foreign on table leave_requests",
+    "reference": "index leave_types_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_requests_pkey on table leave_requests",
+    "reference": "column id of table leave_requests",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_requests_reviewed_by_user_id_foreign on table leave_requests",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_requests_reviewed_by_user_id_foreign on table leave_requests",
+    "reference": "column reviewed_by_user_id of table leave_requests",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_requests_reviewed_by_user_id_foreign on table leave_requests",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint leave_types_code_unique on table leave_types",
+    "reference": "column code of table leave_types",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint leave_types_pkey on table leave_types",
+    "reference": "column id of table leave_types",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_record_id_foreign on table legislative_agenda_items",
+    "reference": "column id of table legislative_records",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_record_id_foreign on table legislative_agenda_items",
+    "reference": "column legislative_record_id of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_record_id_foreign on table legislative_agenda_items",
+    "reference": "index legislative_records_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_session_id_foreign on table legislative_agenda_items",
+    "reference": "column id of table legislative_sessions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_session_id_foreign on table legislative_agenda_items",
+    "reference": "column legislative_session_id of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_items_legislative_session_id_foreign on table legislative_agenda_items",
+    "reference": "index legislative_sessions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_items_pkey on table legislative_agenda_items",
+    "reference": "column id of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_items_transaction_id_foreign on table legislative_agenda_items",
+    "reference": "column id of table transactions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_items_transaction_id_foreign on table legislative_agenda_items",
+    "reference": "column transaction_id of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_items_transaction_id_foreign on table legislative_agenda_items",
+    "reference": "index transactions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_agenda_sequence_unique on table legislative_agenda_items",
+    "reference": "column legislative_session_id of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_agenda_sequence_unique on table legislative_agenda_items",
+    "reference": "column sequence_no of table legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_records_created_by_user_id_foreign on table legislative_records",
+    "reference": "column created_by_user_id of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_records_created_by_user_id_foreign on table legislative_records",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_records_created_by_user_id_foreign on table legislative_records",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_records_pkey on table legislative_records",
+    "reference": "column id of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_records_record_number_unique on table legislative_records",
+    "reference": "column record_number of table legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_sessions_created_by_user_id_foreign on table legislative_sessions",
+    "reference": "column created_by_user_id of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_sessions_created_by_user_id_foreign on table legislative_sessions",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_sessions_created_by_user_id_foreign on table legislative_sessions",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint legislative_sessions_pkey on table legislative_sessions",
+    "reference": "column id of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint legislative_sessions_session_code_unique on table legislative_sessions",
+    "reference": "column session_code of table legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_memorandum_id_foreign on table memo_recipients",
+    "reference": "column id of table memoranda",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memo_recipients_memorandum_id_foreign on table memo_recipients",
+    "reference": "column memorandum_id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_memorandum_id_foreign on table memo_recipients",
+    "reference": "index memoranda_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memo_recipients_memorandum_id_user_id_unique on table memo_recipients",
+    "reference": "column memorandum_id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_memorandum_id_user_id_unique on table memo_recipients",
+    "reference": "column user_id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_pkey on table memo_recipients",
+    "reference": "column id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_user_id_foreign on table memo_recipients",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memo_recipients_user_id_foreign on table memo_recipients",
+    "reference": "column user_id of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memo_recipients_user_id_foreign on table memo_recipients",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memoranda_issued_by_department_id_foreign on table memoranda",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memoranda_issued_by_department_id_foreign on table memoranda",
+    "reference": "column issued_by_department_id of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memoranda_issued_by_department_id_foreign on table memoranda",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memoranda_issued_by_user_id_foreign on table memoranda",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memoranda_issued_by_user_id_foreign on table memoranda",
+    "reference": "column issued_by_user_id of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memoranda_issued_by_user_id_foreign on table memoranda",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint memoranda_memo_number_unique on table memoranda",
+    "reference": "column memo_number of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint memoranda_pkey on table memoranda",
+    "reference": "column id of table memoranda",
+    "deptype": "a"
+  }
+]

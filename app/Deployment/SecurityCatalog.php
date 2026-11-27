@@ -9,6 +9,34 @@ use RuntimeException;
 
 final class SecurityCatalog
 {
+    public static function contract(): array
+    {
+        $index = json_decode(file_get_contents(database_path('deployment/security-contract.json')), true, 128, JSON_THROW_ON_ERROR);
+        if (($index['format'] ?? null) !== 3) {
+            throw new RuntimeException('Unsupported canonical policy format.');
+        }
+        $contract = [];
+        foreach ($index['sections'] as $section) {
+            $rows = [];
+            foreach ($section['parts'] as $part) {
+                if (! preg_match('/^security-contract\/[a-z_]+-[0-9]+\.json$/D', $part['file'])) {
+                    throw new RuntimeException('Canonical policy path drift.');
+                }
+                $bytes = file_get_contents(database_path('deployment/'.$part['file']));
+                if (! hash_equals($part['sha256'], hash('sha256', $bytes))) {
+                    throw new RuntimeException('Canonical policy section digest mismatch.');
+                }
+                array_push($rows, ...json_decode($bytes, true, 128, JSON_THROW_ON_ERROR));
+            }
+            if (count($rows) !== $section['rows']) {
+                throw new RuntimeException('Canonical policy section inventory mismatch.');
+            }
+            $contract[$section['name']] = $rows;
+        }
+
+        return $contract;
+    }
+
     public const ROLES = ['kirion_g1b_app', 'kirion_g1b_custody', 'kirion_g1b_migrator', 'kirion_g1b_owner', 'kirion_g1b_repair', 'n03_command', 'n03_reader', 'n03_reconcile', 'n03_stage'];
 
     private const SCHEMAS = "n.nspname !~ '^pg_' AND n.nspname NOT IN ('information_schema')";
@@ -18,6 +46,8 @@ final class SecurityCatalog
         // ACL entries include grantor, grantee, privilege AND grant option, including PUBLIC/defaults.
         $acl = static fn (string $expression): string => "(SELECT coalesce(jsonb_agg(jsonb_build_array(pg_get_userbyid(a.grantor),CASE WHEN a.grantee=0 THEN 'PUBLIC' ELSE pg_get_userbyid(a.grantee) END,a.privilege_type,a.is_grantable) ORDER BY a.grantor::regrole::text,a.grantee::regrole::text,a.privilege_type), '[]'::jsonb) FROM aclexplode(NULLIF($expression,'{}'::aclitem[])) a)";
         $queries = [
+            'system_routine_security' => 'SELECT p.oid::regprocedure::text AS name,pg_get_userbyid(p.proowner) AS owner,p.prosrc,p.probin,p.prosecdef,p.proleakproof,p.proconfig,'.$acl("coalesce(p.proacl,acldefault('f',p.proowner))")." AS acl FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
+            'system_relation_security' => 'SELECT n.nspname||\'.\'||c.relname AS name,pg_get_userbyid(c.relowner) AS owner,c.relrowsecurity,c.relforcerowsecurity,'.$acl("coalesce(c.relacl,acldefault(CASE WHEN c.relkind='S' THEN 'S'::\"char\" ELSE 'r'::\"char\" END,c.relowner))")." AS acl FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
             'database' => 'SELECT pg_get_userbyid(d.datdba) AS owner, '.$acl("coalesce(d.datacl,acldefault('d',d.datdba))").' AS acl FROM pg_database d WHERE datname=current_database()',
             'schemas' => 'SELECT n.nspname AS name,pg_get_userbyid(n.nspowner) AS owner,'.$acl("coalesce(n.nspacl,acldefault('n',n.nspowner))").' AS acl FROM pg_namespace n WHERE '.self::SCHEMAS.' ORDER BY name',
             'relations' => 'SELECT n.nspname||\'.\'||c.relname AS name,c.relkind,c.relpersistence,pg_get_userbyid(c.relowner) AS owner,c.relrowsecurity,c.relforcerowsecurity,c.reloptions,'.$acl("coalesce(c.relacl,acldefault(CASE WHEN c.relkind='S' THEN 'S'::\"char\" ELSE 'r'::\"char\" END,c.relowner))")." AS acl,
@@ -94,7 +124,8 @@ final class SecurityCatalog
 
     public function verify(string $bootstrap): void
     {
-        $expected = json_decode(file_get_contents(database_path('deployment/security-contract.json')), true, 128, JSON_THROW_ON_ERROR);
+        app(SupportedPg16::class)->verify();
+        $expected = self::contract();
         $actual = $this->snapshot($bootstrap);
         foreach ($expected as $section => $value) {
             if (! array_key_exists($section, $actual) || $actual[$section] !== $value) {

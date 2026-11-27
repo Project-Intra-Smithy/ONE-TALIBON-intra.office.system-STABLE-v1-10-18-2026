@@ -87,6 +87,7 @@ final class PersistentInstaller
             || $identity->system_identifier !== (string) $target['system_identifier']) {
             throw new RuntimeException('Persistent cluster or bootstrap identity mismatch.');
         }
+        app(SupportedPg16::class)->verify();
         CredentialBoundary::verify();
         $passwords = json_decode(file_get_contents($credentialPath), true, 32, JSON_THROW_ON_ERROR);
         $roles = ['kirion_g1b_migrator', 'kirion_g1b_app', 'kirion_g1b_custody', 'n03_stage', 'n03_command', 'n03_reconcile', 'n03_reader'];
@@ -120,30 +121,28 @@ final class PersistentInstaller
                 }
                 $installed = DB::selectOne("SELECT to_regclass('deployment_control.installations') IS NOT NULL AS ready")->ready;
                 $security = app(PersistentSecurity::class);
-                $legacy = $security->preflight($target, $installed);
+                $authority = $security->authority($target);
                 if ($installed) {
+                    app(SecurityCatalog::class)->verify($target['bootstrap_role']);
                     $rows = DB::select('SELECT * FROM deployment_control.installations');
                     $row = count($rows) === 1 ? (array) $rows[0] : null;
+                    if ($row !== null) {
+                        $row['authority'] = json_decode($row['authority'], true, 32, JSON_THROW_ON_ERROR);
+                    }
                     $previous = $target['previous_installation'];
-                    if (! is_array($previous) || $row === null || $row != $previous
+                    if (! is_array($previous) || $row === null || $row != $previous || $row['authority'] != $authority
                         || $row['source_sha'] !== $package['source_sha'] || $row['tree_sha'] !== $package['tree_sha']
                         || $row['package_sha256'] !== $package['package_sha256']
                         || $row['ledger_sha256'] !== hash('sha256', json_encode($existing, JSON_THROW_ON_ERROR))) {
                         throw new RuntimeException('Untrusted installation identity, package or ledger lineage.');
                     }
                     foreach ($roles as $role) {
-                        $config = config('database.connections.'.config('database.default'));
-                        $config['username'] = $role;
-                        $config['password'] = $passwords[$role];
-                        $connection = DB::build($config);
-                        if ($connection->selectOne('SELECT current_user AS role')->role !== $role) {
-                            throw new RuntimeException('Registered credential authentication failed.');
-                        }
-                        $connection->disconnect();
+                        CredentialBoundary::registeredPassword(config('database.connections.'.config('database.default')), $role, $passwords[$role]);
                     }
                 } elseif ($target['previous_installation'] !== null) {
                     throw new RuntimeException('Unexpected prior installation lineage.');
                 }
+                $legacy = $security->preflight($target, $installed);
                 if (! $installed && DB::selectOne("SELECT count(*) AS n FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")->n > 0) {
                     throw new RuntimeException('Protected role collision outside registered installation.');
                 }
@@ -201,14 +200,14 @@ final class PersistentInstaller
                 sort($ledger);
                 if (! $installed) {
                     DB::unprepared(file_get_contents(database_path('deployment/registry.sql')));
-                    DB::statement('INSERT INTO deployment_control.installations VALUES (true,?::uuid,2,?,?,?,?)', [
-                        (string) Str::uuid(), $package['source_sha'], $package['tree_sha'], $package['package_sha256'], hash('sha256', json_encode($ledger, JSON_THROW_ON_ERROR)),
+                    DB::statement('INSERT INTO deployment_control.installations VALUES (true,?::uuid,3,?,?,?,?,?::jsonb)', [
+                        (string) Str::uuid(), $package['source_sha'], $package['tree_sha'], $package['package_sha256'], hash('sha256', json_encode($ledger, JSON_THROW_ON_ERROR)), json_encode($authority, JSON_THROW_ON_ERROR),
                     ]);
                 }
                 app(SecurityCatalog::class)->verify($target['bootstrap_role']);
                 $security->verifyRetired($legacy);
 
-                return ['status' => 'INSTALLED', 'installation' => (array) DB::selectOne('SELECT * FROM deployment_control.installations'), 'migration_count' => count($ran), 'existing_identity_preserved' => true,
+                return ['status' => 'INSTALLED', 'installation' => json_decode(DB::selectOne('SELECT row_to_json(i)::text AS receipt FROM deployment_control.installations i')->receipt, true, 32, JSON_THROW_ON_ERROR), 'migration_count' => count($ran), 'existing_identity_preserved' => true,
                     'app_key_preserved' => hash_equals($target['app_key_sha256'], hash('sha256', (string) config('app.key')))];
             });
         } finally {

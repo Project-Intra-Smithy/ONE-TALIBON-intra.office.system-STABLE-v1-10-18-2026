@@ -15,7 +15,7 @@ allowed = {
     'scripts/ci/verify-persistent-successor.py', 'tests/Manual/persistent-install-rehearsal.py',
     '.github/workflows/functional-completion-pg16.yml', '.github/workflows/persistent-install-pg16.yml',
     'docs/deployment/PERSISTENT-PG16.md',
-    'app/Deployment/SecurityCatalog.php', 'app/Deployment/PersistentSecurity.php', 'app/Deployment/CredentialBoundary.php',
+    'app/Deployment/SupportedPg16.php', 'app/Deployment/SecurityCatalog.php', 'app/Deployment/PersistentSecurity.php', 'app/Deployment/CredentialBoundary.php',
     'scripts/deployment/verified-install.py', 'scripts/deployment/build-package.py',
     'tests/Manual/build-security-contract.php', 'config/database.php',
 }
@@ -63,6 +63,7 @@ for name, stage in policies.items():
 
 allowed.update('database/deployment/'+stage+'.sql' for stage in [*policies.values(), 'finalize', 'registry'])
 allowed.add('database/deployment/security-contract.json')
+allowed.update(p.as_posix() for p in Path('database/deployment/security-contract').glob('*.json'))
 assert changed <= allowed | guarded | {p for p in changed if p.startswith('.forge/')}, changed-allowed-guarded
 for path in ['composer.json','composer.lock','package.json','package-lock.json']:
     assert git('show', BASE+':'+path) == Path(path).read_bytes(), path

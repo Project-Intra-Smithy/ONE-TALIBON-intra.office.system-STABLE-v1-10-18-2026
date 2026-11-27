@@ -1,0 +1,2302 @@
+[
+  {
+    "name": "numeric_ne(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_ne",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_out(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_pl_pg_lsn(numeric,pg_lsn)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_avg(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_avg",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_combine(internal,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_combine",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_deserialize(bytea,internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_deserialize",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_serialize(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_serialize",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_stddev_pop(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_stddev_pop",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_stddev_samp(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_stddev_samp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_sum(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_sum",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_var_pop(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_var_pop",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_poly_var_samp(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_poly_var_samp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_power(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_power",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_recv(internal,oid,integer)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_recv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_send(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_send",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_serialize(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_serialize",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_smaller(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_smaller",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_sortsupport(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_sortsupport",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_sqrt(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_sqrt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_stddev_pop(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_stddev_pop",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_stddev_samp(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_stddev_samp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_sub(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_sub",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_sum(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_sum",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_support(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_support",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_uminus(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_uminus",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_uplus(numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_uplus",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_var_pop(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_var_pop",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numeric_var_samp(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "numeric_var_samp",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numerictypmodin(cstring[])",
+    "owner": "@bootstrap",
+    "prosrc": "numerictypmodin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numerictypmodout(integer)",
+    "owner": "@bootstrap",
+    "prosrc": "numerictypmodout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "nummultirange()",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor0",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "nummultirange(numrange)",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor1",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "nummultirange(numrange[])",
+    "owner": "@bootstrap",
+    "prosrc": "multirange_constructor2",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numnode(tsquery)",
+    "owner": "@bootstrap",
+    "prosrc": "tsquery_numnode",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numrange(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "range_constructor2",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numrange(numeric,numeric,text)",
+    "owner": "@bootstrap",
+    "prosrc": "range_constructor3",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "numrange_subdiff(numeric,numeric)",
+    "owner": "@bootstrap",
+    "prosrc": "numrange_subdiff",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "obj_description(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "obj_description(oid,name)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "octet_length(bit)",
+    "owner": "@bootstrap",
+    "prosrc": "bitoctetlength",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "octet_length(bytea)",
+    "owner": "@bootstrap",
+    "prosrc": "byteaoctetlen",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "octet_length(character)",
+    "owner": "@bootstrap",
+    "prosrc": "bpcharoctetlen",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "octet_length(text)",
+    "owner": "@bootstrap",
+    "prosrc": "textoctetlen",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oid(bigint)",
+    "owner": "@bootstrap",
+    "prosrc": "i8tooid",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oideq(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oideq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidge(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidge",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidgt(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidgt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidin(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "oidin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidlarger(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidlarger",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidle(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidle",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidlt(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidlt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidne(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidne",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidout(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidrecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "oidrecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidsend(oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidsend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidsmaller(oid,oid)",
+    "owner": "@bootstrap",
+    "prosrc": "oidsmaller",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectoreq(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectoreq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorge(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorge",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorgt(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorgt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorin(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorin",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorle(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorle",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorlt(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorlt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorne(oidvector,oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorne",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": true,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorout(oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorout",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorrecv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorrecv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectorsend(oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectorsend",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "oidvectortypes(oidvector)",
+    "owner": "@bootstrap",
+    "prosrc": "oidvectortypes",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_pb(point,box)",
+    "owner": "@bootstrap",
+    "prosrc": "on_pb",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_pl(point,line)",
+    "owner": "@bootstrap",
+    "prosrc": "on_pl",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_ppath(point,path)",
+    "owner": "@bootstrap",
+    "prosrc": "on_ppath",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_ps(point,lseg)",
+    "owner": "@bootstrap",
+    "prosrc": "on_ps",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_sb(lseg,box)",
+    "owner": "@bootstrap",
+    "prosrc": "on_sb",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "on_sl(lseg,line)",
+    "owner": "@bootstrap",
+    "prosrc": "on_sl",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ordered_set_transition(internal,\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "ordered_set_transition",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "ordered_set_transition_multi(internal,\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "ordered_set_transition_multi",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "parse_ident(text,boolean)",
+    "owner": "@bootstrap",
+    "prosrc": "parse_ident",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path(polygon)",
+    "owner": "@bootstrap",
+    "prosrc": "poly_path",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_add(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_add",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_add_pt(path,point)",
+    "owner": "@bootstrap",
+    "prosrc": "path_add_pt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_contain_pt(path,point)",
+    "owner": "@bootstrap",
+    "prosrc": "",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_distance(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_distance",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_div_pt(path,point)",
+    "owner": "@bootstrap",
+    "prosrc": "path_div_pt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_in(cstring)",
+    "owner": "@bootstrap",
+    "prosrc": "path_in",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_inter(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_inter",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_length(path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_length",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_mul_pt(path,point)",
+    "owner": "@bootstrap",
+    "prosrc": "path_mul_pt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_n_eq(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_n_eq",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_n_ge(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_n_ge",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_n_gt(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_n_gt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_n_le(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_n_le",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_n_lt(path,path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_n_lt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_npoints(path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_npoints",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_out(path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_out",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_recv(internal)",
+    "owner": "@bootstrap",
+    "prosrc": "path_recv",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_send(path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_send",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "path_sub_pt(path,point)",
+    "owner": "@bootstrap",
+    "prosrc": "path_sub_pt",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pclose(path)",
+    "owner": "@bootstrap",
+    "prosrc": "path_close",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percent_rank()",
+    "owner": "@bootstrap",
+    "prosrc": "window_percent_rank",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percent_rank(\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "aggregate_dummy",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "percent_rank_final(internal,\"any\")",
+    "owner": "@bootstrap",
+    "prosrc": "hypothetical_percent_rank_final",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

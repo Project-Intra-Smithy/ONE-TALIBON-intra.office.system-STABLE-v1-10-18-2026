@@ -1,0 +1,347 @@
+[
+  {
+    "object": "type operational_items[]",
+    "reference": "type operational_items",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_close_audit_bindings",
+    "reference": "table ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_close_audit_bindings[]",
+    "reference": "type ops009_close_audit_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_origin_delivery_exception_actions",
+    "reference": "table ops009_origin_delivery_exception_actions",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_origin_delivery_exception_actions[]",
+    "reference": "type ops009_origin_delivery_exception_actions",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_origin_delivery_exceptions",
+    "reference": "table ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "type ops009_origin_delivery_exceptions[]",
+    "reference": "type ops009_origin_delivery_exceptions",
+    "deptype": "i"
+  },
+  {
+    "object": "type outbox_messages",
+    "reference": "table outbox_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "type outbox_messages[]",
+    "reference": "type outbox_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "type password_reset_tokens",
+    "reference": "table password_reset_tokens",
+    "deptype": "i"
+  },
+  {
+    "object": "type password_reset_tokens[]",
+    "reference": "type password_reset_tokens",
+    "deptype": "i"
+  },
+  {
+    "object": "type payroll_entries",
+    "reference": "table payroll_entries",
+    "deptype": "i"
+  },
+  {
+    "object": "type payroll_entries[]",
+    "reference": "type payroll_entries",
+    "deptype": "i"
+  },
+  {
+    "object": "type payroll_periods",
+    "reference": "table payroll_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "type payroll_periods[]",
+    "reference": "type payroll_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "type performance_records",
+    "reference": "table performance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type performance_records[]",
+    "reference": "type performance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_events",
+    "reference": "table plan_custody_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_events[]",
+    "reference": "type plan_custody_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_generations",
+    "reference": "table plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_generations[]",
+    "reference": "type plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_scan_evidence",
+    "reference": "table plan_custody_scan_evidence",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_custody_scan_evidence[]",
+    "reference": "type plan_custody_scan_evidence",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_document_bindings",
+    "reference": "table plan_document_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_document_bindings[]",
+    "reference": "type plan_document_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_document_origin_receipts",
+    "reference": "table plan_document_origin_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_document_origin_receipts[]",
+    "reference": "type plan_document_origin_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_editions",
+    "reference": "table plan_editions",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_editions[]",
+    "reference": "type plan_editions",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_families",
+    "reference": "table plan_families",
+    "deptype": "i"
+  },
+  {
+    "object": "type plan_families[]",
+    "reference": "type plan_families",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_attachment_reconciliations",
+    "reference": "table planning_attachment_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_attachment_reconciliations[]",
+    "reference": "type planning_attachment_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_attachments",
+    "reference": "table planning_attachments",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_attachments[]",
+    "reference": "type planning_attachments",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_maps",
+    "reference": "table planning_maps",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_maps[]",
+    "reference": "type planning_maps",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_plan_map_links",
+    "reference": "table planning_plan_map_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_plan_map_links[]",
+    "reference": "type planning_plan_map_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_ppa_identifiers",
+    "reference": "table planning_ppa_identifiers",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_ppa_identifiers[]",
+    "reference": "type planning_ppa_identifiers",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_reference_counters",
+    "reference": "table planning_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "type planning_reference_counters[]",
+    "reference": "type planning_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "type platform_notifications",
+    "reference": "table platform_notifications",
+    "deptype": "i"
+  },
+  {
+    "object": "type platform_notifications[]",
+    "reference": "type platform_notifications",
+    "deptype": "i"
+  },
+  {
+    "object": "type portal_presence_sessions",
+    "reference": "table portal_presence_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type portal_presence_sessions[]",
+    "reference": "type portal_presence_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type ppa_records",
+    "reference": "table ppa_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type ppa_records[]",
+    "reference": "type ppa_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type prototype_messages",
+    "reference": "table prototype_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "type prototype_messages[]",
+    "reference": "type prototype_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "type staff_activation_invitations",
+    "reference": "table staff_activation_invitations",
+    "deptype": "i"
+  },
+  {
+    "object": "type staff_activation_invitations[]",
+    "reference": "type staff_activation_invitations",
+    "deptype": "i"
+  },
+  {
+    "object": "type task_events",
+    "reference": "table task_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type task_events[]",
+    "reference": "type task_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type tasks",
+    "reference": "table tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type tasks[]",
+    "reference": "type tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type transaction_events",
+    "reference": "table transaction_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type transaction_events[]",
+    "reference": "type transaction_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type transactions",
+    "reference": "table transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "type transactions[]",
+    "reference": "type transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_order_employee",
+    "reference": "table travel_order_employee",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_order_employee[]",
+    "reference": "type travel_order_employee",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_order_events",
+    "reference": "table travel_order_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_order_events[]",
+    "reference": "type travel_order_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_orders",
+    "reference": "table travel_orders",
+    "deptype": "i"
+  },
+  {
+    "object": "type travel_orders[]",
+    "reference": "type travel_orders",
+    "deptype": "i"
+  },
+  {
+    "object": "type users",
+    "reference": "table users",
+    "deptype": "i"
+  },
+  {
+    "object": "type users[]",
+    "reference": "type users",
+    "deptype": "i"
+  }
+]

@@ -18,6 +18,7 @@ import sys
 ap = argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--pg-bin', type=Path, required=True)
 ap.add_argument('--output', type=Path, required=True)
+ap.add_argument('--compare-contract', action='store_true')
 ap.add_argument('--record-contract', action='store_true', help='Developer fixture on an exclusive disposable database only; never a persistent-install option')
 args = ap.parse_args()
 source = Path(__file__).resolve().parents[2]
@@ -57,7 +58,7 @@ def run(argv, env, input=None, allowed=(0,), private_result=False, timeout=240):
 
 # The authenticated launcher consumes the same verified bytes it hashes (no check/exec reread).
 TRUSTED_BOOT = "import hashlib,sys; p=sys.argv[1]; b=open(p,'rb').read(); assert hashlib.sha256(b).hexdigest()==sys.argv[2]; sys.argv=[p]+sys.argv[3:]; exec(compile(b,p,'exec'),{'__name__':'__main__','__file__':p})"
-if not args.record_contract:
+if not (args.record_contract or args.compare_contract):
     build_parent = Path(tempfile.mkdtemp(prefix='ot-trusted-package-'))
     if os.name == 'nt':
         actor = run(['whoami'],os.environ).stdout.strip()
@@ -85,7 +86,7 @@ if not args.record_contract:
     provisioning_ini.write_text('\n'.join(ini_lines)+'\n',encoding='utf-8')
     provisioning_ini.chmod(0o600)
 
-for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
+for mode in (['contract'] if (args.record_contract or args.compare_contract) else ['fresh', 'upgrade']):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('PG', 'DB_', 'APP_', 'N03_', 'LEGACY_CUSTODY_', 'KIRION_'))}
     root = Path(tempfile.mkdtemp(prefix='ot-persistent-'+mode+'-'))
     if os.name == 'nt':
@@ -121,7 +122,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         env.update(PGHOST='127.0.0.1', PGPORT=str(port), PGUSER='postgres', PGPASSWORD=bootstrap, PGDATABASE='postgres',
                    APP_ENV='staging', APP_DEBUG='false', APP_KEY=key, APP_URL='https://rehearsal.invalid',
                    DB_CONNECTION='pgsql', DB_HOST='127.0.0.1', DB_PORT=str(port), DB_DATABASE=db, DB_USERNAME='postgres', DB_PASSWORD=bootstrap,
-                   CACHE_STORE='array', SESSION_DRIVER='array', LOG_CHANNEL='stderr', PGSSLMODE='verify-full', PGSSLROOTCERT=(root/'server.crt').as_posix(), DB_SSLMODE='verify-full', DB_SSLROOTCERT=(root/'server.crt').as_posix())
+                   CACHE_STORE='array', SESSION_DRIVER='array', LOG_CHANNEL='stderr', PGSSLMODE='verify-full', PGSSLROOTCERT=(root/'server.crt').as_posix(), DB_SSLMODE='verify-full', DB_SSLROOTCERT=(root/'server.crt').as_posix(), PGREQUIREAUTH='scram-sha-256', PGGSSENCMODE='disable')
 
         def sql(query, connection_env=None, allowed=(0,), private_result=False):
             return run([args.pg_bin/'psql', '-X', '-v', 'ON_ERROR_STOP=1', '-At'], connection_env or env, input=query, allowed=allowed, private_result=private_result)
@@ -134,7 +135,28 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             if not result.stdout.lstrip().startswith('{'):
                 raise RuntimeError('Contract fixture did not return JSON: '+result.stdout[-1000:]+result.stderr[-1000:])
             contract = json.loads(result.stdout)
-            (source/'database/deployment/security-contract.json').write_text(json.dumps(contract,separators=(',',':')),encoding='utf-8')
+            canonical=json.dumps(contract,separators=(',',':'))
+            if args.compare_contract:
+                index=json.loads((source/'database/deployment/security-contract.json').read_text(encoding='utf-8'))
+                reproduced={}
+                for section in index['sections']:
+                    rows=[]
+                    for part in section['parts']:
+                        file=source/'database/deployment'/part['file'];blob=file.read_bytes()
+                        assert hashlib.sha256(blob).hexdigest()==part['sha256']
+                        rows.extend(json.loads(blob))
+                    assert len(rows)==section['rows'];reproduced[section['name']]=rows
+                check('independent_canonical_contract_matches',canonical==json.dumps(reproduced,separators=(',',':')))
+                (args.output/'contract-comparison.json').write_text(json.dumps({'source_sha':report['source_sha'],'canonical_sha256':hashlib.sha256(canonical.encode()).hexdigest(),'independently_regenerated':True,'matches':True},indent=2))
+            else:
+                index={'format':3,'sections':[]};folder=source/'database/deployment/security-contract';folder.mkdir(exist_ok=True)
+                for name,rows in contract.items():
+                    parts=[]
+                    for i in range(0,len(rows),100):
+                        file=folder/(name+'-'+str(i//100)+'.json');file.write_text(json.dumps(rows[i:i+100],indent=2)+'\n',encoding='utf-8',newline='\n')
+                        parts.append({'file':file.relative_to(source/'database/deployment').as_posix(),'sha256':hashlib.sha256(file.read_bytes()).hexdigest()})
+                    index['sections'].append({'name':name,'rows':len(rows),'parts':parts})
+                (source/'database/deployment/security-contract.json').write_text(json.dumps(index,indent=2)+'\n',encoding='utf-8',newline='\n')
             check('canonical_disposable_contract_derived',len(contract['roles'])==9 and len(contract['effective_columns'])>1000)
             continue
         all_paths = sorted((source/'database/migrations').glob('*.php'))
@@ -173,7 +195,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         def invocation(target_file=manifest_file, credential_file=credentials_file, pin=manifest_digest, package_path=package):
             return [sys.executable,'-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
                     '--package',str(package_path),'--manifest',str(build/'package-manifest.json'),'--sha256',pin,
-                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini)]
+                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini),'--php-sha256',hashlib.sha256(Path(php).read_bytes()).hexdigest(),'--ini-sha256',hashlib.sha256(provisioning_ini.read_bytes()).hexdigest()]
 
         def install(manifest, expected=0, extra_env=None):
             manifest_file.write_text(json.dumps(manifest))
@@ -210,6 +232,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
                 ('initial_shared_global_read','GRANT pg_read_all_data TO legacy_runtime WITH SET TRUE','REVOKE pg_read_all_data FROM legacy_runtime'),
                 ('initial_unregistered_control','CREATE SCHEMA deployment_control','DROP SCHEMA deployment_control'),
             ]
+            initial_cases.extend([('initial_large_object',"SELECT lo_create(900001); ALTER LARGE OBJECT 900001 OWNER TO legacy_runtime",'SELECT lo_unlink(900001)'),('initial_foreign_wrapper','CREATE FOREIGN DATA WRAPPER qa_fdw','DROP FOREIGN DATA WRAPPER qa_fdw'),('initial_publication','CREATE PUBLICATION qa_pub FOR TABLE users','DROP PUBLICATION qa_pub'),('initial_domain','CREATE DOMAIN public.qa_domain AS integer','DROP DOMAIN public.qa_domain')])
             for name,change,undo in initial_cases:
                 sql(change)
                 check(mode+'_'+name,install(target,1).returncode==1)
@@ -245,6 +268,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         target['expected_migrations'] = sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines()
         target['previous_installation'] = json.loads(sql('SELECT row_to_json(i) FROM deployment_control.installations i').stdout)
 
+        unsupported_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo json_encode(app(App\\Deployment\\SupportedPg16::class)->snapshot());"
         catalog_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo hash('sha256',json_encode(app(App\\Deployment\\SecurityCatalog::class)->snapshot('postgres')));"
         def metadata_fingerprint():
             # Compare security semantics, not autovacuum/statistics/relfilenode bookkeeping.
@@ -253,7 +277,9 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             semantic=run([php],env,input=catalog_probe).stdout
             assert len(semantic.strip())==64 and all(c in '0123456789abcdef' for c in semantic.strip())
             registry=sql('SELECT row_to_json(i) FROM deployment_control.installations i ORDER BY singleton').stdout
-            return semantic,registry
+            unsupported=run([php],env,input=unsupported_probe).stdout
+            assert unsupported.startswith('{')
+            return semantic,registry,unsupported
         canonical_fingerprint=run([php],env,input=catalog_probe).stdout
         drift_cases=[
             ('reader_delete','GRANT DELETE ON transactions TO n03_reader','REVOKE DELETE ON transactions FROM n03_reader'),
@@ -286,6 +312,16 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             ('role_startup','ALTER ROLE n03_reader IN DATABASE '+db+" SET search_path='pg_catalog'",'ALTER ROLE n03_reader IN DATABASE '+db+' RESET ALL'),
             ('registry_shape','ALTER TABLE deployment_control.installations ADD COLUMN untrusted boolean','ALTER TABLE deployment_control.installations DROP COLUMN untrusted'),
         ]
+        unsupported_cases=[
+            ('large_object',"SELECT lo_create(900001)","SELECT lo_unlink(900001)"),
+            ('foreign_server',"CREATE FOREIGN DATA WRAPPER qa_fdw; CREATE SERVER qa_server FOREIGN DATA WRAPPER qa_fdw; CREATE USER MAPPING FOR CURRENT_USER SERVER qa_server OPTIONS (password 'synthetic-canary')","DROP SERVER qa_server CASCADE; DROP FOREIGN DATA WRAPPER qa_fdw"),
+            ('publication','CREATE PUBLICATION qa_publication FOR TABLE users','DROP PUBLICATION qa_publication'),
+            ('subscription',"CREATE SUBSCRIPTION qa_subscription CONNECTION 'host=127.0.0.1 password=synthetic-canary' PUBLICATION qa_publication WITH (connect=false,create_slot=false,enabled=false)",'DROP SUBSCRIPTION qa_subscription'),
+            ('domain','CREATE DOMAIN public.qa_domain AS integer CHECK(VALUE>0)','DROP DOMAIN public.qa_domain'),
+            ('system_object','CREATE TABLE pg_catalog.qa_untrusted(id int)','DROP TABLE pg_catalog.qa_untrusted'),
+            ('user_collation',"CREATE COLLATION public.qa_collation (provider=libc,locale='C')",'DROP COLLATION public.qa_collation'),
+        ]
+        drift_cases.extend(unsupported_cases)
         for name,change,undo in drift_cases:
             sql(change)
             drift_before=metadata_fingerprint()
@@ -293,6 +329,41 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             check(mode+'_drift_rollback_'+name,metadata_fingerprint()==drift_before)
             sql(undo)
             check(mode+'_fixture_cleanup_'+name,run([php],env,input=catalog_probe).stdout==canonical_fingerprint)
+        if mode=='upgrade':
+            for field in ['legacy_owner_roles','retired_runtime_roles']:
+                reduced=dict(target,**{field:[]})
+                check(mode+'_bound_identity_omission_'+field,install(reduced,1).returncode==1)
+            reclassified=dict(target,legacy_owner_roles=target['retired_runtime_roles'],retired_runtime_roles=target['legacy_owner_roles'])
+            check(mode+'_bound_identity_reclassification',install(reclassified,1).returncode==1)
+            sql('GRANT pg_read_all_data TO legacy_runtime WITH SET TRUE')
+            check(mode+'_omission_with_retired_authority_drift',install(dict(target,retired_runtime_roles=[]),1).returncode==1)
+            sql('REVOKE pg_read_all_data FROM legacy_runtime')
+            sql('CREATE ROLE replacement_runtime')
+            check(mode+'_bound_identity_substitution',install(dict(target,retired_runtime_roles=['replacement_runtime']),1).returncode==1)
+            sql('DROP ROLE replacement_runtime')
+        for role in roles:
+            incorrect=dict(credentials,**{role:secrets.token_hex(32)})
+            private_values.append(incorrect[role])
+            credentials_file.write_text(json.dumps(incorrect))
+            check(mode+'_registered_wrong_password_'+role,install(target,1).returncode==1)
+            credentials_file.write_text(json.dumps(credentials))
+        # HBA belongs only to this new synthetic cluster. Never alter a real target's authentication.
+        hba=data/'pg_hba.conf'; original_hba=hba.read_text()
+        hba.write_text(original_hba.replace('scram-sha-256','trust'))
+        run([args.pg_bin/'pg_ctl','-D',data,'reload'],env)
+        check(mode+'_refuses_nonpassword_HBA',install(target,1).returncode==1)
+        hba.write_text(original_hba);run([args.pg_bin/'pg_ctl','-D',data,'reload'],env)
+        canary=root/'execution-canary'; payload=root/'unverified.php'
+        payload.write_text("<?php file_put_contents("+json.dumps(canary.as_posix())+",'EXECUTED'); return [];",encoding='utf-8')
+        cache_vars={name:str(payload) for name in ['APP_SERVICES_CACHE','APP_PACKAGES_CACHE','APP_CONFIG_CACHE','APP_ROUTES_CACHE','APP_EVENTS_CACHE']}
+        cache_vars.update(APP_BASE_PATH=str(root),LARAVEL_STORAGE_PATH=str(root),COMPOSER_HOME=str(root),APP_ENV_FILE=str(payload),PGSERVICE='unverified',PGPASSFILE=str(root/'unverified-passwords'))
+        normalized=install(target,0,dict(env,**cache_vars))
+        check(mode+'_external_executable_paths_contained', '"status":"INSTALLED"' in normalized.stdout and not canary.exists())
+        for setting in ['log_statement=all','log_min_error_statement=error','log_parameter_max_length=-1','pgaudit.log=all']:
+            key,value=setting.split('=',1)
+            sql('ALTER ROLE postgres IN DATABASE '+db+' SET "'+key+'" TO \''+value+"'")
+            check(mode+'_server_logging_refusal_'+key,install(target,1).returncode==1)
+            sql('ALTER ROLE postgres IN DATABASE '+db+' RESET "'+key+'"')
         # Even an externally declared matching arbitrary previous SHA cannot bless an unqualified lineage.
         sql("UPDATE deployment_control.installations SET source_sha='"+'f'*40+"'")
         forged=dict(target,previous_installation=dict(target['previous_installation'],source_sha='f'*40))
@@ -346,4 +417,4 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             path.unlink(missing_ok=True)
         (args.output/'persistent-rehearsal.json').write_text(json.dumps(report,indent=2))
 
-print('Canonical policy contract derived:' if args.record_contract else 'Persistent fresh/upgrade qualification PASS:',len(report['checks']),'checks')
+print('Canonical policy contract derived:' if (args.record_contract or args.compare_contract) else 'Persistent fresh/upgrade qualification PASS:',len(report['checks']),'checks')

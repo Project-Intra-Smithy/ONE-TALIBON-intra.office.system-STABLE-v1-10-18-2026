@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.can_manage_maps",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.can_manage_plans",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.can_manage_ppas",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.designated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.revoked_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.revoked_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.designated_planning_staff.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.adoption_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.adoption_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.authority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.chapters",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.coordinating_offices",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.coverage_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.coverage_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.document_ref",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.higher_review_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.horizon",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.last_action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.last_action_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.lead_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.lead_office",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.mdc_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.next_milestone",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.next_milestone_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.plan_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.provenance_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.required_action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.sections_complete",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.sections_total",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.development_plans.updated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.document_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.linkable_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.linkable_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.relationship",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.document_links.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.checksum_sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.classification",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.custody_mode",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.custody_operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.custody_ordinal",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.document_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.metadata",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.mime_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.original_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.owner_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.retention_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.security_domain",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.size_bytes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.storage_disk",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.storage_path",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.documents.uploaded_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.dtr_period_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.first_in_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.generated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.last_out_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.leave_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.raw_event_count",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.source_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_daily_summaries.work_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.generated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.generated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.label",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.locked_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.locked_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.period_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.period_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.dtr_periods.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.attained_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.expires_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.employee_development_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

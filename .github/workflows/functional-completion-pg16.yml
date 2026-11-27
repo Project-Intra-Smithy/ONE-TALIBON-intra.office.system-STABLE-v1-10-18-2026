@@ -5,7 +5,7 @@ name: Functional completion - Protected PG16
 
 on:
   push:
-    branches: [candidate/ot-functional-completion-r1, candidate/ot-persistent-deployment-r1, candidate/ot-persistent-deployment-r2]
+    branches: [candidate/ot-functional-completion-r1, candidate/ot-persistent-deployment-r1, candidate/ot-persistent-deployment-r2, candidate/ot-persistent-deployment-r3]
   workflow_dispatch:
 
 permissions:

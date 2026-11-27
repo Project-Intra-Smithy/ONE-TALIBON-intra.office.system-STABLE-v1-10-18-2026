@@ -1,0 +1,1002 @@
+[
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_document_id_document_public_id_operation_id_ordin_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_document_id_document_public_id_operation_id_ordin_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_ordinal_generation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_ordinal_generation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_upload_audit_id_operation_id_document_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_upload_audit_id_operation_id_document_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_document_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_document_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_binding_document_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.bindings",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_binding_document_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_actor_user_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_actor_user_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_audit_log_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_audit_log_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_event_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_event_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_record_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_record_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_document_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_document_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_office_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.classification_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_office_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_event_id_correspondence_id__fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_event_id_correspondence_id__fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_operation_id_actor_user_id_office_id_corre_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_operation_id_actor_user_id_office_id_corre_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_transaction_event_id_transaction_id_actor__fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_transaction_event_id_transaction_id_actor__fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_transaction_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_transaction_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_travel_event_id_travel_id_actor_user_id_ev_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_travel_event_id_travel_id_actor_user_id_ev_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_travel_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.command_results",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_travel_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_outcomes",
+    "constraint_relation": "legacy_custody.compensation_outcomes",
+    "conname": "compensation_outcomes_tombstone_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_outcomes",
+    "constraint_relation": "legacy_custody.compensation_outcomes",
+    "conname": "compensation_outcomes_tombstone_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_outcomes",
+    "conname": "compensation_outcomes_tombstone_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_outcomes",
+    "conname": "compensation_outcomes_tombstone_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_generation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_generation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_namespace_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_namespace_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_generation_id_namespa_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.compensation_tombstones",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_generation_id_namespa_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_ordinal_generation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_operation_id_ordinal_generation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_generation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_generation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_generation_id_namespa_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_generation_id_namespa_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.generations",
+    "conname": "generations_operation_id_ordinal_generation_id_namespace_i_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.generations",
+    "constraint_relation": "legacy_custody.generations",
+    "conname": "generations_operation_id_ordinal_generation_id_namespace_i_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_namespace_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_namespace_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_namespace_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_namespace_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.watermark_checkpoints",
+    "conname": "watermark_checkpoints_namespace_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.namespaces",
+    "constraint_relation": "legacy_custody.watermark_checkpoints",
+    "conname": "watermark_checkpoints_namespace_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_events",
+    "constraint_relation": "legacy_custody.operation_events",
+    "conname": "operation_events_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_events",
+    "constraint_relation": "legacy_custody.operation_events",
+    "conname": "operation_events_operation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_gates",
+    "constraint_relation": "legacy_custody.operation_gates",
+    "conname": "operation_gates_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_gates",
+    "constraint_relation": "legacy_custody.operation_gates",
+    "conname": "operation_gates_operation_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "documents",
+    "conname": "n03_document_item",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "documents",
+    "conname": "n03_document_item",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "legacy_custody.generations",
+    "conname": "generations_operation_id_ordinal_generation_id_namespace_i_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "legacy_custody.generations",
+    "conname": "generations_operation_id_ordinal_generation_id_namespace_i_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "legacy_custody.operation_items",
+    "conname": "operation_items_operation_id_namespace_id_epoch_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "legacy_custody.operation_items",
+    "conname": "operation_items_operation_id_namespace_id_epoch_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_operation_id_actor_user_id_office_id_corre_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_operation_id_actor_user_id_office_id_corre_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.compensation_tombstones",
+    "conname": "compensation_tombstones_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_events",
+    "conname": "operation_events_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_events",
+    "conname": "operation_events_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_gates",
+    "conname": "operation_gates_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_gates",
+    "conname": "operation_gates_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_items",
+    "conname": "operation_items_operation_id_namespace_id_epoch_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operation_items",
+    "conname": "operation_items_operation_id_namespace_id_epoch_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_actor_user_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_actor_user_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_namespace_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_namespace_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_office_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_office_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.terminal_receipts",
+    "conname": "terminal_receipts_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "legacy_custody.terminal_receipts",
+    "conname": "terminal_receipts_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "ops009_close_audit_bindings",
+    "conname": "ops009_close_audit_bindings_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "ops009_close_audit_bindings",
+    "conname": "ops009_close_audit_bindings_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "conname": "ops009_origin_delivery_exceptions_operation_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operations",
+    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "conname": "ops009_origin_delivery_exceptions_operation_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.ownership_links",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_binding_document_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.ownership_links",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_binding_document_id_fkey",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  }
+]

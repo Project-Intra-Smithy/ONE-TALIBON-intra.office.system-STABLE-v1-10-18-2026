@@ -1,0 +1,10 @@
+[
+  {
+    "role": "kirion_g1b_owner",
+    "member": "kirion_g1b_migrator",
+    "grantor": "@bootstrap",
+    "admin_option": false,
+    "inherit_option": false,
+    "set_option": true
+  }
+]

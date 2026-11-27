@@ -1,0 +1,137 @@
+[
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "legacy_custody",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_custody",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_custody",
+    "name": "legacy_custody",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_custody",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody",
+    "rights": "{t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public",
+    "rights": "{t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "deployment_control",
+    "rights": "{f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody",
+    "rights": "{t,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public",
+    "rights": "{f,f,f,f}"
+  }
+]

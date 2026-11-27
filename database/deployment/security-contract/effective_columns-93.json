@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.correlation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.custody_operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.entity_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.entity_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.integration_client_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.ip_address",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.outcome",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.audit_logs.user_agent",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.action_url",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.all_day",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.description",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.ends_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.event_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.location",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.priority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.scope",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.source_domain",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.source_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.source_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.starts_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.calendar_events.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.correlation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.correspondence_record_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.event",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.integration_client_actor_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.metadata",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.n03_municipal_actor",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.new_lifecycle_state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.occurred_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.office_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.previous_lifecycle_state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_events.remarks",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.action_started_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.action_started_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.channel",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.classification",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.classified_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.classified_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.external_reference_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.lifecycle_state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.municipal_reference_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.originating_external_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.received_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.received_source_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.receiving_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.receiving_integration_client_credential_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.receiving_integration_client_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.registered_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.registered_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.routed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.routed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.sender_contact",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.sender_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.sender_organization",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.source",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.subject",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_records.workflow_transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_reference_counters.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_reference_counters.last_value",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_reference_counters.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.correspondence_reference_counters.year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.branch",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.is_active",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.is_routable",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.office_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.parent_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.short_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.sort_order",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.departments.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.can_manage_maps",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.can_manage_plans",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.can_manage_ppas",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.designated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.designated_planning_staff.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

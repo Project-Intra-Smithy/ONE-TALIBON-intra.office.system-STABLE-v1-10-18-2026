@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint transactions_reference_no_unique on table transactions",
+    "reference": "column reference_no of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_employee_id_foreign on table travel_order_employee",
+    "reference": "column employee_id of table travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_employee_id_foreign on table travel_order_employee",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_employee_employee_id_foreign on table travel_order_employee",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_employee_pkey on table travel_order_employee",
+    "reference": "column id of table travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_travel_order_id_employee_id_unique on table travel_order_employee",
+    "reference": "column employee_id of table travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_travel_order_id_employee_id_unique on table travel_order_employee",
+    "reference": "column travel_order_id of table travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_travel_order_id_foreign on table travel_order_employee",
+    "reference": "column id of table travel_orders",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_employee_travel_order_id_foreign on table travel_order_employee",
+    "reference": "column travel_order_id of table travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_employee_travel_order_id_foreign on table travel_order_employee",
+    "reference": "index travel_orders_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_events_actor_user_id_foreign on table travel_order_events",
+    "reference": "column actor_user_id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_events_actor_user_id_foreign on table travel_order_events",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_events_actor_user_id_foreign on table travel_order_events",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_events_pkey on table travel_order_events",
+    "reference": "column id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_events_travel_order_id_foreign on table travel_order_events",
+    "reference": "column id of table travel_orders",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_order_events_travel_order_id_foreign on table travel_order_events",
+    "reference": "column travel_order_id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_order_events_travel_order_id_foreign on table travel_order_events",
+    "reference": "index travel_orders_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_department_id_foreign on table travel_orders",
+    "reference": "column department_id of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_department_id_foreign on table travel_orders",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_department_id_foreign on table travel_orders",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_pkey on table travel_orders",
+    "reference": "column id of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_public_id_unique on table travel_orders",
+    "reference": "column public_id of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_recorded_by_user_id_foreign on table travel_orders",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_recorded_by_user_id_foreign on table travel_orders",
+    "reference": "column recorded_by_user_id of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_recorded_by_user_id_foreign on table travel_orders",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_reference_number_unique on table travel_orders",
+    "reference": "column reference_number of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_status_updated_by_user_id_foreign on table travel_orders",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint travel_orders_status_updated_by_user_id_foreign on table travel_orders",
+    "reference": "column status_updated_by_user_id of table travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint travel_orders_status_updated_by_user_id_foreign on table travel_orders",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint users_email_unique on table users",
+    "reference": "column email of table users",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint users_pkey on table users",
+    "reference": "column id of table users",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint users_suspended_by_user_id_foreign on table users",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint users_suspended_by_user_id_foreign on table users",
+    "reference": "column suspended_by_user_id of table users",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint users_suspended_by_user_id_foreign on table users",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint users_username_unique on table users",
+    "reference": "column username of table users",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_actor_user_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "column actor_user_id of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_actor_user_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_actor_user_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_checkpoint_seq_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column checkpoint_seq of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_checkpoint_seq_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column checkpoint_seq of table legacy_custody.watermark_checkpoints",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_epoch_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column epoch of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_epoch_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column epoch of table legacy_custody.watermark_checkpoints",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_event_kind_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column event_kind of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_event_kind_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column event_kind of table legacy_custody.watermark_checkpoints",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_namespace_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "column namespace_id of table legacy_custody.namespaces",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_namespace_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "column namespace_id of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_namespace_id_fkey on table legacy_custody.watermark_checkpoints",
+    "reference": "index legacy_custody.namespaces_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint watermark_checkpoints_pkey on table legacy_custody.watermark_checkpoints",
+    "reference": "column checkpoint_seq of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_state_anchor_digest_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column state_anchor_digest of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint watermark_checkpoints_state_anchor_digest_check on table legacy_custody.watermark_checkpoints",
+    "reference": "column state_anchor_digest of table legacy_custody.watermark_checkpoints",
+    "deptype": "n"
+  },
+  {
+    "object": "default value for column account_status of table users",
+    "reference": "column account_status of table users",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column all_day of table calendar_events",
+    "reference": "column all_day of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column allowances of table payroll_entries",
+    "reference": "column allowances of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column approved_leave_units of table payroll_entries",
+    "reference": "column approved_leave_units of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column attempt_count of table outbox_messages",
+    "reference": "column attempt_count of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column audience_type of table memoranda",
+    "reference": "column audience_type of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column balance of table leave_credit_accounts",
+    "reference": "column balance of table leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column barangays of table planning_maps",
+    "reference": "column barangays of table planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column binding_state of table plan_document_bindings",
+    "reference": "column binding_state of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column branch of table departments",
+    "reference": "column branch of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column calculation_mode of table payroll_periods",
+    "reference": "column calculation_mode of table payroll_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column can_manage of table employee_health_access_grants",
+    "reference": "column can_manage of table employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column can_manage_maps of table designated_planning_staff",
+    "reference": "column can_manage_maps of table designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column can_manage_plans of table designated_planning_staff",
+    "reference": "column can_manage_plans of table designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column can_manage_ppas of table designated_planning_staff",
+    "reference": "column can_manage_ppas of table designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column can_view of table employee_health_access_grants",
+    "reference": "column can_view of table employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column category of table planning_attachments",
+    "reference": "column category of table planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column classification of table documents",
+    "reference": "column classification of table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column classification of table memoranda",
+    "reference": "column classification of table memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column condition of table assets",
+    "reference": "column condition of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column coordinating_offices of table development_plans",
+    "reference": "column coordinating_offices of table development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column correspondence_event_id of table legacy_custody.command_results",
+    "reference": "column correspondence_event_id of table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "default value for column correspondence_event_id of table legacy_custody.command_results",
+    "reference": "column event_id of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "default value for column correspondence_event_id of table legacy_custody.command_results",
+    "reference": "column source_kind of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "default value for column correspondence_id of table legacy_custody.command_results",
+    "reference": "column correspondence_id of table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "default value for column correspondence_id of table legacy_custody.command_results",
+    "reference": "column source_id of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "default value for column correspondence_id of table legacy_custody.command_results",
+    "reference": "column source_kind of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "default value for column created_at of table asset_events",
+    "reference": "column created_at of table asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table attendance_logs",
+    "reference": "column created_at of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table audit_logs",
+    "reference": "column created_at of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table initial_admin_bootstraps",
+    "reference": "column created_at of table initial_admin_bootstraps",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table leave_credit_transactions",
+    "reference": "column created_at of table leave_credit_transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table legacy_custody.command_results",
+    "reference": "column created_at of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table legacy_custody.compensation_tombstones",
+    "reference": "column created_at of table legacy_custody.compensation_tombstones",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table legacy_custody.namespaces",
+    "reference": "column created_at of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table legacy_custody.operations",
+    "reference": "column created_at of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table legacy_custody.terminal_receipts",
+    "reference": "column created_at of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table ops009_origin_delivery_exception_actions",
+    "reference": "column created_at of table ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table ops009_origin_delivery_exceptions",
+    "reference": "column created_at of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table plan_custody_generations",
+    "reference": "column created_at of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table task_events",
+    "reference": "column created_at of table task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column created_at of table transaction_events",
+    "reference": "column created_at of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column custodian_role of table ops009_origin_delivery_exceptions",
+    "reference": "column custodian_role of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column custody_mode of table documents",
+    "reference": "column custody_mode of table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column custody_state of table plan_custody_generations",
+    "reference": "column custody_state of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column delivered_at of table memo_recipients",
+    "reference": "column delivered_at of table memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column document_type of table documents",
+    "reference": "column document_type of table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column drrm_tagged of table ppa_records",
+    "reference": "column drrm_tagged of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column dtr_complete_days of table payroll_entries",
+    "reference": "column dtr_complete_days of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "default value for column dtr_days_with_logs of table payroll_entries",
+    "reference": "column dtr_days_with_logs of table payroll_entries",
+    "deptype": "a"
+  }
+]

@@ -1,0 +1,1017 @@
+[
+  {
+    "name": "public.operational_items.item_type",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.priority",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'normal'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.progress_percent",
+    "type": "smallint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::smallint",
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.reference_no",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.remarks",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.responsible_employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.status",
+    "type": "character varying(48)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.target_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items.utilized_amount",
+    "type": "numeric(16,2)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_department_id_status_index.department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_department_id_status_index.status",
+    "type": "character varying(48)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_item_type_index.item_type",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_item_type_status_index.item_type",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_item_type_status_index.status",
+    "type": "character varying(48)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_priority_index.priority",
+    "type": "character varying(24)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_reference_no_unique.reference_no",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_status_index.status",
+    "type": "character varying(48)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.operational_items_target_date_index.target_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.audit_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.operation_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.transaction_event_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.transaction_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_operation_id_key.operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_pkey.audit_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_transaction_event_id_key.transaction_event_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_transaction_id_key.transaction_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_action_exception_id_action_key.action",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_action_exception_id_action_key.exception_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.action",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.actor_department_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.actor_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.created_at",
+    "type": "timestamp with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "now()",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.exception_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('ops009_origin_delivery_exception_actions_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.note",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.created_at",
+    "type": "timestamp with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "now()",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.custodian_role",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'department_head'::text",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('ops009_origin_delivery_exceptions_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.operation_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.origin_department_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.reason",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'NO_ELIGIBLE_ORIGIN_RECIPIENT'::text",
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.transaction_event_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.transaction_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_operation_id_key.operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_transaction_event_id_key.transaction_event_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_transaction_id_key.transaction_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.aggregate_id",
+    "type": "character varying(191)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.aggregate_type",
+    "type": "character varying(160)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.attempt_count",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "0",
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.available_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.claimed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.claimed_by",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.event_type",
+    "type": "character varying(160)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('outbox_messages_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.last_error",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.payload",
+    "type": "json",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.public_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.status",
+    "type": "character varying(24)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_available_at_index.available_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_public_id_unique.public_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_messages_status_index.status",
+    "type": "character varying(24)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_pending_dispatch_idx.available_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.outbox_pending_dispatch_idx.status",
+    "type": "character varying(24)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.password_reset_tokens.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.password_reset_tokens.email",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.password_reset_tokens.token",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.password_reset_tokens_pkey.email",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.allowances",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.approved_leave_units",
+    "type": "numeric(10,3)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.basic_pay",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.dtr_complete_days",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "0",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.dtr_days_with_logs",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "0",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.dtr_partial_days",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "0",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.dtr_snapshot_status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'not_linked'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.employee_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.gross_pay",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.gsis",
+    "type": "numeric(14,2)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::numeric",
+    "acl": []
+  },
+  {
+    "name": "public.payroll_entries.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('payroll_entries_id_seq'::regclass)",
+    "acl": []
+  }
+]

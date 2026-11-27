@@ -12,6 +12,9 @@ final class CredentialBoundary
 {
     public static function verify(): void
     {
+        if (getenv('PGREQUIREAUTH') !== 'scram-sha-256' || getenv('PGGSSENCMODE') !== 'disable') {
+            throw new RuntimeException('Explicit SCRAM-only client authentication is required.');
+        }
         // No automatic changes to monitoring. The operator supplies a dedicated safe bootstrap session.
         $required = ['log_statement' => 'none', 'log_min_duration_statement' => '-1', 'log_min_duration_sample' => '-1',
             'log_transaction_sample_rate' => '0', 'log_duration' => 'off', 'log_min_error_statement' => 'panic',
@@ -46,6 +49,35 @@ final class CredentialBoundary
             || ! is_file((string) config('database.connections.'.config('database.default').'.sslrootcert')))) {
             throw new RuntimeException('Credential provisioning requires a local Unix socket or verified TLS.');
         }
+    }
+
+    public static function registeredPassword(array $config, string $role, string $password): void
+    {
+        $config['username'] = $role;
+        $config['password'] = $password;
+        $connection = DB::build($config);
+        try {
+            if ($connection->selectOne('SELECT current_user AS role')->role !== $role) {
+                throw new RuntimeException('Registered password authentication identity mismatch.');
+            }
+        } finally {
+            $connection->disconnect();
+        }
+        $config['password'] = bin2hex(random_bytes(32));
+        $negative = DB::build($config);
+        try {
+            $negative->selectOne('SELECT current_user AS role');
+        } catch (\Throwable $e) {
+            // Only the expected wrong-password authentication failure is proof. No raw PDO
+            // diagnostics, DSNs or generated canaries are returned to logs/receipts.
+            if (str_contains($e->getMessage(), 'password authentication failed')) {
+                return;
+            }
+            throw new RuntimeException('Registered password denial could not be established.');
+        } finally {
+            $negative->disconnect();
+        }
+        throw new RuntimeException('Registered role accepted an incorrect password.');
     }
 
     public static function scram(string $password): string
