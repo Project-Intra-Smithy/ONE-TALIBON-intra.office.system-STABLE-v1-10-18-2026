@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
 use App\Domain\Workflow\Authorization\TransactionActorEligibility;
+use App\Models\Document;
 use App\Models\Employee;
-use App\Models\User;
 use App\Models\EmployeeDevelopmentRecord;
 use App\Models\PerformanceRecord;
+use App\Models\User;
+use App\Services\CommonEvidence\LegacyEvidenceEligibility;
 use App\Services\EmployeeHealthVaultService;
 use App\Services\TransactionVisibilityQuery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,11 +37,23 @@ class EmployeeProfileController extends Controller
         $canViewHrRecord = $isSelf || $isHrPrivileged;
         $canViewWorkContext = $isSelf || $isHrPrivileged || $isSameOfficeHead || $isExecutive;
 
-        $documents = $canViewHrRecord
-            ? Document::query()
+        if ($canViewHrRecord) {
+            $documentsQuery = Document::query()
                 ->whereHas('links', fn ($query) => $query
                     ->where('linkable_type', Employee::class)
-                    ->where('linkable_id', $employee->id))
+                    ->where('linkable_id', $employee->id));
+
+            // P07 HR Profile Quarantine: exclude EVER_PLAN, Plan receipts/bindings,
+            // unknown security_domain, and REGISTRY_V1 rows before metadata leaves SQL.
+            LegacyEvidenceEligibility::restrict($documentsQuery->getQuery(), 'documents');
+            if (Schema::hasColumn('documents', 'custody_mode')
+                && Schema::hasColumn('documents', 'custody_operation_id')) {
+                $documentsQuery
+                    ->where('documents.custody_mode', 'LEGACY_PATH')
+                    ->whereNull('documents.custody_operation_id');
+            }
+
+            $documents = $documentsQuery
                 ->latest()
                 ->limit(30)
                 ->get(['id', 'public_id', 'title', 'document_type', 'classification', 'retention_code', 'created_at'])
@@ -51,8 +65,10 @@ class EmployeeProfileController extends Controller
                     'classification' => $document->classification,
                     'retention_code' => $document->retention_code,
                     'created_at' => $document->created_at?->toIso8601String(),
-                ])
-            : collect();
+                ]);
+        } else {
+            $documents = collect();
+        }
 
         $activeAssignments = $canViewWorkContext
             ? $workRequests->scope($viewer)

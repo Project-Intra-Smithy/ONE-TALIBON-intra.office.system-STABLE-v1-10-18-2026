@@ -1,0 +1,329 @@
+name: OperationForge N03 G2A foundation validation
+
+on:
+  push:
+    branches:
+      - candidate/operationforge-n03-g2a-foundation
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: N03 ${{ matrix.phase }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [roles, focused, full, browser]
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: operationforge_disposable
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGDATABASE: talibon_portal_test
+      PGUSER: postgres
+      PGPASSWORD: operationforge_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: operationforge_disposable
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - name: Verify exact candidate and isolated empty database
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/candidate/operationforge-n03-g2a-foundation
+          test "$GITHUB_ACTIONS" = true
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")" = 0
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          git rev-parse HEAD
+      - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - run: |
+          cp .env.example .env
+          php artisan key:generate
+          php -l database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          php -l tests/Feature/LegacyCustodyFoundationTest.php
+      - name: A01 baseline-only migration ledger
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/n03-baseline-paths" <<'PATHS'
+          database/migrations/0001_01_01_000000_create_users_table.php
+          database/migrations/2026_08_18_000100_create_departments_table.php
+          database/migrations/2026_08_18_000200_create_employees_table.php
+          database/migrations/2026_08_18_001000_create_transactions_table.php
+          database/migrations/2026_08_18_001100_create_transaction_events_table.php
+          database/migrations/2026_08_18_001200_create_audit_logs_table.php
+          database/migrations/2026_08_18_002000_create_memoranda_table.php
+          database/migrations/2026_08_18_002100_create_memo_recipients_table.php
+          database/migrations/2026_08_18_003000_create_legislative_records_table.php
+          database/migrations/2026_08_18_004000_create_hris_leave_and_attendance_tables.php
+          database/migrations/2026_08_19_000100_make_employee_user_optional.php
+          database/migrations/2026_08_19_000110_add_employee_identity_fields.php
+          database/migrations/2026_08_19_000200_add_transaction_accountability_fields.php
+          database/migrations/2026_08_19_000300_create_operational_items_table.php
+          database/migrations/2026_08_19_000400_create_payroll_prototype_tables.php
+          database/migrations/2026_08_19_010000_add_phase1_office_routing_metadata.php
+          database/migrations/2026_08_19_011000_create_platform_notifications_table.php
+          database/migrations/2026_08_19_011100_create_calendar_events_table.php
+          database/migrations/2026_08_19_011200_create_shared_documents_tables.php
+          database/migrations/2026_08_19_012000_add_phase1_employee_profile_fields.php
+          database/migrations/2026_08_19_013000_create_employee_lifecycle_tables.php
+          database/migrations/2026_08_19_013100_create_property_accountability_tables.php
+          database/migrations/2026_08_19_014000_create_phase1_dtr_and_payroll_context.php
+          database/migrations/2026_08_19_016000_create_employee_development_and_health_tables.php
+          database/migrations/2026_08_22_017000_create_offboarding_tables.php
+          database/migrations/2026_08_22_020000_create_property_lifecycle_tables.php
+          database/migrations/2026_08_22_030000_create_legislative_sessions_and_agenda.php
+          database/migrations/2026_08_22_130000_add_mfa_fields_to_users_table.php
+          database/migrations/2026_08_22_144500_add_mfa_version_to_users_table.php
+          database/migrations/2026_08_23_090000_create_integration_client_tables.php
+          database/migrations/2026_08_23_090100_add_integration_client_to_audit_logs.php
+          database/migrations/2026_08_23_150000_create_integration_idempotency_records_table.php
+          database/migrations/2026_08_23_150100_create_outbox_messages_table.php
+          database/migrations/2026_08_23_150200_create_integration_proof_writes_table.php
+          database/migrations/2026_08_23_170000_create_correspondence_records_table.php
+          database/migrations/2026_08_23_170100_create_correspondence_events_table.php
+          database/migrations/2026_08_23_170200_create_correspondence_reference_counters_table.php
+          database/migrations/2026_08_24_010000_add_route_action_fields_to_correspondence_records.php
+          database/migrations/2026_08_27_120000_create_travel_orders_tables.php
+          database/migrations/2026_09_24_012300_create_prototype_messages_table.php
+          database/migrations/2026_09_30_000100_add_work_request_fields_to_transactions.php
+          database/migrations/2026_09_30_183000_add_work_request_queue_indexes.php
+          database/migrations/2026_09_30_184000_add_assignment_audit_to_transaction_events.php
+          database/migrations/2026_10_08_000000_create_tasks_table.php
+          database/migrations/2026_10_09_000000_extend_tasks_for_w02_core.php
+          database/migrations/2026_10_09_000100_create_task_events_table.php
+          database/migrations/2026_10_19_230000_add_user_last_seen_for_portal_presence.php
+          database/migrations/2026_10_20_040000_create_portal_presence_sessions_table.php
+          database/migrations/2026_10_28_010000_create_plan_catalog_foundation_tables.php
+          database/migrations/2026_10_28_011000_add_plan_origin_and_quarantined_bindings.php
+          database/migrations/2026_10_28_012000_create_plan_custody_foundation.php
+          database/migrations/2026_11_11_000100_create_permanent_iam_tables.php
+          PATHS
+          mapfile -t files < "$RUNNER_TEMP/n03-baseline-paths"
+          test "${#files[@]}" = 52
+          args=()
+          for f in "${files[@]}"; do test -f "$f"; args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+          sed -e 's@.*/@@' -e 's@\.php$@@' "$RUNNER_TEMP/n03-baseline-paths" | sort > "$RUNNER_TEMP/n03-expected-ledger"
+          psql -XAtc 'SELECT migration FROM public.migrations' | sort > "$RUNNER_TEMP/n03-actual-ledger"
+          diff -u "$RUNNER_TEMP/n03-expected-ledger" "$RUNNER_TEMP/n03-actual-ledger"
+          test "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NULL")" = t
+      - name: A01 historical role installation and verification
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            printf '%s=%s\n' "$name" "$value" >> "$GITHUB_ENV"
+            export "$name=$value"
+          done
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+      - name: A01 atomic DDL failure and N03 migration
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          migration=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          # Deliberately collide late in DDL, only in this empty synthetic cluster.
+          psql -X -v ON_ERROR_STOP=1 -c 'ALTER TABLE public.transaction_events ADD CONSTRAINT n03_transaction_event_tuple UNIQUE(id)'
+          if php artisan migrate --force --no-interaction --path="$migration" > "$RUNNER_TEMP/n03-ddl-red.log" 2>&1; then cat "$RUNNER_TEMP/n03-ddl-red.log"; exit 1; fi
+          cat "$RUNNER_TEMP/n03-ddl-red.log"
+          grep -E '42P07|42710|already exists' "$RUNNER_TEMP/n03-ddl-red.log"
+          test "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NULL")" = t
+          test "$(psql -XAtc 'SELECT count(*) FROM public.migrations')" = 52
+          psql -X -v ON_ERROR_STOP=1 -c 'ALTER TABLE public.transaction_events DROP CONSTRAINT n03_transaction_event_tuple'
+          if N03_DISPOSABLE_LEASE=wrong php artisan migrate --force --no-interaction --path="$migration"; then exit 1; fi
+          test "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NULL")" = t
+          php artisan migrate --force --no-interaction --path="$migration"
+          printf '%s\n' 2026_11_19_200000_create_legacy_custody_foundation >> "$RUNNER_TEMP/n03-expected-ledger"
+          sort -o "$RUNNER_TEMP/n03-expected-ledger" "$RUNNER_TEMP/n03-expected-ledger"
+          psql -XAtc 'SELECT migration FROM public.migrations' | sort > "$RUNNER_TEMP/n03-actual-ledger"
+          diff -u "$RUNNER_TEMP/n03-expected-ledger" "$RUNNER_TEMP/n03-actual-ledger"
+      - name: A01 A02 N03 ownership ACL catalog and repeat refusal
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          install() {
+            psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          }
+          install
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          if install > "$RUNNER_TEMP/n03-install-repeat.log" 2>&1; then cat "$RUNNER_TEMP/n03-install-repeat.log"; exit 1; fi
+          grep 'role collision' "$RUNNER_TEMP/n03-install-repeat.log"
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+      - name: A02–A07 real nonowner logins and foundation Feature tests
+        if: matrix.phase == 'roles'
+        env:
+          N03_ROLE_SUITE: '1'
+        run: php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
+      - name: A08 disposable regression schema lifecycle
+        if: matrix.phase == 'focused' || matrix.phase == 'full'
+        run: |
+          set -euo pipefail
+          # Laravel's PostgreSQL db:wipe enumerates only the configured public
+          # schema. Full Feature tests repeatedly call migrate:fresh; include
+          # the EMPTY synthetic namespace in that existing disposable wipe.
+          # This is not a migration rollback or a role-cluster cleanup.
+          cat > "$RUNNER_TEMP/n03-regression-bootstrap.php" <<'PHP'
+          <?php
+          require getenv('GITHUB_WORKSPACE').'/vendor/autoload.php';
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'
+              || getenv('DB_DATABASE') !== 'talibon_portal_test'
+              || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
+              || getenv('N03_ROLE_SUITE') === '1'
+              || getenv('GITHUB_REF') !== 'refs/heads/candidate/operationforge-n03-g2a-foundation') {
+              throw new RuntimeException('Unsafe N03 regression bootstrap.');
+          }
+          \Illuminate\Database\Connection::resolverFor('pgsql', static function ($connection, $database, $prefix, $config) {
+              return new class($connection, $database, $prefix, $config) extends \Illuminate\Database\PostgresConnection {
+                  public function getSchemaBuilder()
+                  {
+                      if (is_null($this->schemaGrammar)) {
+                          $this->useDefaultSchemaGrammar();
+                      }
+                      return new class($this) extends \Illuminate\Database\Schema\PostgresBuilder {
+                          public function dropAllTables()
+                          {
+                              $db = $this->connection;
+                              $db->transaction(function () use ($db) {
+                                  $guard = $db->selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%') AS role_cluster");
+                                  if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000
+                                      || $guard->bootstrap !== 'on' || $guard->role_cluster || getenv('N03_ROLE_SUITE') === '1') {
+                                      throw new RuntimeException('Refusing N03 regression wipe outside the normal isolated cluster.');
+                                  }
+                                  if ($guard->present) {
+                                      $expected = ['bindings','command_results','generations','namespaces','operation_events','operation_gates','operation_items','operations','ownership_links','terminal_receipts'];
+                                      $actual = array_map(static fn ($row) => $row->tablename, $db->select("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname='legacy_custody' ORDER BY tablename"));
+                                      if ($actual !== $expected
+                                          || (int) $db->selectOne("SELECT count(*) AS n FROM pg_catalog.pg_proc WHERE pronamespace='legacy_custody'::regnamespace")->n !== 7
+                                          || (int) $db->selectOne("SELECT count(*) AS n FROM public.migrations WHERE migration='2026_11_19_200000_create_legacy_custody_foundation'")->n !== 1
+                                          || $db->selectOne("SELECT EXISTS(SELECT 1 FROM public.documents WHERE custody_mode<>'LEGACY_PATH' OR custody_operation_id IS NOT NULL OR custody_ordinal IS NOT NULL) AS marked")->marked
+                                          || $db->selectOne("SELECT EXISTS(SELECT 1 FROM public.audit_logs WHERE custody_operation_id IS NOT NULL) AS marked")->marked) {
+                                          throw new RuntimeException('Refusing noncanonical or marked N03 regression namespace.');
+                                      }
+                                      foreach ($expected as $table) {
+                                          if ($db->selectOne("SELECT EXISTS(SELECT 1 FROM legacy_custody.$table) AS populated")->populated) {
+                                              throw new RuntimeException('Refusing populated N03 regression namespace.');
+                                          }
+                                      }
+                                      $db->unprepared('DROP SCHEMA legacy_custody CASCADE');
+                                      fwrite(STDOUT, "N03 empty regression namespace included in disposable migrate:fresh\n");
+                                  }
+                                  parent::dropAllTables();
+                              });
+                          }
+                      };
+                  }
+              };
+          });
+          PHP
+          php -l "$RUNNER_TEMP/n03-regression-bootstrap.php"
+      - name: A08 focused unregistered regression (separate isolated cluster)
+        if: matrix.phase == 'focused'
+        run: php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php tests/Feature/LegacyDocumentCustodyIntegrityTest.php tests/Feature/DocumentAccessPrecedenceTest.php tests/Feature/CoreDocumentAttachmentsTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+      - name: A08 full canonical PG16 Feature (separate isolated cluster)
+        if: matrix.phase == 'full'
+        run: php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature --exclude-group=n03-role
+      - uses: actions/setup-node@v4
+        if: matrix.phase == 'browser'
+        with:
+          node-version-file: .nvmrc
+      - name: A08 frontend contracts and build
+        if: matrix.phase == 'browser'
+        run: |
+          npm ci
+          npm run types:check
+          npm run test:contracts
+          npm run test:ux
+          npm run build
+      - name: A08 prepare normal browser database (no registry rows)
+        if: matrix.phase == 'browser'
+        run: |
+          php artisan migrate --force --no-interaction
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          npx playwright install --with-deps chromium
+          password="$(openssl rand -hex 24)Aa1!"
+          echo "::add-mask::$password"
+          echo "PDF_QA_PASSWORD=$password" >> "$GITHUB_ENV"
+          PDF_QA_PASSWORD="$password" php tests/Browser/legacy-pdf-inline-fixture.php
+      - name: A08 loopback HTTP server
+        if: matrix.phase == 'browser'
+        run: |
+          APP_ENV=local php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/operationforge-http.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:8000/login; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: A08 real native PDF tab and explicit download
+        if: matrix.phase == 'browser'
+        env:
+          QA_EXPECTED_SHA: ${{ github.sha }}
+        run: xvfb-run -a node tests/Browser/legacy-pdf-inline-authenticated.mjs
+      - name: Upload original synthetic browser receipt and screenshot
+        if: matrix.phase == 'browser' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operationforge-n03-g2a-native-pdf-synthetic
+          path: |
+            storage/app/qa/legacy-pdf-browser.json
+            storage/app/qa/legacy-pdf-native-viewer.png
+          if-no-files-found: error
+          retention-days: 7
+      - name: Verify no registry records in normal datasets
+        if: success() && matrix.phase != 'roles'
+        run: |
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM public.documents WHERE custody_mode='REGISTRY_V1'")" = 0
+      # GitHub removes each job's distinct service container during job teardown.
+  mandatory:
+    name: A01–A08 aggregate
+    runs-on: ubuntu-24.04
+    needs: [validate]
+    if: always()
+    steps:
+      - name: Require all four exact-SHA matrix jobs
+        env:
+          OUTCOME: ${{ needs.validate.result }}
+        run: |
+          printf 'N03 mandatory matrix=%s SHA=%s\n' "$OUTCOME" "$GITHUB_SHA"
+          test "$OUTCOME" = success

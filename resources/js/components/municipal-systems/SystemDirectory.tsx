@@ -46,7 +46,7 @@ export default function SystemDirectory({ systems, onSelect }: Props) {
                             </span>
 
                             <span className="min-w-0 flex-1">
-                                <span className="block text-[6.5px] font-black uppercase tracking-[0.06em] text-slate-400 lg:text-[7.5px]">
+                                <span className="block text-[6.5px] font-black uppercase tracking-[0.06em] text-[var(--ink-secondary)] lg:text-[7.5px]">
                                     {system.id}
                                 </span>
                                 <span className="mt-0.5 block line-clamp-2 text-[8.5px] font-extrabold leading-3 text-slate-800 dark:text-slate-100 lg:text-[10px] lg:leading-[1.15rem]">
@@ -69,7 +69,7 @@ export default function SystemDirectory({ systems, onSelect }: Props) {
                     <div className="text-[9px] font-extrabold text-slate-700 dark:text-slate-200">
                         No matching future systems
                     </div>
-                    <p className="mt-0.5 text-[8px] text-slate-500 dark:text-slate-400">
+                    <p className="mt-0.5 text-[8px] text-slate-500 dark:text-[var(--ink-secondary)]">
                         Adjust the search or filter to restore the municipal system matrix.
                     </p>
                 </div>

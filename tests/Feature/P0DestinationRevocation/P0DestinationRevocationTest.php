@@ -5,26 +5,38 @@ namespace Tests\Feature\P0DestinationRevocation;
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
 use App\Domain\TravelOrders\TravelOrderStatus;
+use App\Http\Middleware\RequireActiveAccount;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\TravelOrder;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 /**
- * Authenticated HTTP regressions. DatabaseMigrations is intentional: RefreshDatabase
- * wraps tests in a transaction, hiding fixtures from a second PG connection.
- * The revoker uses a separately committed connection while the web session remains.
+ * Authenticated HTTP regressions require committed synthetic fixtures visible to
+ * the independent revoker connection. DatabaseTruncation avoids a transaction
+ * and never invokes rollback of forward-only protected custody migrations.
+ * Run only against the disposable PostgreSQL test database.
  */
 final class P0DestinationRevocationTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTruncation;
+
+    protected function tearDown(): void
+    {
+        // Cross-connection tests commit fixtures. Force the next Feature test
+        // to rebuild its disposable schema instead of reusing committed rows.
+        RefreshDatabaseState::$migrated = false;
+
+        parent::tearDown();
+    }
 
     public function test_travel_order_detail_and_index_reject_separated_employment_with_retained_session(): void
     {
@@ -40,11 +52,20 @@ final class P0DestinationRevocationTest extends TestCase
         $this->revoke('employees', $actor->employee->id, ['employment_status' => 'separated']);
         $this->assertTrue($actor->employee->employment_status === 'active', 'Preloaded actor relation must remain stale.');
 
-        $this->get('/travel-orders')->assertForbidden();
-        $denied = $this->get('/travel-orders/'.$order->public_id)->assertForbidden();
-        $this->assertStringNotContainsString($order->purpose, $denied->getContent());
+        $this->assertRevokedTransport($actor, 'employees', $actor->employee->id, ['employment_status' => 'active'], ['employment_status' => 'separated'], [
+            fn () => $this->get('/travel-orders'),
+            fn () => $this->get('/travel-orders/'.$order->public_id),
+        ], [$order->purpose]);
+
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($actor, function () use ($order): void {
+            $this->get('/travel-orders')->assertForbidden();
+            $denied = $this->get('/travel-orders/'.$order->public_id)->assertForbidden();
+            $this->assertStringNotContainsString($order->purpose, $denied->getContent());
+        });
 
         $this->revoke('employees', $actor->employee->id, ['employment_status' => 'active']);
+        $this->actingAs($actor->fresh());
         $this->get('/travel-orders/'.$order->public_id)->assertOk();
     }
 
@@ -59,9 +80,18 @@ final class P0DestinationRevocationTest extends TestCase
         $actor->load('employee.department');
         $this->revoke('employees', $actor->employee->id, ['employment_status' => 'separated']);
 
-        $this->get('/travel-orders/create')->assertForbidden();
-        $this->post('/travel-orders', $this->travelPayload($mayor, $actor->employee))->assertForbidden();
-        $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed'])->assertForbidden();
+        $this->assertRevokedTransport($actor, 'employees', $actor->employee->id, ['employment_status' => 'active'], ['employment_status' => 'separated'], [
+            fn () => $this->get('/travel-orders/create'),
+            fn () => $this->post('/travel-orders', $this->travelPayload($mayor, $actor->employee)),
+            fn () => $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed']),
+        ], [$order->purpose]);
+
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($actor, function () use ($mayor, $actor, $order): void {
+            $this->get('/travel-orders/create')->assertForbidden();
+            $this->post('/travel-orders', $this->travelPayload($mayor, $actor->employee))->assertForbidden();
+            $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed'])->assertForbidden();
+        });
 
         $this->assertDatabaseCount('travel_orders', 1);
         $this->assertDatabaseCount('travel_order_events', 0);
@@ -79,10 +109,21 @@ final class P0DestinationRevocationTest extends TestCase
         $this->get('/travel-orders/'.$order->public_id)->assertOk();
         $this->revoke('departments', $mayor->id, ['is_active' => false]);
 
-        $this->get('/travel-orders')->assertForbidden();
-        $this->get('/travel-orders/'.$order->public_id)->assertForbidden();
-        $this->post('/travel-orders', $this->travelPayload($other, $actor->employee))->assertForbidden();
-        $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed'])->assertForbidden();
+        $this->assertRevokedTransport($actor, 'departments', $mayor->id, ['is_active' => true], ['is_active' => false], [
+            fn () => $this->get('/travel-orders'),
+            fn () => $this->get('/travel-orders/'.$order->public_id),
+            fn () => $this->post('/travel-orders', $this->travelPayload($other, $actor->employee)),
+            fn () => $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed']),
+        ], [$order->purpose]);
+
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($actor, function () use ($order, $other, $actor): void {
+            $this->get('/travel-orders')->assertForbidden();
+            $this->get('/travel-orders/'.$order->public_id)->assertForbidden();
+            $this->post('/travel-orders', $this->travelPayload($other, $actor->employee))->assertForbidden();
+            $this->post('/travel-orders/'.$order->public_id.'/status', ['status' => 'completed'])->assertForbidden();
+        });
+
         $this->assertSame(TravelOrderStatus::Approved, $order->fresh()->status);
         $this->assertDatabaseCount('travel_order_events', 0);
     }
@@ -99,15 +140,26 @@ final class P0DestinationRevocationTest extends TestCase
         $actor->load('employee.department');
         $this->revoke('departments', $office->id, ['is_active' => false]);
 
-        $this->getJson('/correspondence/'.$record->public_id)->assertForbidden();
-        $this->get('/correspondence/'.$record->public_id.'/workspace')->assertForbidden();
-        // Index FormRequest only requires login. Canonical scope must return no titles/totals.
-        $result = $this->get('/correspondence?view=all')->assertOk();
-        $this->assertStringNotContainsString($record->subject, $result->getContent());
-        $result->assertInertia(fn (AssertableInertia $page) => $page
-            ->where('records.total', 0)
-            ->where('overview.counts.all', 0));
+        $this->assertRevokedTransport($actor, 'departments', $office->id, ['is_active' => true], ['is_active' => false], [
+            fn () => $this->getJson('/correspondence/'.$record->public_id),
+            fn () => $this->get('/correspondence/'.$record->public_id.'/workspace'),
+            fn () => $this->get('/correspondence?view=all'),
+        ], [$record->subject]);
+
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($actor, function () use ($record): void {
+            $this->getJson('/correspondence/'.$record->public_id)->assertForbidden();
+            $this->get('/correspondence/'.$record->public_id.'/workspace')->assertForbidden();
+            // Index FormRequest only requires login. Canonical scope must return no titles/totals.
+            $result = $this->get('/correspondence?view=all')->assertOk();
+            $this->assertStringNotContainsString($record->subject, $result->getContent());
+            $result->assertInertia(fn (AssertableInertia $page) => $page
+                ->where('records.total', 0)
+                ->where('overview.counts.all', 0));
+        });
+
         $this->revoke('departments', $office->id, ['is_active' => true]);
+        $this->actingAs($actor->fresh());
         $this->getJson('/correspondence/'.$record->public_id)->assertOk();
     }
 
@@ -138,23 +190,37 @@ final class P0DestinationRevocationTest extends TestCase
         $actor->load('employee.department');
         $this->revoke('departments', $office->id, ['is_active' => false]);
 
-        $this->postJson('/correspondence/'.$received->public_id.'/register')->assertForbidden();
-        $this->postJson('/correspondence/'.$registered->public_id.'/classify', ['classification' => 'internal'])->assertForbidden();
-        $this->postJson('/correspondence/'.$classified->public_id.'/route', ['target_department_id' => $target->id, 'priority' => 'normal'])->assertForbidden();
-        $this->postJson('/correspondence/'.$routed->public_id.'/act')->assertForbidden();
+        $this->assertRevokedTransport($actor, 'departments', $office->id, ['is_active' => true], ['is_active' => false], [
+            fn () => $this->postJson('/correspondence/'.$received->public_id.'/register', []),
+            fn () => $this->post('/correspondence/'.$received->public_id.'/workspace/register', []),
+            fn () => $this->postJson('/correspondence/'.$registered->public_id.'/classify', ['classification' => 'internal']),
+            fn () => $this->post('/correspondence/'.$registered->public_id.'/workspace/classify', ['classification' => 'internal']),
+            fn () => $this->postJson('/correspondence/'.$classified->public_id.'/route', ['target_department_id' => $target->id, 'priority' => 'normal']),
+            fn () => $this->post('/correspondence/'.$classified->public_id.'/workspace/route', ['target_department_id' => $target->id, 'priority' => 'normal']),
+            fn () => $this->postJson('/correspondence/'.$routed->public_id.'/act', []),
+            fn () => $this->post('/correspondence/'.$routed->public_id.'/workspace/act', []),
+        ], [$received->subject, $registered->subject, $classified->subject, $routed->subject]);
 
-        foreach ([$received, $registered, $classified, $routed] as $record) {
-            $this->post('/correspondence/'.$record->public_id.'/workspace/'.match ($record->id) {
-                $received->id => 'register',
-                $registered->id => 'classify',
-                $classified->id => 'route',
-                default => 'act',
-            }, match ($record->id) {
-                $registered->id => ['classification' => 'internal'],
-                $classified->id => ['target_department_id' => $target->id, 'priority' => 'normal'],
-                default => [],
-            })->assertForbidden();
-        }
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($actor, function () use ($received, $registered, $classified, $target, $routed): void {
+            $this->postJson('/correspondence/'.$received->public_id.'/register')->assertForbidden();
+            $this->postJson('/correspondence/'.$registered->public_id.'/classify', ['classification' => 'internal'])->assertForbidden();
+            $this->postJson('/correspondence/'.$classified->public_id.'/route', ['target_department_id' => $target->id, 'priority' => 'normal'])->assertForbidden();
+            $this->postJson('/correspondence/'.$routed->public_id.'/act')->assertForbidden();
+
+            foreach ([$received, $registered, $classified, $routed] as $record) {
+                $this->post('/correspondence/'.$record->public_id.'/workspace/'.match ($record->id) {
+                    $received->id => 'register',
+                    $registered->id => 'classify',
+                    $classified->id => 'route',
+                    default => 'act',
+                }, match ($record->id) {
+                    $registered->id => ['classification' => 'internal'],
+                    $classified->id => ['target_department_id' => $target->id, 'priority' => 'normal'],
+                    default => [],
+                })->assertForbidden();
+            }
+        });
 
         $this->assertSame(CorrespondenceLifecycleState::Received, $received->fresh()->lifecycle_state);
         $this->assertSame(CorrespondenceLifecycleState::Registered, $registered->fresh()->lifecycle_state);
@@ -179,9 +245,51 @@ final class P0DestinationRevocationTest extends TestCase
         $this->get('/correspondence/'.$restricted->public_id.'/workspace')->assertForbidden();
 
         $this->revoke('departments', $own->id, ['is_active' => false]);
-        $this->get('/correspondence/'.$received->public_id.'/workspace')->assertForbidden();
+        $this->assertRevokedTransport($registrar, 'departments', $own->id, ['is_active' => true], ['is_active' => false], [
+            fn () => $this->get('/correspondence/'.$received->public_id.'/workspace'),
+        ], [$received->subject]);
+
+        // Independently exercise the original downstream domain boundary.
+        $this->assertDomainBoundary($registrar, function () use ($received): void {
+            $this->get('/correspondence/'.$received->public_id.'/workspace')->assertForbidden();
+        });
+
         $this->revoke('departments', $own->id, ['is_active' => true]);
+        $this->actingAs($registrar->fresh());
         $this->get('/correspondence/'.$received->public_id.'/workspace')->assertOk();
+    }
+
+    /** Each transport request starts with its own eligible pre-revocation session. */
+    private function assertRevokedTransport(User $actor, string $table, int $id, array $eligible, array $revoked, array $requests, array $secrets): void
+    {
+        foreach ($requests as $request) {
+            $this->revoke($table, $id, $eligible);
+            $this->actingAs($actor->fresh());
+            $this->revoke($table, $id, $revoked);
+            $response = $request()->assertRedirect(route('login'))->assertSessionMissing('auth_session_version');
+            $this->assertGuest();
+            foreach ($secrets as $secret) {
+                $this->assertStringNotContainsString($secret, $response->getContent());
+            }
+        }
+    }
+
+    /**
+     * Test-only isolated dispatch to the original domain controllers/policies.
+     * The outer account gate has already been asserted with real middleware.
+     * Keep routing, authentication, MFA, FormRequests and domain guards intact.
+     */
+    private function assertDomainBoundary(User $actor, \Closure $assertions): void
+    {
+        $this->withoutMiddleware(RequireActiveAccount::class);
+        try {
+            $this->actingAs($actor);
+            $assertions();
+        } finally {
+            $this->withMiddleware(RequireActiveAccount::class);
+            auth()->guard('web')->logoutCurrentDevice();
+            session()->invalidate();
+        }
     }
 
     private function revoke(string $table, int $id, array $values): void

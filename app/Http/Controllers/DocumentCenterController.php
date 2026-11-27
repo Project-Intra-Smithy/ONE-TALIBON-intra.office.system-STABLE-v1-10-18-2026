@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecordsIndexRequest;
+use App\Models\Document;
+use App\Services\CommonEvidence\DocumentTraceabilityQuery;
 use App\Services\DocumentArchiveQuery;
 use App\Services\RecordsSearchQuery;
 use Inertia\Inertia;
@@ -14,16 +18,29 @@ final class DocumentCenterController extends Controller
         RecordsIndexRequest $request,
         RecordsSearchQuery $records,
         DocumentArchiveQuery $archive,
+        DocumentTraceabilityQuery $traceability,
     ): Response {
         $filters = $request->validated();
         $mode = (string) ($filters['mode'] ?? 'records');
+        $archiveWorkspace = $mode === 'files'
+            ? $archive->workspace($request->user(), $filters)
+            : $this->emptyArchiveWorkspace($filters);
+
+        $selectedTraceability = null;
+        if ($mode === 'files' && isset($archiveWorkspace['selected']['publicId']) && is_string($archiveWorkspace['selected']['publicId'])) {
+            $selectedDocument = Document::query()
+                ->where('public_id', $archiveWorkspace['selected']['publicId'])
+                ->first();
+            if ($selectedDocument !== null) {
+                $selectedTraceability = $traceability->forAuthorizedDocument($request->user(), $selectedDocument);
+            }
+        }
 
         return Inertia::render('Documents/Index', [
             ...$records->workspace($request->user(), $filters),
             'mode' => $mode,
-            'archive' => $mode === 'files'
-                ? $archive->workspace($request->user(), $filters)
-                : $this->emptyArchiveWorkspace($filters),
+            'archive' => $archiveWorkspace,
+            'selectedTraceability' => $selectedTraceability,
         ]);
     }
 

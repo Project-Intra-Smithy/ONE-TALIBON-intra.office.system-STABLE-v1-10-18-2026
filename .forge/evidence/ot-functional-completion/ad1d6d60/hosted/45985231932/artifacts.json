@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 15191846056,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE5MTg0NjA1Ng==",
+      "name": "tcds-canonical-ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "size_in_bytes": 59348160,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15191846056",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15191846056/zip",
+      "expired": false,
+      "digest": "sha256:5d29bb7b865218eae19ed9d20c3275893f03f397237ea9dc5b1d6b81d634e46d",
+      "created_at": "2026-11-27T10:51:08Z",
+      "updated_at": "2026-11-27T10:51:08Z",
+      "expires_at": "2027-02-25T10:48:45Z",
+      "workflow_run": {
+        "id": 45985231932,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-money-r2",
+        "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d"
+      }
+    },
+    {
+      "id": 15190859098,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE5MDg1OTA5OA==",
+      "name": "tcds-phase-a-ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "size_in_bytes": 99025981,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15190859098",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15190859098/zip",
+      "expired": false,
+      "digest": "sha256:23eec687c4741ea7f24f11f6cfcd252723216af7d421b2c1836c4b1f0eda4868",
+      "created_at": "2026-11-27T10:55:06Z",
+      "updated_at": "2026-11-27T10:55:06Z",
+      "expires_at": "2027-02-25T10:48:45Z",
+      "workflow_run": {
+        "id": 45985231932,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-money-r2",
+        "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d"
+      }
+    }
+  ]
+}

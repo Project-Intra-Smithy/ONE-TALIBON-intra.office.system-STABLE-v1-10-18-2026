@@ -13,23 +13,32 @@ export default function MunicipalBrand({
     publicPortal = false,
     iconOnly = false,
 }: Props) {
-    return <div
-        className={`municipal-brand flex min-w-0 items-center gap-3 ${inverse ? 'text-white' : 'text-[#0b2852] dark:text-slate-100'}`}
-        aria-label={iconOnly ? `One Talibon · ${publicPortal ? 'Municipal Public Portal' : 'Talibon Intra-Office Portal'}` : undefined}
-    >
-        <img
-            src={talibonAssets.municipalSeal}
-            alt={iconOnly ? '' : 'Municipality of Talibon seal'}
-            className="h-11 w-11 shrink-0 sm:h-12 sm:w-12"
-        />
-        {!iconOnly && <div className="min-w-0">
-            <div className={`whitespace-nowrap font-extrabold leading-tight tracking-tight ${compact ? 'text-xl' : 'text-xl sm:text-2xl'}`}>
-                <span className={inverse ? 'text-white' : 'text-[#2f7d45] dark:text-[#8ec9a0]'}>ONE</span> TALIBON
-            </div>
-            <div className={publicPortal
-                ? 'mt-1 text-xs font-semibold leading-snug tracking-[.02em]'
-                : 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider'
-            }>{publicPortal ? 'Municipal Public Portal' : 'Talibon Intra-Office Portal'}</div>
-        </div>}
-    </div>;
+    return (
+        <div
+            className={`flex min-w-0 items-center gap-2.5 ${inverse ? 'text-white' : 'text-[var(--ink-primary)]'}`}
+            aria-label={iconOnly ? `ONE TALIBON · ${publicPortal ? 'Municipal Public Portal' : 'Municipality of Talibon'}` : undefined}
+        >
+            <img
+                src={talibonAssets.municipalSeal}
+                alt={iconOnly ? '' : 'Official seal of the Municipality of Talibon'}
+                width={38}
+                height={38}
+                className="h-9 w-9 shrink-0 rounded-full object-contain"
+            />
+            {!iconOnly && (
+                <div className="min-w-0">
+                    <div className={`truncate font-extrabold leading-tight tracking-tight ${compact ? 'text-base' : 'text-lg sm:text-xl'}`}>
+                        <span className={inverse ? 'text-white' : 'text-[var(--brand-primary)]'}>ONE</span> TALIBON
+                    </div>
+                    <div
+                        className={`truncate text-xs font-medium leading-tight ${
+                            inverse ? 'text-[var(--surface-sidebar-muted)]' : 'text-[var(--ink-secondary)]'
+                        }`}
+                    >
+                        {publicPortal ? 'Municipal Public Portal' : 'Municipality of Talibon'}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 }

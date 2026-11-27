@@ -22,7 +22,7 @@ export default function PortalHeaderIdentity({ user }: { user: AuthUser | null }
     return (
         <div role="group" aria-label={`Signed in as ${identityTitle}`} className="flex min-w-0 items-center gap-2">
             <span
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] text-xs font-bold text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-brand)]"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] text-xs font-bold text-[var(--municipal-brand-deep)] dark:text-[var(--brand-ink)]"
                 aria-hidden="true"
                 title={identityTitle}
             >

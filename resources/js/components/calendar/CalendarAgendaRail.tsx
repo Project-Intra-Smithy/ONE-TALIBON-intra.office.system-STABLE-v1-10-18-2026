@@ -12,7 +12,7 @@ export default function CalendarAgendaRail({ events, calendar, onEventOpen }: { 
         .slice(0, 5);
 
     return <aside className="municipal-panel min-w-0 self-start overflow-hidden" aria-label="Calendar agenda">
-        <header className="flex min-h-9 items-center gap-2 border-b border-[var(--municipal-border)] px-2.5 text-[var(--municipal-brand)]">
+        <header className="flex min-h-9 items-center gap-2 border-b border-[var(--municipal-border)] px-2.5 text-[var(--brand-ink)]">
             <CalendarDays size={14} aria-hidden="true" />
             <h2 className="text-xs font-bold">Agenda</h2>
         </header>
@@ -20,7 +20,7 @@ export default function CalendarAgendaRail({ events, calendar, onEventOpen }: { 
         <AgendaSection title="Today" items={today} calendar={calendar} onEventOpen={onEventOpen} />
         <AgendaSection title="Upcoming" items={upcoming} calendar={calendar} onEventOpen={onEventOpen} />
 
-        <Link href="/meetings" className="flex min-h-9 items-center justify-between border-t border-[var(--municipal-border)] px-2.5 text-[10px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">
+        <Link href="/meetings" className="flex min-h-9 items-center justify-between border-t border-[var(--municipal-border)] px-2.5 text-[10px] font-bold text-[var(--brand-ink)] hover:bg-[var(--municipal-hover)]">
             View meetings
             <ArrowRight size={12} aria-hidden="true" />
         </Link>

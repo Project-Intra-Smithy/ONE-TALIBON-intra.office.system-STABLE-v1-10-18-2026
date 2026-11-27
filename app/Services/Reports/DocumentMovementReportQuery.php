@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Services\CorrespondenceAccessDecider;
+use App\Services\CommonEvidence\AuthorizedArchiveSql;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ final class DocumentMovementReportQuery
     public function __construct(
         private readonly CorrespondenceAccessDecider $access,
         private readonly ReportValuePresenter $presenter,
+        private readonly AuthorizedArchiveSql $archive,
     ) {}
 
     public function rows(User $actor, array $filters, bool $paginate = true): mixed
@@ -50,10 +52,22 @@ final class DocumentMovementReportQuery
             ])->all();
     }
 
-    private function query(User $actor, array $filters): Builder
+    /**
+     * Internal predicate only. No FILE_EXISTENCE publication grant is defined.
+     * Callers must never treat this result as permission to expose the field.
+     */
+    public function eligibleEventEvidence(User $actor, string $source, int $sourceId): bool
     {
-        $correspondence = $this->correspondenceEvents($actor, $filters);
-        $workflow = $this->workflowEvents($actor, $filters);
+        return $this->query($actor, [], true)
+            ->where('source', $source)->where('source_id', $sourceId)
+            ->where('has_evidence', true)->exists();
+    }
+
+    private function query(User $actor, array $filters, bool $inspectEvidence = false): Builder
+    {
+        $eligible = $inspectEvidence ? $this->archive->eligibleEventLinks($actor) : null;
+        $correspondence = $this->correspondenceEvents($actor, $filters, $eligible);
+        $workflow = $this->workflowEvents($actor, $filters, $eligible);
 
         return DB::query()->fromSub($correspondence->unionAll($workflow), 'movement_rows')
             ->orderByDesc('occurred_at')
@@ -61,7 +75,7 @@ final class DocumentMovementReportQuery
             ->orderBy('source_id');
     }
 
-    private function correspondenceEvents(User $actor, array $filters): Builder
+    private function correspondenceEvents(User $actor, array $filters, ?Builder $eligible): Builder
     {
         $submitted = DB::table('transaction_events')
             ->where('action', 'submitted')
@@ -93,16 +107,20 @@ final class DocumentMovementReportQuery
             ->selectRaw("CASE WHEN ce.event = 'routed' THEN COALESCE(route_target.short_name, route_target.name, fallback_to.short_name, fallback_to.name) END AS to_office")
             ->selectRaw('COALESCE(accountable_office.short_name, accountable_office.name, receiving_office.short_name, receiving_office.name) AS accountable_office')
             ->selectRaw('assignee.full_name AS assignee_name')
-            ->selectRaw("CASE WHEN ce.event = 'in_action' THEN 2 ELSE 0 END AS sort_rank")
-            ->selectRaw(
-                "(EXISTS (SELECT 1 FROM document_links dl WHERE dl.linkable_type = ? AND dl.linkable_id = ce.id) OR (ce.event = 'routed' AND EXISTS (SELECT 1 FROM document_links sdl WHERE sdl.linkable_type = ? AND sdl.linkable_id = submitted_event.id))) AS has_evidence",
-                [(new CorrespondenceEvent)->getMorphClass(), (new TransactionEvent)->getMorphClass()],
+            ->selectRaw("CASE WHEN ce.event = 'in_action' THEN 2 ELSE 0 END AS sort_rank");
+        if ($eligible !== null) {
+            $direct = $this->eventEvidence($eligible, CorrespondenceEvent::class, 'ce.id');
+            $submittedEvidence = $this->eventEvidence($eligible, TransactionEvent::class, 'submitted_event.id');
+            $query->selectRaw(
+                "(EXISTS (".$direct->toSql().") OR (ce.event = 'routed' AND EXISTS (".$submittedEvidence->toSql()."))) AS has_evidence",
+                [...$direct->getBindings(), ...$submittedEvidence->getBindings()],
             );
+        }
 
         return $this->applyRecordFilters($query, $filters, 'ce.occurred_at');
     }
 
-    private function workflowEvents(User $actor, array $filters): Builder
+    private function workflowEvents(User $actor, array $filters, ?Builder $eligible): Builder
     {
         $query = DB::table('transaction_events as te')
             ->join('transactions as tx', 'tx.id', '=', 'te.transaction_id')
@@ -130,13 +148,21 @@ final class DocumentMovementReportQuery
             ->selectRaw('COALESCE(to_office.short_name, to_office.name) AS to_office')
             ->selectRaw('COALESCE(accountable_office.short_name, accountable_office.name, receiving_office.short_name, receiving_office.name) AS accountable_office')
             ->selectRaw('assignee.full_name AS assignee_name')
-            ->selectRaw('1 AS sort_rank')
-            ->selectRaw(
-                'EXISTS (SELECT 1 FROM document_links dl WHERE dl.linkable_type = ? AND dl.linkable_id = te.id) AS has_evidence',
-                [(new TransactionEvent)->getMorphClass()],
-            );
+            ->selectRaw('1 AS sort_rank');
+        if ($eligible !== null) {
+            $direct = $this->eventEvidence($eligible, TransactionEvent::class, 'te.id');
+            $query->selectRaw('EXISTS ('.$direct->toSql().') AS has_evidence', $direct->getBindings());
+        }
 
         return $this->applyRecordFilters($query, $filters, 'te.created_at');
+    }
+
+    private function eventEvidence(Builder $eligible, string $model, string $eventColumn): Builder
+    {
+        return DB::query()->fromSub(clone $eligible, 'eligible_event')
+            ->selectRaw('1')
+            ->whereIn('eligible_event.linkable_type', array_unique([$model, (new $model)->getMorphClass()]))
+            ->whereColumn('eligible_event.linkable_id', $eventColumn);
     }
 
     private function applyRecordFilters(Builder $query, array $filters, string $dateColumn): Builder
@@ -179,7 +205,6 @@ final class DocumentMovementReportQuery
             'actor' => $row->actor_name,
             'remarks' => $row->remarks,
             'occurredAt' => CarbonImmutable::parse($row->occurred_at)->timezone(config('app.timezone'))->toIso8601String(),
-            'hasEvidence' => (bool) $row->has_evidence ? 'Yes' : 'No',
             'accountableOffice' => $row->accountable_office,
             'assignee' => $row->assignee_name ?? 'Unassigned',
             'detailUrl' => route('correspondence.workspace.show', ['correspondence' => $row->public_id], false),

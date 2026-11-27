@@ -46,7 +46,7 @@ export default function RecordsSearch() {
                 ref={trigger}
                 type="button"
                 onClick={() => setOpen((value) => !value)}
-                className={`flex h-11 items-center gap-2 rounded-lg px-2.5 text-sm font-semibold transition-colors ${open ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
+                className={`flex h-11 items-center gap-2 rounded-lg px-2.5 text-sm font-semibold transition-colors ${open ? 'bg-[var(--municipal-brand-soft)] text-[var(--brand-ink)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
                 aria-label="Search municipal records"
                 aria-expanded={open}
                 aria-haspopup="dialog"

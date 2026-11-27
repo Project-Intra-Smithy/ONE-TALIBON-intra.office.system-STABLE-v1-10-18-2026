@@ -46,7 +46,7 @@ export default function ConversationList({ conversations, selectedChannel, query
                                     className={`block w-full rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)] ${selected ? 'bg-[var(--municipal-brand-soft)]' : 'hover:bg-[var(--municipal-hover)]'}`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${selected ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-brand)]'}`}>
+                                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${selected ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--brand-ink)]'}`}>
                                             <MessageSquareText size={17} aria-hidden="true" />
                                         </div>
                                         <div className="min-w-0 flex-1">

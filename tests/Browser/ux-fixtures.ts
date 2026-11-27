@@ -49,6 +49,7 @@ export function fixturePage(screen: string, role = 'employee'): Fixture {
     };
     const scenarios: Record<string, Fixture> = {
         dashboard: { component: 'Dashboard', url: '/dashboard', props: dashboard },
+        myTasks: { component: 'Tasks/Index', url: '/my-tasks', props: {} },
         work: { component: 'Transactions/Index', url: '/transactions', props: {
             records: page([...work]), filters: { view: 'all', search: '', status: '', priority: '', office_id: null },
             scopeGroups: [{ key: 'personal', label: 'My queues', views: [{ key: 'all', label: 'All visible work', scope: 'personal', count: 2 }, { key: 'needs_my_action', label: 'Needs my action', scope: 'personal', count: 1 }, { key: 'due_soon', label: 'Due soon', scope: 'personal', count: 1 }] }],

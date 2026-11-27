@@ -35,6 +35,7 @@ class AuthenticationRuntimeContractTest extends TestCase
         ]);
 
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $this->withSession([
             'showcase.session' => true,

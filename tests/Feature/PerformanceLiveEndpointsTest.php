@@ -38,6 +38,7 @@ class PerformanceLiveEndpointsTest extends TestCase
         }
 
         Auth::guard('web')->login($admin);
+        $this->withSession(['auth_session_version' => (int) $admin->session_version]);
 
         foreach ([
             '/notifications/feed',

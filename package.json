@@ -11,14 +11,19 @@
     "types:check": "tsc --noEmit",
     "test:aj-home-auth": "node --test tests/Browser/aj-home-auth.test.mjs",
     "test:ux": "node --experimental-strip-types --test tests/Browser/ux-refinement.test.mjs",
-    "test:contracts": "node --experimental-strip-types --test tests/Frontend/*.test.mjs"
+    "test:contracts": "node --experimental-strip-types --test tests/Frontend/*.test.mjs",
+    "dev:preview": "vite --config preview/vite.config.ts",
+    "build:preview": "vite build --config preview/vite.config.ts",
+    "types:preview": "tsc --noEmit -p preview/tsconfig.json"
   },
   "dependencies": {
+    "@fontsource-variable/public-sans": "^5.3.0",
     "@inertiajs/react": "^3.0.0",
     "@inertiajs/vite": "^3.0.0",
     "lucide-react": "^0.475.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
@@ -30,7 +35,8 @@
     "playwright": "1.55.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
-    "vite": "8.3.3"
+    "vite": "8.3.3",
+    "@types/leaflet": "^1.9.22"
   },
   "packageManager": "npm@10.9.2"
 }

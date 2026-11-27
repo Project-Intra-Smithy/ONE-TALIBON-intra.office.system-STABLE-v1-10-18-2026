@@ -15,8 +15,8 @@ const css = source('resources/css/ot-r6-modules.css');
 
 test('Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency', () => {
     for (const page of [directory, plans, ppas]) {
-        assert.match(page, /import '\.\.\/\.\.\/\.\.\/css\/ot-r6-modules\.css'/);
-        assert.match(page, /className="[^"]*\bot-r6-modules\b/);
+        assert.doesNotMatch(page, /import '\.\.\/\.\.\/\.\.\/css\/ot-r6-modules\.css'/);
+        assert.doesNotMatch(page, /import '\.\.\/\.\.\/\.\.\/css\/portal-visual-redesign\.css'/);
     }
     assert.match(css, /\.ot-r6-modules/);
     assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root|\.municipal-panel)\s*\{/);
@@ -47,15 +47,15 @@ test('plan filter behavior and safe detail focus restoration are preserved', () 
     assert.match(card, /plan\.code/);
     assert.match(card, /plan\.horizon/);
     assert.match(card, /aria-expanded=\{selected\}/);
-    assert.match(plans, /document\.body\.style\.overflow = 'hidden'/);
-    assert.match(plans, /event\.key === 'Escape'/);
-    assert.match(plans, /event\.key !== 'Tab'/);
+    const nativeDialog = readFileSync(new URL('../../resources/js/components/ui/Dialog.tsx', import.meta.url), 'utf8');
+    assert.match(nativeDialog, /document\.body\.style\.overflow = 'hidden'/);
+    assert.match(nativeDialog, /showModal\(\)/);
     assert.match(plans, /requestAnimationFrame\(\(\) => document\.getElementById/);
-    assert.match(plans, /role="dialog"/);
+    assert.match(plans, /<PlanDossierPresentation/);
     assert.match(plans, /records shown here are not validated live municipal approvals/i);
 });
 
-test('PPA filter predicates and static reference-data boundaries stay unchanged', () => {
+test('PPA filter predicates and server-authorized planning boundaries stay intact', () => {
     assert.match(ppas, /ppaRecords\.filter/);
     for (const key of ['sector', 'office', 'year', 'plan', 'fundingSource', 'status']) {
         assert.match(ppas, new RegExp(`filters\\.${key}`));
@@ -64,7 +64,7 @@ test('PPA filter predicates and static reference-data boundaries stay unchanged'
     assert.match(ppaFilters, /min-h-11/);
     assert.match(ppas, /no completion percentage is recorded for PPAs/);
     assert.match(ppas, /do not represent verified live project progress/);
-    assert.doesNotMatch(ppas + detail + register, /router\.post|fetch\(.*method:\s*'POST'|onClick=\{.*createPPA/i);
+    assert.doesNotMatch(ppas + detail + register, /localStorage\.|fetch\(.*method:\s*'POST'|onClick=\{.*createPPA/i);
 });
 
 test('PPA register and detail are responsive, keyboard reachable and preserve selection', () => {
@@ -76,8 +76,8 @@ test('PPA register and detail are responsive, keyboard reachable and preserve se
     assert.match(register, /aria-selected=\{selectedId === record\.id\}/);
     assert.match(register, /aria-expanded=\{selectedId === record\.id\}/);
     assert.match(detail, /selected-ppa-detail/);
-    assert.match(detail, /panelRef\.current\?\.focus\(\)/);
-    assert.match(detail, /event\.key === 'Escape'/);
+    assert.match(detail, /<PlanDossierPresentation/);
+    assert.match(detail, /onClose=\{onClose\}/);
     assert.match(ppas, /dataset\.ppaTrigger === id/);
     assert.match(ppas, /trigger\?\.focus\(\)/);
     assert.match(css, /\.ot-r6-ppa-layout--selected/);

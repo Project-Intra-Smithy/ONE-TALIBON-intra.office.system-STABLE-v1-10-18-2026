@@ -52,11 +52,11 @@ export default function RelatedWorkPanel({ items, title = 'Related work' }: Prop
             <div className="min-w-0">
                 <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
                     <div className="truncate text-xs font-semibold text-slate-900 group-hover:text-blue-800 dark:text-slate-100 dark:group-hover:text-blue-300">{item.label}</div>
-                    {item.meta ? <div className="shrink-0 text-[9px] font-bold uppercase tracking-wide text-slate-400">{item.meta}</div> : null}
+                    {item.meta ? <div className="shrink-0 text-[9px] font-bold uppercase tracking-wide text-[var(--ink-secondary)]">{item.meta}</div> : null}
                 </div>
-                <div className={`mt-0.5 text-[11px] text-slate-500 dark:text-slate-400 ${compact ? 'line-clamp-1' : 'line-clamp-2 leading-4'}`}>{item.detail}</div>
+                <div className={`mt-0.5 text-[11px] text-slate-500 dark:text-[var(--ink-secondary)] ${compact ? 'line-clamp-1' : 'line-clamp-2 leading-4'}`}>{item.detail}</div>
             </div>
-            <ArrowUpRight size={14} className="mt-0.5 shrink-0 text-slate-400 group-hover:text-blue-700 dark:group-hover:text-blue-300" aria-hidden="true" />
+            <ArrowUpRight size={14} className="mt-0.5 shrink-0 text-[var(--ink-secondary)] group-hover:text-blue-700 dark:group-hover:text-blue-300" aria-hidden="true" />
         </Link>
     );
 
@@ -66,20 +66,20 @@ export default function RelatedWorkPanel({ items, title = 'Related work' }: Prop
                 <Layers3 size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" />
                 <div className="min-w-0">
                     <h2 id="related-work-title" className="text-sm font-bold text-slate-950 dark:text-slate-100">{title}</h2>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Nearby authorized work and the shortest route back to your queue.</p>
+                    <p className="text-[11px] text-slate-500 dark:text-[var(--ink-secondary)]">Nearby authorized work and the shortest route back to your queue.</p>
                 </div>
             </div>
 
             {nearby.length > 0 ? (
                 <>
-                    <div className="bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:bg-slate-900/40 dark:text-slate-400">Nearby records</div>
+                    <div className="bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:bg-slate-900/40 dark:text-[var(--ink-secondary)]">Nearby records</div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">{nearby.map((item) => renderItem(item, false, true))}</div>
                 </>
             ) : null}
 
             {shortcuts.length > 0 ? (
                 <>
-                    {nearby.length > 0 ? <div className="border-y border-slate-100 bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">Navigation</div> : null}
+                    {nearby.length > 0 ? <div className="border-y border-slate-100 bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-[var(--ink-secondary)]">Navigation</div> : null}
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">{shortcuts.map((item) => renderItem(item, nearby.length > 0))}</div>
                 </>
             ) : null}

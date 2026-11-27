@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\Custody\WorkRequestN03CloseService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -13,8 +16,8 @@ final class TransactionEvidenceService
     public function __construct(
         private readonly TransactionWorkflowService $workflow,
         private readonly DocumentAttachmentService $attachments,
-    ) {
-    }
+        private readonly WorkRequestN03CloseService $n03Close,
+    ) {}
 
     /** @param array<string, mixed> $data @param array<int, \Illuminate\Http\UploadedFile> $files */
     public function create(User $actor, array $data, array $files): WorkflowTransaction
@@ -28,13 +31,7 @@ final class TransactionEvidenceService
 
         try {
             return DB::transaction(function () use ($actor, $data, $files, &$attached): WorkflowTransaction {
-                $transaction = $this->workflow->create($actor, $data);
-                $event = TransactionEvent::query()
-                    ->where('transaction_id', $transaction->id)
-                    ->where('actor_user_id', $actor->id)
-                    ->where('action', 'submitted')
-                    ->orderByDesc('id')
-                    ->firstOrFail();
+                ['transaction' => $transaction, 'event' => $event] = $this->workflow->createWithEvent($actor, $data);
 
                 $attached = $this->attachments->attach($actor, $files, [
                     ['model' => $transaction, 'relationship' => 'supporting_document'],
@@ -49,7 +46,7 @@ final class TransactionEvidenceService
         }
     }
 
-    /** @param array<int, \Illuminate\Http\UploadedFile> $files */
+    /** @param array<int, UploadedFile> $files */
     public function transition(
         User $actor,
         WorkflowTransaction $transaction,
@@ -59,6 +56,12 @@ final class TransactionEvidenceService
         ?string $remarks,
         array $files,
     ): WorkflowTransaction {
+        // Closing a Work Request is exclusively N03-backed, regardless of
+        // whether the user uploads supporting evidence with the action.
+        if ($action === 'close') {
+            return $this->n03Close->close($actor, $transaction, $remarks, $files);
+        }
+
         if ($files === []) {
             return $this->workflow->transition(
                 $actor,
@@ -84,7 +87,7 @@ final class TransactionEvidenceService
                 $files,
                 &$attached,
             ): WorkflowTransaction {
-                $updated = $this->workflow->transition(
+                ['transaction' => $updated, 'event' => $event] = $this->workflow->transitionWithEvent(
                     $actor,
                     $transaction,
                     $action,
@@ -92,13 +95,6 @@ final class TransactionEvidenceService
                     $assignedEmployeeId,
                     $remarks,
                 );
-
-                $event = TransactionEvent::query()
-                    ->where('transaction_id', $updated->id)
-                    ->where('actor_user_id', $actor->id)
-                    ->where('action', $action)
-                    ->orderByDesc('id')
-                    ->firstOrFail();
 
                 $attached = $this->attachments->attach($actor, $files, [[
                     'model' => $event,
