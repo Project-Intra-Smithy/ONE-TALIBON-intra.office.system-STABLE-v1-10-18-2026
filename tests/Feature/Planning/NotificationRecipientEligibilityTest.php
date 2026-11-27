@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Planning;
 
+use App\Models\Department;
 use App\Models\PlatformNotification;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
@@ -64,5 +65,30 @@ final class NotificationRecipientEligibilityTest extends TestCase
         $this->assertNull(app(PlatformNotificationService::class)->notifyUser($this->actor(),
             $this->payload('synthetic-missing-source') + ['source_type' => WorkflowTransaction::class, 'source_id' => 99999999]));
         $this->assertSame(0, PlatformNotification::count());
+    }
+
+    public function test_routing_closure_between_discovery_and_locked_delivery_is_rechecked(): void
+    {
+        $this->seed();
+        $actor = $this->actor();
+        $office = $actor->employee->department;
+        $service = new class extends PlatformNotificationService
+        {
+            public function notifyUser(User $recipient, array $payload): ?PlatformNotification
+            {
+                if (isset($payload['department_id'])) {
+                    Department::query()->whereKey($payload['department_id'])->update(['is_routable' => false]);
+                }
+
+                return parent::notifyUser($recipient, $payload);
+            }
+        };
+        $this->assertTrue((bool) $office->is_routable);
+        $this->assertSame(0, $service->notifyDepartment($office, $this->payload('synthetic-routing-changed')));
+        $this->assertFalse((bool) $office->fresh()->is_routable);
+        $this->assertSame(0, PlatformNotification::count());
+        $this->assertNull(app(PlatformNotificationService::class)->notifyUser($actor,
+            $this->payload('synthetic-office-bound') + ['department_id' => $office->id]));
+        $this->assertNotNull(app(PlatformNotificationService::class)->notifyUser($actor, $this->payload('synthetic-personal')));
     }
 }

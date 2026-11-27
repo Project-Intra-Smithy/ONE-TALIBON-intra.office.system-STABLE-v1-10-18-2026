@@ -246,4 +246,75 @@ final class PlanningCompletionTest extends TestCase
         $this->assertNull($sample->fresh()->adoption_reference);
         $this->assertSame($before, AuditLog::count());
     }
+
+    public function test_historical_foreign_or_unknown_custody_cannot_be_claimed_through_an_authorized_parent(): void
+    {
+        $this->seed();
+        Storage::fake('documents');
+        $this->actingAs($this->actor('engineering'))->post('/ppas', $this->proposal())->assertRedirect();
+        $original = PpaRecord::query()->latest('id')->firstOrFail();
+        $attachment = $this->upload('ppa', $original->ppa_code);
+        DB::table('planning_attachments')->where('id', $attachment->id)->update(['parent_record_id' => null]);
+        $this->actingAs($this->actor('budget'))->post('/ppas', $this->proposal())->assertRedirect();
+        $target = PpaRecord::query()->latest('id')->firstOrFail();
+        $before = AuditLog::count();
+        $this->post('/planning/attachment-custody/'.$attachment->public_id.'/reconcile', [
+            'parent_record_id' => $target->id, 'evidence_reference' => 'Arbitrary but long enough explanation',
+        ])->assertForbidden();
+        $this->assertNull($attachment->fresh()->parent_record_id);
+        $this->assertNull($attachment->fresh()->archived_at);
+        $this->assertDatabaseCount('planning_attachment_reconciliations', 0);
+        $this->assertSame($before, AuditLog::count());
+        $this->get(route('planning.attachments.preview', $attachment))->assertOk();
+        DB::table('planning_attachments')->where('id', $attachment->id)->update(['owner_department_id' => null]);
+        $this->actingAs($this->actor('engineering'))->post('/planning/attachment-custody/'.$attachment->public_id.'/reconcile', [
+            'parent_record_id' => $original->id, 'evidence_reference' => 'Unproven historical ownership evidence',
+        ])->assertForbidden();
+        $this->assertNull($attachment->fresh()->parent_record_id);
+        $this->assertDatabaseCount('planning_attachment_reconciliations', 0);
+    }
+
+    public function test_explicit_and_generated_identifiers_share_permanent_non_reuse_reservations(): void
+    {
+        $this->seed();
+        $this->actingAs($this->actor('engineering'))->post('/ppas', $this->proposal(['ppa_code' => 'PPA-2027-101']))
+            ->assertRedirect()->assertSessionHasNoErrors();
+        $ppa = PpaRecord::query()->firstOrFail();
+        $this->delete('/ppas/'.$ppa->id)->assertRedirect()->assertSessionHasNoErrors();
+        $before = AuditLog::count();
+        $this->post('/ppas', $this->proposal(['ppa_code' => 'PPA-2027-101']))->assertSessionHasErrors('ppa_code');
+        $this->assertSame(0, PpaRecord::count());
+        $this->assertSame($before, AuditLog::count());
+        $this->post('/ppas', $this->proposal())->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('PPA-2027-102', PpaRecord::query()->firstOrFail()->ppa_code);
+        $this->assertDatabaseHas('planning_ppa_identifiers', ['code' => 'PPA-2027-101']);
+        foreach (["UPDATE planning_ppa_identifiers SET code = 'FORGED'", 'DELETE FROM planning_ppa_identifiers', 'TRUNCATE planning_ppa_identifiers'] as $sql) {
+            try {
+                DB::transaction(fn () => DB::statement($sql));
+                $this->fail('Issued identifier reservation was discarded.');
+            } catch (QueryException $exception) {
+                $this->assertSame('P0001', $exception->errorInfo[0]);
+            }
+        }
+    }
+
+    public function test_partial_schedule_updates_validate_against_the_locked_existing_interval(): void
+    {
+        $this->seed();
+        $this->actingAs($this->actor('engineering'))->post('/ppas', $this->proposal([
+            'schedule_start' => '2027-01-01', 'schedule_end' => '2027-12-31', 'barangay' => 'Legacy scalar',
+        ]))->assertRedirect()->assertSessionHasNoErrors();
+        $ppa = PpaRecord::query()->firstOrFail();
+        $before = AuditLog::count();
+        $this->put('/ppas/'.$ppa->id, $this->proposal(['schedule_start' => '2028-01-01']))->assertSessionHasErrors('schedule_end');
+        $this->assertSame('2027-01-01', $ppa->fresh()->schedule_start->format('Y-m-d'));
+        $this->assertSame($before, AuditLog::count());
+        $this->put('/ppas/'.$ppa->id, $this->proposal(['schedule_end' => '2027-11-30']))->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('2027-11-30', $ppa->fresh()->schedule_end->format('Y-m-d'));
+        $this->assertSame('Legacy scalar', $ppa->fresh()->barangay);
+        $this->assertNull($ppa->fresh()->covered_barangays);
+        $this->put('/ppas/'.$ppa->id, $this->proposal(['covered_barangays' => ['Independent coverage']]))->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('Legacy scalar', $ppa->fresh()->barangay);
+        $this->assertSame(['Independent coverage'], $ppa->fresh()->covered_barangays);
+    }
 }

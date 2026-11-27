@@ -17,8 +17,8 @@ export type MapStudioValues = {
     effectivePeriod: string;
     authority: string;
     legendNotes: string;
-    lat: number;
-    lng: number;
+    lat: number|string;
+    lng: number|string;
 };
 export default function MapStudioView({ open, editing, onClose, values, onChange, onSubmit: handleSubmit, categories: PLANNING_MAP_CATEGORY_META, templates: PLANNING_MAP_TEMPLATES, barangays: TALIBON_BARANGAYS, statuses: STATUS_OPTIONS, onFileUpload: handleFileUpload, coordinatePicker, unavailable = [], busy = false, error, referenceFields, studioDescription = 'Register a planning map with its source, coverage, reference coordinates and visibility.' }: {
     open:boolean; editing:{code:string}|null; onClose:()=>void; values:MapStudioValues;
@@ -43,8 +43,8 @@ export default function MapStudioView({ open, editing, onClose, values, onChange
     const setEffectivePeriod=(value:string)=>onChange('effectivePeriod',value);
     const setAuthority=(value:string)=>onChange('authority',value);
     const setLegendNotes=(value:string)=>onChange('legendNotes',value);
-    const setLat=(value:number)=>onChange('lat',value);
-    const setLng=(value:number)=>onChange('lng',value);
+    const setLat=(value:string)=>onChange('lat',value);
+    const setLng=(value:string)=>onChange('lng',value);
     return (<Dialog
             open={open}
             onClose={onClose}
@@ -252,9 +252,9 @@ export default function MapStudioView({ open, editing, onClose, values, onChange
                             <input
                                 id="pm-lat"
                                 type="number"
-                                step="0.0001"
+                                step="0.000001"
                                 disabled={unavailable.includes('lat')} value={lat}
-                                onChange={(e) => setLat(Number(e.target.value))}
+                                onChange={(e) => setLat(e.target.value)}
                                 className="tcds-input font-mono"
                             />
                         </FormField>
@@ -262,9 +262,9 @@ export default function MapStudioView({ open, editing, onClose, values, onChange
                             <input
                                 id="pm-lng"
                                 type="number"
-                                step="0.0001"
+                                step="0.000001"
                                 disabled={unavailable.includes('lng')} value={lng}
-                                onChange={(e) => setLng(Number(e.target.value))}
+                                onChange={(e) => setLng(e.target.value)}
                                 className="tcds-input font-mono"
                             />
                         </FormField>

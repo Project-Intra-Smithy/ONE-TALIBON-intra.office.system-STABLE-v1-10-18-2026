@@ -147,7 +147,7 @@ final class PpaController extends Controller
                 'development_plan_id' => ['nullable', 'integer', 'min:1'],
                 'planning_map_id' => ['nullable', 'integer', 'min:1'],
                 'schedule_start' => ['nullable', 'date_format:Y-m-d'],
-                'schedule_end' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:schedule_start'],
+                'schedule_end' => ['nullable', 'date_format:Y-m-d'],
                 'expected_outputs' => ['nullable', 'string', 'max:10000'],
                 'covered_barangays' => ['nullable', 'array', 'max:100'],
                 'covered_barangays.*' => ['required', 'string', 'max:120', 'distinct'],
@@ -156,6 +156,7 @@ final class PpaController extends Controller
 
             $targetStatus = $data['status'] ?? 'Planned';
             $perms = $this->authorization->authorizePpaMutation($user, targetStatus: $targetStatus);
+            $this->assertSchedule($data);
 
             // If Implementing Office Head (and not MPDC manager), lock responsible_office to their own office and status to Planned/Draft
             $responsibleOffice = $perms['canManagePpas']
@@ -172,6 +173,7 @@ final class PpaController extends Controller
                 : app(PlanningReferences::class)->nextPpa((int) $data['year']);
 
             app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('ppa', [$code], 'ppa_code');
+            app(PlanningReferences::class)->reservePpa($code);
             $ppa = PpaRecord::query()->create([
                 ...$amounts, ...$links,
                 ...array_intersect_key($data, array_flip(['schedule_start', 'schedule_end', 'expected_outputs', 'covered_barangays'])),
@@ -245,7 +247,7 @@ final class PpaController extends Controller
                 'development_plan_id' => ['nullable', 'integer', 'min:1'],
                 'planning_map_id' => ['nullable', 'integer', 'min:1'],
                 'schedule_start' => ['nullable', 'date_format:Y-m-d'],
-                'schedule_end' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:schedule_start'],
+                'schedule_end' => ['nullable', 'date_format:Y-m-d'],
                 'expected_outputs' => ['nullable', 'string', 'max:10000'],
                 'covered_barangays' => ['nullable', 'array', 'max:100'],
                 'covered_barangays.*' => ['required', 'string', 'max:120', 'distinct'],
@@ -253,6 +255,7 @@ final class PpaController extends Controller
             ]);
 
             $perms = $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
+            $this->assertSchedule($data, $ppa);
             $office = $perms['canManagePpas'] && isset($data['responsible_office'])
                 ? $this->authorization->officeIdentity($data['responsible_office'], 'responsible_office')
                 : null;
@@ -464,5 +467,14 @@ final class PpaController extends Controller
         }
 
         return $value;
+    }
+
+    private function assertSchedule(array $data, ?PpaRecord $existing = null): void
+    {
+        $start = array_key_exists('schedule_start', $data) ? $data['schedule_start'] : $existing?->schedule_start?->format('Y-m-d');
+        $end = array_key_exists('schedule_end', $data) ? $data['schedule_end'] : $existing?->schedule_end?->format('Y-m-d');
+        if ($start !== null && $end !== null && $start > $end) {
+            throw ValidationException::withMessages(['schedule_end' => 'The effective schedule end cannot precede its start.']);
+        }
     }
 }

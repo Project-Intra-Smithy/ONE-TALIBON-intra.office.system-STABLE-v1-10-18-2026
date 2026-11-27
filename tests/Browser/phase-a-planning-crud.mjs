@@ -58,6 +58,7 @@ export async function planningCrud(page,context,origin,interactions) {
     form=page.getByRole('dialog');
     await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA ${suffix}`);
     await form.getByLabel('Expected Outputs (Deliverables)').fill('Synthetic measurable deliverable');
+    await form.getByLabel('Legacy barangay reference').fill('Synthetic legacy scalar');
     await form.getByLabel('Related Development Plan Reference').fill('Synthetic test reference');
     await form.getByLabel('Budget / Program Year').selectOption('2035');
     await form.getByLabel('Funding Source').fill('Synthetic external funding source');
@@ -65,6 +66,8 @@ export async function planningCrud(page,context,origin,interactions) {
     const ppa=(await props('/ppas')).ppaRecords.find(record=>record.title===`Synthetic PPA ${suffix}`);
     assert.ok(ppa?.dbId);
     assert.equal(ppa.expectedOutputs,'Synthetic measurable deliverable');
+    assert.equal(ppa.barangay,'Synthetic legacy scalar');
+    assert.equal(ppa.coveredBarangays,null);
     assert.equal(ppa.year,2035);assert.equal(ppa.fundingSource,'Synthetic external funding source');
     await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
     await page.getByRole('button',{name:'Edit PPA',exact:true}).click();
@@ -72,16 +75,25 @@ export async function planningCrud(page,context,origin,interactions) {
     await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA revised ${suffix}`);
     await save('Save changes');
     assert.equal((await props('/ppas')).ppaRecords.find(record=>record.id===ppa.id).title,`Synthetic PPA revised ${suffix}`);
+    let savedPpa=(await props('/ppas')).ppaRecords.find(record=>record.id===ppa.id);
+    assert.equal(savedPpa.barangay,'Synthetic legacy scalar');assert.equal(savedPpa.coveredBarangays,null);
+    await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
+    await page.getByRole('button',{name:'Edit PPA',exact:true}).click();
+    await page.getByRole('dialog').getByLabel('Covered Barangays').fill('Synthetic North, Synthetic South');
+    await save('Save changes');
+    savedPpa=(await props('/ppas')).ppaRecords.find(record=>record.id===ppa.id);
+    assert.equal(savedPpa.barangay,'Synthetic legacy scalar');assert.deepEqual(savedPpa.coveredBarangays,['Synthetic North','Synthetic South']);
     await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
     await remove(ppa.id);
     assert.equal((await props('/ppas')).ppaRecords.some(record=>record.id===ppa.id),false);
-    interactions.push({role:'department_head',label:'real-ppa-create-edit-delete',customYearAndFunding:true});
+    interactions.push({role:'department_head',label:'real-ppa-create-edit-delete',customYearAndFunding:true,independentLegacyAndCoveredBarangays:true});
 
     await page.goto(origin+'/planning-maps');
     await page.getByRole('button',{name:'Register Map Plate',exact:true}).click();
     form=page.getByRole('dialog');
     await form.getByLabel('Map Code').fill(mapCode);
     await form.getByLabel('Map Title').fill('Synthetic reference map');
+    await form.getByLabel('Latitude',{exact:true}).fill('10.123456');
     await form.getByLabel('Linked Plan Reference').fill('Synthetic test reference');
     await form.getByRole('radio',{name:/Draft/}).check();
     await save('Save Planning Map');
@@ -90,10 +102,12 @@ export async function planningCrud(page,context,origin,interactions) {
     form=page.getByRole('dialog');
     await form.getByLabel('Map Title').fill('Synthetic reference map revised');
     await save('Save Map Changes');
-    assert.equal((await props('/planning-maps')).planningMaps.find(record=>record.code===mapCode).title,'Synthetic reference map revised');
+    const savedMap=(await props('/planning-maps')).planningMaps.find(record=>record.code===mapCode);
+    assert.equal(savedMap.title,'Synthetic reference map revised');
+    assert.equal(savedMap.centerLat,10.123456);assert.equal(savedMap.centerLng,null);
     await remove(mapCode);
     assert.equal((await props('/planning-maps')).planningMaps.some(record=>record.code===mapCode),false);
-    interactions.push({role:'department_head',label:'real-map-create-edit-delete'});
+    interactions.push({role:'department_head',label:'real-map-create-edit-delete',independentNullableCoordinates:true});
     await page.getByRole('link',{name:'Staff Scopes',exact:true}).click();
     await page.getByRole('dialog',{name:'Office Planning Staff & Module Scopes',exact:true}).waitFor();
     await page.getByLabel('Active Office Employee').waitFor();

@@ -12,6 +12,7 @@ use App\Models\PpaRecord;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -29,6 +30,8 @@ final class PlanningCustodyController extends Controller
                 'parentCode' => $a->parent_code, 'parentRecordId' => $a->parent_record_id,
                 'archived' => $a->archived_at !== null,
                 'parentExists' => $this->parentExists($a),
+                'canReconcile' => $a->parent_record_id === null && $permissions['canUploadAttachments']
+                    && $a->owner_department_id !== null && (int) $a->owner_department_id === $permissions['actorDepartmentId'],
                 'previewUrl' => $a->archived_at === null ? route('planning.attachments.preview', $a) : null,
             ]),
             'canReconcile' => $permissions['canUploadAttachments'],
@@ -62,8 +65,13 @@ final class PlanningCustodyController extends Controller
 
         return DB::transaction(function () use ($request, $attachment, $data) {
             $auth = app(PlanningAuthorizationService::class);
-            $auth->resolve($request->user());
+            $permissions = $auth->resolve($request->user());
             $attachment = PlanningAttachment::query()->lockForUpdate()->findOrFail($attachment->id);
+            // Destination permission cannot manufacture authority over historical custody.
+            if ($attachment->owner_department_id === null
+                || (int) $attachment->owner_department_id !== $permissions['actorDepartmentId']) {
+                throw new AuthorizationException('Foreign or unknown historical custody requires explicitly authorized originating-office reconciliation.');
+            }
             if ($attachment->parent_record_id !== null) {
                 throw ValidationException::withMessages(['parent_record_id' => 'A recorded parent binding cannot be reassigned. Escalate conflicting evidence for accountable review.']);
             }

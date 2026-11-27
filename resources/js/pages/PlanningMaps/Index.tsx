@@ -86,7 +86,7 @@ export default function PlanningMapsIndex({
     const [busy, setBusy] = useState(false);
     const [submissionError,setSubmissionError]=useState('');
     const [dossier,setDossier]=useState<Record<string,string>>({});
-    const [coordinatesSupplied,setCoordinatesSupplied]=useState(false);
+    const [coordinateInput,setCoordinateInput]=useState({lat:'',lng:''});
     const [coordinates,setCoordinates]=useState({lat:10.1531,lng:124.3268});
 
     const filteredMaps = useMemo(() => {
@@ -112,7 +112,7 @@ export default function PlanningMapsIndex({
         filteredMaps.find((m) => m.code === selectedMapCode) ?? filteredMaps[0] ?? null;
 
     const openMapStudio=(map:ServerPlanningMap|null)=>{
-        setDossier({development_plan_id:String(map?.developmentPlanId??''),plate_attachment_id:String(map?.plateAttachmentId??''),source_attribution:map?.sourceAttribution??'',effective_period:map?.effectivePeriod??'',authority:map?.authority??'',legend_notes:map?.legendNotes??''});setCoordinatesSupplied(map?.centerLat!=null&&map?.centerLng!=null);
+        setDossier({development_plan_id:String(map?.developmentPlanId??''),plate_attachment_id:String(map?.plateAttachmentId??''),source_attribution:map?.sourceAttribution??'',effective_period:map?.effectivePeriod??'',authority:map?.authority??'',legend_notes:map?.legendNotes??''});setCoordinateInput({lat:map?.centerLat==null?'':String(map.centerLat),lng:map?.centerLng==null?'':String(map.centerLng)});
         setEditingMap(map);setSubmissionError('');setMapCode(map?.code??'');setTitle(map?.title??'');setCategory(map?.category??'Macro & Spatial');setPlanCode(map?.planCode??'');setScale(map?.scale==='Not supplied'?'':map?.scale??'');setCrs(map?.crs==='Not supplied'?'':map?.crs??'');setCoverage(map?.coverage==='Not supplied'?'':map?.coverage??'');setStatus(map?.status??'For Review');setSummary(map?.summary??'');setBarangaysInput(map?.barangays.join(', ')??'');setCoordinates({lat:map?.centerLat??10.151,lng:map?.centerLng??124.327});setShowCreateModal(true);
     };
 
@@ -141,8 +141,8 @@ export default function PlanningMapsIndex({
                 status,
                 summary: summary.trim() || undefined,
                 barangays,
-                center_lat: coordinatesSupplied?coordinates.lat:null,
-                center_lng: coordinatesSupplied?coordinates.lng:null,
+                center_lat: coordinateInput.lat===''?null:coordinateInput.lat,
+                center_lng: coordinateInput.lng===''?null:coordinateInput.lng,
             };
         const options = {
                 preserveScroll: true,
@@ -234,7 +234,7 @@ export default function PlanningMapsIndex({
                 fontSize="11"
                 fontWeight="600"
             >
-                {selectedMap.barangays[0] ?? 'Poblacion'} Sector
+                {selectedMap.barangays[0] ? `${selectedMap.barangays[0]} Sector` : 'Coverage not supplied'}
             </text>
             <text
                 x="18"
@@ -422,7 +422,7 @@ export default function PlanningMapsIndex({
                                             <MapPin size={12} /> Covered Barangays
                                         </dt>
                                         <dd className="mt-1 font-semibold text-[var(--municipal-text)]">
-                                            {(selectedMap.barangays ?? []).join(', ') || 'Municipality-wide'}
+                                            {(selectedMap.barangays ?? []).join(', ') || 'Not supplied'}
                                         </dd>
                                     </div>
                                     <div className="rounded-lg bg-[var(--municipal-surface-subtle)] p-2.5 text-xs">
@@ -464,13 +464,13 @@ export default function PlanningMapsIndex({
             </PageFrame>
 
             {expandedPlateCode !== null && expandedPlateCode === selectedMap?.code && selectedMap && <MapPlateDialog key={selectedMap.code} open onClose={()=>setExpandedPlateCode(null)} title={selectedMap.title} description="Provisional schematic. Awaiting official GIS." status={selectedMap.status} category={selectedMap.category} plate={referencePlate('dialog-')} note={selectedMap.summary} metadata={[
-                ['Covered Barangays',selectedMap.barangays.join(', ')],['Authority / Reference','Not supplied by the current server record'],['Scale & Projection',`${selectedMap.scale} · ${selectedMap.crs}`],['Map Pin Coordinates',`${selectedMap.centerLat} · ${selectedMap.centerLng}`],['Legend & Notes','Official symbology is not supplied by the current server record'],['Source Attribution & Last Update',`${selectedMap.provenanceStatus} · ${selectedMap.updatedYear}`]
+                ['Covered Barangays',selectedMap.barangays.join(', ')],['Authority / Reference',selectedMap.authority??'Not supplied'],['Scale & Projection',`${selectedMap.scale} · ${selectedMap.crs}`],['Map Pin Coordinates',`${selectedMap.centerLat} · ${selectedMap.centerLng}`],['Legend & Notes',selectedMap.legendNotes??'Not supplied'],['Source Attribution & Last Update',`${selectedMap.sourceAttribution??'Not supplied'} · ${selectedMap.provenanceStatus} · ${selectedMap.updatedYear??'Not supplied'}`]
             ]} />}
 
             <MapStudioView error={submissionError} open={showCreateModal} editing={editingMap} onClose={()=>setShowCreateModal(false)} busy={busy}
-                values={{code:mapCode,title,category,status,description:summary,imageUrl:'',sourceAttribution:dossier.source_attribution??'',barangaysText:barangaysInput,scale,projection:crs,effectivePeriod:dossier.effective_period??'',authority:dossier.authority??'',legendNotes:dossier.legend_notes??'',lat:coordinates.lat,lng:coordinates.lng}}
+                values={{code:mapCode,title,category,status,description:summary,imageUrl:'',sourceAttribution:dossier.source_attribution??'',barangaysText:barangaysInput,scale,projection:crs,effectivePeriod:dossier.effective_period??'',authority:dossier.authority??'',legendNotes:dossier.legend_notes??'',lat:coordinateInput.lat,lng:coordinateInput.lng}}
                 onChange={(field,value)=>{
-                    if(field==='lat'||field==='lng'){setCoordinatesSupplied(true);setCoordinates(coords=>({...coords,[field]:Number(value)}));return;}
+                    if(field==='lat'||field==='lng'){setCoordinateInput(coords=>({...coords,[field]:String(value)}));if(String(value)!=='')setCoordinates(coords=>({...coords,[field]:Number(value)}));return;}
                     const keys:Record<string,string>={sourceAttribution:'source_attribution',effectivePeriod:'effective_period',authority:'authority',legendNotes:'legend_notes'};if(keys[field]){setDossier(d=>({...d,[keys[field]]:String(value)}));return;}
                     const setters:Record<string,(value:string)=>void>={code:setMapCode,title:setTitle,category:setCategory,status:setStatus,description:setSummary,barangaysText:setBarangaysInput,scale:setScale,projection:setCrs};
                     setters[field]?.(String(value));
@@ -478,7 +478,7 @@ export default function PlanningMapsIndex({
                 onSubmit={handleCreateMap} categories={Object.fromEntries(categories.filter(category=>category!=='All').map(category=>[category,{label:category}]))}
                 templates={[]} barangays={[]} statuses={['Draft','For Review',...(planningPermissions?.canPublishOrArchive?['Published','Archived']:[])].map(value=>({value,label:value,description:value==='Published'?'Visible according to server authorization':'Provisional registry record'}))}
                 onFileUpload={()=>{}} unavailable={[...(editingMap?['code' as const]:[]),'imageUrl']}
-                coordinatePicker={<InteractiveReferenceMap pins={[]} pickMode pickedCoords={coordinates} onPickCoords={value=>{setCoordinatesSupplied(true);setCoordinates(value);}} ariaLabel="Click to pick map pin coordinates in Talibon" heightClass="h-52" />}
+                coordinatePicker={<InteractiveReferenceMap pins={[]} pickMode pickedCoords={coordinateInput.lat!==''&&coordinateInput.lng!==''?coordinates:undefined} onPickCoords={value=>{setCoordinates(value);setCoordinateInput({lat:String(value.lat),lng:String(value.lng)});}} ariaLabel="Click to pick map pin coordinates in Talibon" heightClass="h-52" />}
                 referenceFields={<div className="grid gap-3 sm:grid-cols-2"><label className="text-xs font-semibold">Verified development plan<select className="tcds-input" value={dossier.development_plan_id??''} onChange={e=>setDossier(d=>({...d,development_plan_id:e.target.value}))}><option value="">Not linked</option>{planOptions.map(p=><option key={p.id} value={p.id}>{p.code}</option>)}</select></label>{editingMap&&<label className="text-xs font-semibold">Private cartographic plate<select className="tcds-input" value={dossier.plate_attachment_id??''} onChange={e=>setDossier(d=>({...d,plate_attachment_id:e.target.value}))}><option value="">Not supplied</option>{attachments.filter(a=>a.parentType==='map'&&a.parentRecordId===editingMap.dbId&&a.category==='cartographic_plate').map(a=><option key={a.publicId} value={a.attachmentId}>{a.title}</option>)}</select></label>}<label className="text-xs font-semibold">Linked Plan Reference<input required={!dossier.development_plan_id} value={planCode} onChange={event=>setPlanCode(event.target.value)} className="tcds-input mt-1" /></label><label className="text-xs font-semibold">Coverage Scope<input value={coverage} onChange={event=>setCoverage(event.target.value)} className="tcds-input mt-1" /></label></div>}
             />
         </AppLayout>

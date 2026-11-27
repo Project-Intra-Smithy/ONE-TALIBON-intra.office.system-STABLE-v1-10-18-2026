@@ -27,8 +27,12 @@ class PlatformNotificationService
             return null;
         }
         $recipient->load('employee.department');
-        if (isset($payload['department_id']) && (int) $recipient->employee?->department_id !== (int) $payload['department_id']) {
-            return null;
+        if (isset($payload['department_id'])) {
+            // The canonical identity lock holds this office row through delivery.
+            $office = $recipient->employee?->department;
+            if (! $office || (int) $office->id !== (int) $payload['department_id'] || ! $office->is_active || ! $office->is_routable) {
+                return null;
+            }
         }
         if (($payload['source_type'] ?? null) === WorkflowTransaction::class) {
             $source = WorkflowTransaction::query()->lockForUpdate()->find($payload['source_id'] ?? null);

@@ -26,10 +26,23 @@ final class PlanningReferences
             $number++;
             $code = sprintf('PPA-%d-%03d', $year, $number);
         } while (PpaRecord::query()->where('ppa_code', $code)->exists()
+            || DB::table('planning_ppa_identifiers')->where('code', $code)->exists()
             || PlanningAttachment::query()->where('parent_type', 'ppa')->where('parent_code', $code)->exists());
         DB::table('planning_reference_counters')->where('year', $year)->update(['last_number' => $number]);
 
         return $code;
+    }
+
+    public function reservePpa(string $code): void
+    {
+        if (DB::transactionLevel() < 1) {
+            throw new \LogicException('Identifier reservation requires a transaction.');
+        }
+        DB::select('SELECT pg_advisory_xact_lock(?)', [741002]);
+        if (DB::table('planning_ppa_identifiers')->where('code', $code)->exists()) {
+            throw ValidationException::withMessages(['ppa_code' => 'This Planning identifier has already been issued or retained and cannot be reused.']);
+        }
+        DB::table('planning_ppa_identifiers')->insert(['code' => $code, 'observation_source' => 'new_record', 'observed_at' => now()]);
     }
 
     public function links(array $data): array
