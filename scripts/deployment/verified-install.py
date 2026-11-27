@@ -108,6 +108,7 @@ def main():
     ap.add_argument('--target', type=Path, required=True)
     ap.add_argument('--credentials', type=Path, required=True)
     ap.add_argument('--php', required=True)
+    ap.add_argument('--ini', type=Path, help='Private, independently controlled provisioning-only PHP configuration')
     ap.add_argument('--verify-only', action='store_true')
     args = ap.parse_args()
     manifest = verify(args.package, args.manifest, args.sha256)
@@ -122,8 +123,20 @@ def main():
     env = dict(os.environ)
     if any(env.get(name) for name in ['PHPRC','PHP_INI_SCAN_DIR','PHP_VALUE','PHP_ADMIN_VALUE','LD_PRELOAD','LD_AUDIT','LD_LIBRARY_PATH','DYLD_INSERT_LIBRARIES']):
         refuse('Unsupported runtime configuration override')
+    php_command=[args.php]
+    if args.ini:
+        secure_path(args.ini, True)
+        secure_path(args.ini.parent, True)
+        if args.ini.resolve().is_relative_to(args.package.resolve()):
+            refuse('Runtime configuration must be outside the package')
+        php_command += ['-c',str(args.ini)]
+        scan_guard=tempfile.TemporaryDirectory(prefix='ot-empty-php-scan-',dir=args.target.parent)
+        secure_path(scan_guard.name, True)
+        env['PHP_INI_SCAN_DIR']=scan_guard.name
     probe_env={k:v for k,v in env.items() if k.upper() in ['PATH','SYSTEMROOT','WINDIR','HOME','USERPROFILE','TEMP','TMP']}
-    probe=json.loads(subprocess.check_output([args.php,'-r',"echo json_encode(['prepend'=>ini_get('auto_prepend_file'),'append'=>ini_get('auto_append_file'),'preload'=>ini_get('opcache.preload'),'ffi_preload'=>ini_get('ffi.preload'),'ini'=>php_ini_loaded_file(),'scanned'=>php_ini_scanned_files(),'extensions'=>get_loaded_extensions()]);"],env=probe_env,text=True))
+    if args.ini:
+        probe_env['PHP_INI_SCAN_DIR']=scan_guard.name
+    probe=json.loads(subprocess.check_output([*php_command,'-r',"echo json_encode(['prepend'=>ini_get('auto_prepend_file'),'append'=>ini_get('auto_append_file'),'preload'=>ini_get('opcache.preload'),'ffi_preload'=>ini_get('ffi.preload'),'ini'=>php_ini_loaded_file(),'scanned'=>php_ini_scanned_files(),'extensions'=>get_loaded_extensions()]);"],env=probe_env,text=True))
     if any(probe.get(k) for k in ['prepend','append','preload','ffi_preload']):
         refuse('Unsupported PHP startup instrumentation')
     allowed_extensions={'core','date','libxml','openssl','pcre','zlib','filter','hash','json','pcntl','random','reflection','spl','session','standard','sodium','pdo','xml','calendar','ctype','curl','dom','mbstring','fileinfo','ftp','gd','gettext','iconv','intl','exif','mysqli','pdo_mysql','pdo_pgsql','pgsql','pdo_sqlite','phar','posix','readline','shmop','simplexml','sockets','sqlite3','sysvmsg','sysvsem','sysvshm','tokenizer','xmlreader','xmlwriter','xsl','zip','bcmath','com_dotnet','mysqlnd','ffi','bz2','dba','gmp','ldap','odbc','pdo_dblib','pdo_odbc','pspell','snmp','soap','tidy','enchant','zend opcache'}
@@ -166,7 +179,7 @@ def main():
         for name in ['framework/cache','framework/sessions','framework/views','logs','app/private']:
             (root/'storage'/name).mkdir(parents=True,exist_ok=True)
         env['LOG_CHANNEL']='stderr'
-        result = subprocess.run([args.php,'-d','opcache.enable_cli=0',str(root/'bootstrap.php'),str(root/'attestation.json'),str(args.package.resolve()),str(root/'storage'),str(args.target.resolve()),str(args.credentials.resolve())],env=env,cwd=args.package)
+        result = subprocess.run([*php_command,'-d','opcache.enable_cli=0',str(root/'bootstrap.php'),str(root/'attestation.json'),str(args.package.resolve()),str(root/'storage'),str(args.target.resolve()),str(args.credentials.resolve())],env=env,cwd=args.package)
         if result.returncode:
             raise SystemExit(result.returncode)
 

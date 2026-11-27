@@ -70,6 +70,20 @@ if not args.record_contract:
     app_cwd = package
     launcher = build/'verified-install.py'
     manifest_digest = build_receipt['package_manifest_sha256']
+    builtin={x.lower() for x in json.loads(run([php,'-n','-r','echo json_encode(get_loaded_extensions());'],os.environ).stdout)}
+    extension_dir=Path(run([php,'-r',"echo ini_get('extension_dir');"],os.environ).stdout.strip())
+    if not extension_dir.is_absolute():
+        extension_dir=Path(php).parent/extension_dir
+    provisioning_ini=build/'provision.ini'
+    ini_lines=['display_errors=stderr','log_errors=Off','memory_limit=512M']
+    for name in ['PDO','bcmath','ctype','curl','dom','fileinfo','intl','mbstring','openssl','pdo_pgsql','pgsql','session','tokenizer','xml','xmlreader','xmlwriter','zip']:
+        if name.lower() not in builtin:
+            library=extension_dir/(('php_'+name.lower()+'.dll') if os.name=='nt' else name.lower()+'.so')
+            if not library.is_file():
+                raise RuntimeError('Missing supported stock provisioning extension: '+name)
+            ini_lines.append('extension="'+library.as_posix()+'"')
+    provisioning_ini.write_text('\n'.join(ini_lines)+'\n',encoding='utf-8')
+    provisioning_ini.chmod(0o600)
 
 for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('PG', 'DB_', 'APP_', 'N03_', 'LEGACY_CUSTODY_', 'KIRION_'))}
@@ -159,7 +173,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         def invocation(target_file=manifest_file, credential_file=credentials_file, pin=manifest_digest, package_path=package):
             return [sys.executable,'-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
                     '--package',str(package_path),'--manifest',str(build/'package-manifest.json'),'--sha256',pin,
-                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php]
+                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini)]
 
         def install(manifest, expected=0, extra_env=None):
             manifest_file.write_text(json.dumps(manifest))
