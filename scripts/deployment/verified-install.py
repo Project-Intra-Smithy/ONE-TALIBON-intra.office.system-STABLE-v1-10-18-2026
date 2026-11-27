@@ -27,8 +27,8 @@ def secure_path(path, secret=False):
     if path.is_symlink() or not path.exists() or (os.name == 'nt' and path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT):
         refuse('Missing or symbolic deployment input')
     if os.name != 'nt':
-        stat = path.stat()
-        if stat.st_uid not in (0, os.geteuid()) or stat.st_mode & (0o077 if secret else 0o022):
+        metadata = path.stat()
+        if metadata.st_uid not in (0, os.geteuid()) or metadata.st_mode & (0o077 if secret else 0o022):
             refuse('Unsafe deployment ownership or permissions')
         return
     # Inspect native SIDs/DACLs, not localized icacls strings or a documentation-only promise.
@@ -196,5 +196,5 @@ if __name__ == '__main__':
         main()
     except Exception as exc:
         # No secret values, PHP/SQL diagnostics, source content or verifier material in errors.
-        print('Verified persistent launch refused.'+((' '+str(exc)) if type(exc) is RuntimeError else ''),file=sys.stderr)
+        print('Verified persistent launch refused. ['+type(exc).__name__+']'+((' '+str(exc)) if type(exc) is RuntimeError else ''),file=sys.stderr)
         raise SystemExit(1)

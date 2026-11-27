@@ -245,6 +245,8 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         def metadata_fingerprint():
             return sql("SELECT md5(concat_ws('|',(SELECT string_agg(row_to_json(c)::text,',' ORDER BY c.oid) FROM pg_class c),(SELECT string_agg(row_to_json(n)::text,',' ORDER BY n.oid) FROM pg_namespace n),(SELECT string_agg(row_to_json(a)::text,',' ORDER BY a.attrelid,a.attnum) FROM pg_attribute a),(SELECT string_agg(row_to_json(p)::text,',' ORDER BY p.oid) FROM pg_proc p),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_default_acl d),(SELECT string_agg(row_to_json(m)::text,',' ORDER BY m.roleid,m.member) FROM pg_auth_members m),(SELECT string_agg(row_to_json(r)::text,',' ORDER BY r.oid) FROM pg_roles r),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_database d)))").stdout
 
+        catalog_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo hash('sha256',json_encode(app(App\\Deployment\\SecurityCatalog::class)->snapshot('postgres')));"
+        canonical_fingerprint=run([php],env,input=catalog_probe).stdout
         drift_cases=[
             ('reader_delete','GRANT DELETE ON transactions TO n03_reader','REVOKE DELETE ON transactions FROM n03_reader'),
             ('column_grant','GRANT UPDATE(name) ON users TO n03_reader','REVOKE UPDATE(name) ON users FROM n03_reader'),
@@ -259,8 +261,8 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             ('migrator_extra_path','GRANT pg_read_all_data TO kirion_g1b_migrator WITH INHERIT FALSE, SET TRUE','REVOKE pg_read_all_data FROM kirion_g1b_migrator'),
             ('migrator_admin_option','GRANT kirion_g1b_owner TO kirion_g1b_migrator WITH ADMIN TRUE','GRANT kirion_g1b_owner TO kirion_g1b_migrator WITH ADMIN FALSE'),
             ('role_attribute','ALTER ROLE n03_reader INHERIT','ALTER ROLE n03_reader NOINHERIT'),
-            ('owner_db','ALTER DATABASE '+db+' OWNER TO n03_reader','ALTER DATABASE '+db+' OWNER TO postgres'),
-            ('owner_schema','ALTER SCHEMA public OWNER TO n03_reader','ALTER SCHEMA public OWNER TO kirion_g1b_owner'),
+            ('owner_db','ALTER DATABASE '+db+' OWNER TO n03_reader','ALTER DATABASE '+db+' OWNER TO postgres; GRANT CONNECT ON DATABASE '+db+' TO n03_reader'),
+            ('owner_schema','ALTER SCHEMA public OWNER TO n03_reader','ALTER SCHEMA public OWNER TO kirion_g1b_owner; GRANT USAGE ON SCHEMA public TO n03_reader'),
             ('routine_owner','ALTER FUNCTION legacy_custody.lock_pending(uuid,bigint,text) OWNER TO n03_reader','ALTER FUNCTION legacy_custody.lock_pending(uuid,bigint,text) OWNER TO kirion_g1b_owner'),
             ('unknown_view','CREATE VIEW public.unapproved_view AS SELECT id FROM users; ALTER VIEW public.unapproved_view OWNER TO n03_reader','DROP VIEW public.unapproved_view'),
             ('unknown_partition','CREATE TABLE public.unapproved_parent(id int) PARTITION BY RANGE(id); CREATE TABLE public.unapproved_child PARTITION OF public.unapproved_parent FOR VALUES FROM (0) TO (10)','DROP TABLE public.unapproved_parent'),
@@ -282,6 +284,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             check(mode+'_rejects_'+name,install(target,1).returncode==1)
             check(mode+'_drift_rollback_'+name,metadata_fingerprint()==drift_before)
             sql(undo)
+            check(mode+'_fixture_cleanup_'+name,run([php],env,input=catalog_probe).stdout==canonical_fingerprint)
         # Even an externally declared matching arbitrary previous SHA cannot bless an unqualified lineage.
         sql("UPDATE deployment_control.installations SET source_sha='"+'f'*40+"'")
         forged=dict(target,previous_installation=dict(target['previous_installation'],source_sha='f'*40))
