@@ -80,6 +80,12 @@ final class SecurityCatalog
         // Only the verified offline administrator identity varies between installations.
         $out = json_decode(str_replace(json_encode($bootstrap), '"@bootstrap"', json_encode($out, JSON_THROW_ON_ERROR)), true, 128, JSON_THROW_ON_ERROR);
         foreach ($out as &$rows) {
+            foreach ($rows as &$row) {
+                if (isset($row['acl'])) {
+                    usort($row['acl'], static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+                }
+            }
+            unset($row);
             usort($rows, static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
         }
 
