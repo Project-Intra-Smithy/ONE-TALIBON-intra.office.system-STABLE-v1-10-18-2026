@@ -12,6 +12,7 @@ use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningSuiteInitializer;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -95,9 +96,15 @@ final class PlanningIntegrityTest extends TestCase
     public function test_plan_code_and_key_collision_fails_closed_for_upload_and_creation(): void
     {
         $this->seed();
+        app(PlanningSuiteInitializer::class)->seedReferenceSamples(true);
         $head = $this->actor('planning@talibon.demo');
         $plans = DevelopmentPlan::query()->limit(2)->get();
         $this->assertCount(2, $plans);
+        $this->actingAs($head)->post('/development-plans', [
+            'code' => $plans[0]->plan_key, 'title' => 'Alias replacement', 'horizon' => 'Annual',
+            'lead_office' => $head->employee->department->name,
+            'coverage_start' => 2027, 'coverage_end' => 2027, 'status' => 'Draft',
+        ])->assertSessionHasErrors('code');
         $plans[1]->update(['code' => $plans[0]->plan_key]);
         $this->actingAs($head);
         $this->expectException(AuthorizationException::class);

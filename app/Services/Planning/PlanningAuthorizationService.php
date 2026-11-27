@@ -376,6 +376,6 @@ final class PlanningAuthorizationService
         $parent = app(PlanningAttachmentCustody::class)->parent($attachment->parent_type, $attachment->parent_code);
         if ($attachment->parent_record_id === null || (int) $parent->getKey() !== $attachment->parent_record_id) {
             throw new AuthorizationException('Historical or mismatched attachment identity requires explicit reconciliation.');
+        }
     }
-}
 }
