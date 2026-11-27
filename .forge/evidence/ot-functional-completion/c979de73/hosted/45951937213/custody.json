@@ -1,0 +1,24 @@
+{
+  "runId": "45951937213",
+  "sha": "c979de739120fff357e6f2bdbd79afe9c67ab402",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 15177417226,
+      "name": "tcds-canonical-c979de739120fff357e6f2bdbd79afe9c67ab402",
+      "bytes": 59354690,
+      "digest": "sha256:04ab099f8c991df8fd8449efd99830b039f44b90ee0c96b8d70a0c11b2fc6172",
+      "githubDigest": "sha256:04ab099f8c991df8fd8449efd99830b039f44b90ee0c96b8d70a0c11b2fc6172",
+      "matched": true
+    },
+    {
+      "id": 15177128575,
+      "name": "tcds-phase-a-c979de739120fff357e6f2bdbd79afe9c67ab402",
+      "bytes": 99026252,
+      "digest": "sha256:9f26485dbe38a6e1b6f9a07e56ac6ff4bc2ab78615a359508ac66023d07a4f44",
+      "githubDigest": "sha256:9f26485dbe38a6e1b6f9a07e56ac6ff4bc2ab78615a359508ac66023d07a4f44",
+      "matched": true
+    }
+  ],
+  "logsDigest": "sha256:f4c2a35875bc34c03829fa048a78108ab2d632243fd7a78717e468113c401714"
+}

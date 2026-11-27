@@ -1,0 +1,112 @@
+{
+  "runId": "45951934729",
+  "sha": "c979de739120fff357e6f2bdbd79afe9c67ab402",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 15177615673,
+      "name": "functional-work-request-broker-source-and-pg16-custody",
+      "bytes": 5852,
+      "digest": "sha256:a5cc6558f14fe28cb0165f5ddde535a5c56be42ef9039363fed28135b398ac2f",
+      "githubDigest": "sha256:a5cc6558f14fe28cb0165f5ddde535a5c56be42ef9039363fed28135b398ac2f",
+      "matched": true
+    },
+    {
+      "id": 15177575951,
+      "name": "operationforge-traceability-core-native-pdf",
+      "bytes": 16495,
+      "digest": "sha256:d87bdd82f3755285b22b5e22d331113169f63c4b9f45d343344962a9b4801346",
+      "githubDigest": "sha256:d87bdd82f3755285b22b5e22d331113169f63c4b9f45d343344962a9b4801346",
+      "matched": true
+    },
+    {
+      "id": 15177307548,
+      "name": "functional-work-request-full-source-and-pg16-custody",
+      "bytes": 5906,
+      "digest": "sha256:15e3d752b241648f347a08efdee1ed02ef91831332e46bbe8b18213295e5d020",
+      "githubDigest": "sha256:15e3d752b241648f347a08efdee1ed02ef91831332e46bbe8b18213295e5d020",
+      "matched": true
+    },
+    {
+      "id": 15177286500,
+      "name": "functional-work-request-junit",
+      "bytes": 2896,
+      "digest": "sha256:cbaa58a9a05aa13994ccdf9d622ff94df36703c7ab25b86df97e024d0ece2943",
+      "githubDigest": "sha256:cbaa58a9a05aa13994ccdf9d622ff94df36703c7ab25b86df97e024d0ece2943",
+      "matched": true
+    },
+    {
+      "id": 15177142348,
+      "name": "functional-work-request-p0-cross-session-source-and-pg16-custody",
+      "bytes": 5935,
+      "digest": "sha256:22037519ec4dfbf97330738aa06248d55f67c6b6969cd805627407c67c01fdd1",
+      "githubDigest": "sha256:22037519ec4dfbf97330738aa06248d55f67c6b6969cd805627407c67c01fdd1",
+      "matched": true
+    },
+    {
+      "id": 15177127688,
+      "name": "functional-work-request-g2a-roles-source-and-pg16-custody",
+      "bytes": 5915,
+      "digest": "sha256:4fb60fa68c5bf0bdf533be1f4c114fd25596945ebc7abd39170720806f48bd72",
+      "githubDigest": "sha256:4fb60fa68c5bf0bdf533be1f4c114fd25596945ebc7abd39170720806f48bd72",
+      "matched": true
+    },
+    {
+      "id": 15177021938,
+      "name": "functional-work-request-browser-source-and-pg16-custody",
+      "bytes": 5912,
+      "digest": "sha256:b427333388fa1f033b9b9f917ea353951b9e4e3e17cb6f7f3314e4d0e23fff9c",
+      "githubDigest": "sha256:b427333388fa1f033b9b9f917ea353951b9e4e3e17cb6f7f3314e4d0e23fff9c",
+      "matched": true
+    },
+    {
+      "id": 15177006857,
+      "name": "functional-work-request-iam-cross-session-source-and-pg16-custody",
+      "bytes": 5937,
+      "digest": "sha256:ccd42a43d29e385094436f7ac0651ee7a2b9286c67e506436c4f603528d91781",
+      "githubDigest": "sha256:ccd42a43d29e385094436f7ac0651ee7a2b9286c67e506436c4f603528d91781",
+      "matched": true
+    },
+    {
+      "id": 15176938340,
+      "name": "functional-work-request-focused-source-and-pg16-custody",
+      "bytes": 5914,
+      "digest": "sha256:6030c86eb946fd792fb92f30a42b4eac5907cfe220b69ac37c9873518723384e",
+      "githubDigest": "sha256:6030c86eb946fd792fb92f30a42b4eac5907cfe220b69ac37c9873518723384e",
+      "matched": true
+    },
+    {
+      "id": 15176654105,
+      "name": "functional-work-request-task-cross-session-source-and-pg16-custody",
+      "bytes": 5940,
+      "digest": "sha256:91038469004a547b5b84dfe64a08f846317f7319cd5cf97e259c5696b74f6b74",
+      "githubDigest": "sha256:91038469004a547b5b84dfe64a08f846317f7319cd5cf97e259c5696b74f6b74",
+      "matched": true
+    },
+    {
+      "id": 15176639280,
+      "name": "functional-work-request-c01-source-and-pg16-custody",
+      "bytes": 5904,
+      "digest": "sha256:cdf68cd6eb7e983a63927395703d451e3c635e39f962eb3d9aaffaa71e4c52d2",
+      "githubDigest": "sha256:cdf68cd6eb7e983a63927395703d451e3c635e39f962eb3d9aaffaa71e4c52d2",
+      "matched": true
+    },
+    {
+      "id": 15176614364,
+      "name": "functional-work-request-c02-source-and-pg16-custody",
+      "bytes": 5904,
+      "digest": "sha256:293704c1c9d5ded511b1d4d8b57cc512edcad37178806a3a80b7c35e64873db5",
+      "githubDigest": "sha256:293704c1c9d5ded511b1d4d8b57cc512edcad37178806a3a80b7c35e64873db5",
+      "matched": true
+    },
+    {
+      "id": 15176489958,
+      "name": "functional-work-request-roles-source-and-pg16-custody",
+      "bytes": 5909,
+      "digest": "sha256:48e59cebfeb45438eed940efe7f65a5f88b9da757c08465f9424cc34902c9ed9",
+      "githubDigest": "sha256:48e59cebfeb45438eed940efe7f65a5f88b9da757c08465f9424cc34902c9ed9",
+      "matched": true
+    }
+  ],
+  "logsDigest": "sha256:3afb25210c35d1a31e0ee1a3ce3e54946a1e6898bcd2f58afe1a22d262de487f"
+}

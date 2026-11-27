@@ -38,3 +38,17 @@ Release obligations remain explicit: Engineer #7203434407 policy regression qual
 Decision #7203434407 is committed at 6711f8c3 and supersedes historical Planning attachment read-denial expectations. Internal authenticated eligibility and existing appropriate MFA remain mandatory. Ordinary staff have cross-office draft/published/attachment/executive reads without designation. Department Heads manage only their own eligible staff and cannot delegate modules outside their existing authority: MPDC/MPDO all three existing modules; other implementing Heads their existing own-office Draft/Planned PPA proposal authority. Delegated create/edit/remove follows those module/object limits, retaining official/reference retention guards and immutable audit. No new adoption, publication or signing power delegated. Revoked grants retain historical rows and read access. Foreign grants/revokes/updates are denied. Canonical per-record action capabilities and scoped staff roster mirror server enforcement.
 
 Initial local PHP attempts were refused by original test-environment and leased N03 migration guards (zero assertions); no tests were suppressed or guards changed. Exact-source hosted protected PG16 matrix is the full application verification path. Fresh local PG16 cluster at loopback port 55623 is task-owned synthetic-only, never production. Local frontend/type/build receipts remain author evidence until frozen candidate validation.
+
+## Consolidated implementation disposition — 27 November 2026
+
+This disposition supersedes the prospective implementation wording above; historical register remains intact. Exact executable c979de739120fff357e6f2bdbd79afe9c67ab402, draft PR77. [Qualification and complete local evidence](../evidence/ot-functional-completion/c979de73/README.md).
+
+| Remaining contract | Implemented disposition | Remaining external gate |
+| --- | --- | --- |
+| N11 | Exact decimal strings/nulls, transactional allocation and permanent explicit/generated PPA reservations, typed Plan/PPA/Map references, FK retention and observed-only migration seed | Real data preflight, backup/recovery, source acceptance |
+| Historical custody | Paginated orphan/archived discovery; evidence-backed first binding with immutable audit, proven originating-office custody and destination mutation checks | Accountable reconciliation of actual historical records; unknown/foreign custody needs explicit authority |
+| Planning dossier | Chapters/adoption metadata with existing Head authority, schedule/outputs/independent coverage, actual typed relations, private map plate, independent nullable coordinates/provenance | Official values and provenance remain unknown until supplied |
+| N13 | Fresh locked identity/office/routing/source checks for generic notifications; stale recipient exclusion, existing feed reauthorization and pinned N03 preserved | Independent corrective review and Maintainer acceptance |
+| Authorized integration | Existing canonical forms, capabilities and custody navigation wired; actual CRUD and negative regressions | Siris whole-system QA and integration held |
+
+Earlier N01–N10/N12 and Work Request R1 bounded approvals are preserved, not reopened. All authorized source slices are implemented and exact-source author qualification passes14hostedjobs plus clean local canonical96routes/79interactions. Independent Nox successor disposition remains pending due unavailable in-chat browser; no independent PASS or formal closure inferred. No excluded scope activation, main merge, deployment or production database mutation.

@@ -1,0 +1,265 @@
+{
+  "total_count": 13,
+  "artifacts": [
+    {
+      "id": 15177615673,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzYxNTY3Mw==",
+      "name": "functional-work-request-broker-source-and-pg16-custody",
+      "size_in_bytes": 5852,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177615673",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177615673/zip",
+      "expired": false,
+      "digest": "sha256:a5cc6558f14fe28cb0165f5ddde535a5c56be42ef9039363fed28135b398ac2f",
+      "created_at": "2026-11-27T06:28:11Z",
+      "updated_at": "2026-11-27T06:28:11Z",
+      "expires_at": "2026-12-11T06:28:10Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177575951,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzU3NTk1MQ==",
+      "name": "operationforge-traceability-core-native-pdf",
+      "size_in_bytes": 16495,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177575951",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177575951/zip",
+      "expired": false,
+      "digest": "sha256:d87bdd82f3755285b22b5e22d331113169f63c4b9f45d343344962a9b4801346",
+      "created_at": "2026-11-27T06:29:28Z",
+      "updated_at": "2026-11-27T06:29:28Z",
+      "expires_at": "2026-12-04T06:29:26Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177307548,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzMwNzU0OA==",
+      "name": "functional-work-request-full-source-and-pg16-custody",
+      "size_in_bytes": 5906,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177307548",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177307548/zip",
+      "expired": false,
+      "digest": "sha256:15e3d752b241648f347a08efdee1ed02ef91831332e46bbe8b18213295e5d020",
+      "created_at": "2026-11-27T06:30:11Z",
+      "updated_at": "2026-11-27T06:30:11Z",
+      "expires_at": "2026-12-11T06:30:10Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177286500,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzI4NjUwMA==",
+      "name": "functional-work-request-junit",
+      "size_in_bytes": 2896,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177286500",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177286500/zip",
+      "expired": false,
+      "digest": "sha256:cbaa58a9a05aa13994ccdf9d622ff94df36703c7ab25b86df97e024d0ece2943",
+      "created_at": "2026-11-27T06:29:20Z",
+      "updated_at": "2026-11-27T06:29:20Z",
+      "expires_at": "2026-12-11T06:29:19Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177142348,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzE0MjM0OA==",
+      "name": "functional-work-request-p0-cross-session-source-and-pg16-custody",
+      "size_in_bytes": 5935,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177142348",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177142348/zip",
+      "expired": false,
+      "digest": "sha256:22037519ec4dfbf97330738aa06248d55f67c6b6969cd805627407c67c01fdd1",
+      "created_at": "2026-11-27T06:28:12Z",
+      "updated_at": "2026-11-27T06:28:12Z",
+      "expires_at": "2026-12-11T06:28:11Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177127688,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzEyNzY4OA==",
+      "name": "functional-work-request-g2a-roles-source-and-pg16-custody",
+      "size_in_bytes": 5915,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177127688",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177127688/zip",
+      "expired": false,
+      "digest": "sha256:4fb60fa68c5bf0bdf533be1f4c114fd25596945ebc7abd39170720806f48bd72",
+      "created_at": "2026-11-27T06:28:31Z",
+      "updated_at": "2026-11-27T06:28:31Z",
+      "expires_at": "2026-12-11T06:28:30Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177021938,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzAyMTkzOA==",
+      "name": "functional-work-request-browser-source-and-pg16-custody",
+      "size_in_bytes": 5912,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177021938",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177021938/zip",
+      "expired": false,
+      "digest": "sha256:b427333388fa1f033b9b9f917ea353951b9e4e3e17cb6f7f3314e4d0e23fff9c",
+      "created_at": "2026-11-27T06:29:29Z",
+      "updated_at": "2026-11-27T06:29:29Z",
+      "expires_at": "2026-12-11T06:29:28Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15177006857,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NzAwNjg1Nw==",
+      "name": "functional-work-request-iam-cross-session-source-and-pg16-custody",
+      "size_in_bytes": 5937,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177006857",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15177006857/zip",
+      "expired": false,
+      "digest": "sha256:ccd42a43d29e385094436f7ac0651ee7a2b9286c67e506436c4f603528d91781",
+      "created_at": "2026-11-27T06:28:19Z",
+      "updated_at": "2026-11-27T06:28:19Z",
+      "expires_at": "2026-12-11T06:28:17Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15176938340,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NjkzODM0MA==",
+      "name": "functional-work-request-focused-source-and-pg16-custody",
+      "size_in_bytes": 5914,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176938340",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176938340/zip",
+      "expired": false,
+      "digest": "sha256:6030c86eb946fd792fb92f30a42b4eac5907cfe220b69ac37c9873518723384e",
+      "created_at": "2026-11-27T06:30:17Z",
+      "updated_at": "2026-11-27T06:30:17Z",
+      "expires_at": "2026-12-11T06:30:16Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15176654105,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NjY1NDEwNQ==",
+      "name": "functional-work-request-task-cross-session-source-and-pg16-custody",
+      "size_in_bytes": 5940,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176654105",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176654105/zip",
+      "expired": false,
+      "digest": "sha256:91038469004a547b5b84dfe64a08f846317f7319cd5cf97e259c5696b74f6b74",
+      "created_at": "2026-11-27T06:28:12Z",
+      "updated_at": "2026-11-27T06:28:12Z",
+      "expires_at": "2026-12-11T06:28:10Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15176639280,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NjYzOTI4MA==",
+      "name": "functional-work-request-c01-source-and-pg16-custody",
+      "size_in_bytes": 5904,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176639280",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176639280/zip",
+      "expired": false,
+      "digest": "sha256:cdf68cd6eb7e983a63927395703d451e3c635e39f962eb3d9aaffaa71e4c52d2",
+      "created_at": "2026-11-27T06:28:26Z",
+      "updated_at": "2026-11-27T06:28:26Z",
+      "expires_at": "2026-12-11T06:28:24Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15176614364,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NjYxNDM2NA==",
+      "name": "functional-work-request-c02-source-and-pg16-custody",
+      "size_in_bytes": 5904,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176614364",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176614364/zip",
+      "expired": false,
+      "digest": "sha256:293704c1c9d5ded511b1d4d8b57cc512edcad37178806a3a80b7c35e64873db5",
+      "created_at": "2026-11-27T06:28:17Z",
+      "updated_at": "2026-11-27T06:28:17Z",
+      "expires_at": "2026-12-11T06:28:15Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    },
+    {
+      "id": 15176489958,
+      "node_id": "MDg6QXJ0aWZhY3QxNTE3NjQ4OTk1OA==",
+      "name": "functional-work-request-roles-source-and-pg16-custody",
+      "size_in_bytes": 5909,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176489958",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15176489958/zip",
+      "expired": false,
+      "digest": "sha256:48e59cebfeb45438eed940efe7f65a5f88b9da757c08465f9424cc34902c9ed9",
+      "created_at": "2026-11-27T06:28:14Z",
+      "updated_at": "2026-11-27T06:28:14Z",
+      "expires_at": "2026-12-11T06:28:13Z",
+      "workflow_run": {
+        "id": 45951934729,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-functional-completion-r1",
+        "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402"
+      }
+    }
+  ]
+}

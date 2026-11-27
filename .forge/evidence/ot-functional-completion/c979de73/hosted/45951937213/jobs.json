@@ -1,0 +1,309 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 140349575104,
+      "run_id": 45951937213,
+      "workflow_name": "TCDS Phase A presentation evidence",
+      "head_branch": "candidate/ot-functional-completion-r1",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45951937213",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgrXyPwA",
+      "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140349575104",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45951937213/job/140349575104",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T06:27:07Z",
+      "started_at": "2026-11-27T06:27:09Z",
+      "completed_at": "2026-11-27T06:29:36Z",
+      "name": "canonical-runtime",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T06:27:10Z",
+          "completed_at": "2026-11-27T06:27:13Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T06:27:13Z",
+          "completed_at": "2026-11-27T06:27:26Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T06:27:26Z",
+          "completed_at": "2026-11-27T06:27:32Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T06:27:32Z",
+          "completed_at": "2026-11-27T06:27:39Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T06:27:39Z",
+          "completed_at": "2026-11-27T06:27:42Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --no-scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T06:27:42Z",
+          "completed_at": "2026-11-27T06:27:47Z"
+        },
+        {
+          "name": "Run cp .env.example .env",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T06:27:47Z",
+          "completed_at": "2026-11-27T06:27:47Z"
+        },
+        {
+          "name": "Run npm ci --no-audit --no-fund",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T06:27:47Z",
+          "completed_at": "2026-11-27T06:27:49Z"
+        },
+        {
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T06:27:49Z",
+          "completed_at": "2026-11-27T06:28:22Z"
+        },
+        {
+          "name": "Real canonical application on disposable PostgreSQL",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-27T06:28:22Z",
+          "completed_at": "2026-11-27T06:29:27Z"
+        },
+        {
+          "name": "Source consumption and observed route evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-27T06:29:27Z",
+          "completed_at": "2026-11-27T06:29:28Z"
+        },
+        {
+          "name": "Preserve canonical evidence separately",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T06:29:28Z",
+          "completed_at": "2026-11-27T06:29:32Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-11-27T06:29:32Z",
+          "completed_at": "2026-11-27T06:29:32Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-27T06:29:32Z",
+          "completed_at": "2026-11-27T06:29:32Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-27T06:29:32Z",
+          "completed_at": "2026-11-27T06:29:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-27T06:29:34Z",
+          "completed_at": "2026-11-27T06:29:34Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140349575104",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001523,
+      "runner_name": "GitHub Actions 1000001523",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140349575347,
+      "run_id": 45951937213,
+      "workflow_name": "TCDS Phase A presentation evidence",
+      "head_branch": "candidate/ot-functional-completion-r1",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45951937213",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgrXyQsw",
+      "head_sha": "c979de739120fff357e6f2bdbd79afe9c67ab402",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140349575347",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45951937213/job/140349575347",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T06:27:07Z",
+      "started_at": "2026-11-27T06:27:10Z",
+      "completed_at": "2026-11-27T06:33:18Z",
+      "name": "presentation",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T06:27:10Z",
+          "completed_at": "2026-11-27T06:27:11Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T06:27:11Z",
+          "completed_at": "2026-11-27T06:27:14Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T06:27:14Z",
+          "completed_at": "2026-11-27T06:27:20Z"
+        },
+        {
+          "name": "Run npm ci --no-audit --no-fund",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T06:27:20Z",
+          "completed_at": "2026-11-27T06:27:21Z"
+        },
+        {
+          "name": "Run npm run types:check && npm run types:preview",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T06:27:21Z",
+          "completed_at": "2026-11-27T06:27:39Z"
+        },
+        {
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T06:27:39Z",
+          "completed_at": "2026-11-27T06:27:58Z"
+        },
+        {
+          "name": "Run npm run test:contracts && npm run test:ux",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T06:27:58Z",
+          "completed_at": "2026-11-27T06:28:23Z"
+        },
+        {
+          "name": "Run npm run build && npm run build:preview",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T06:28:23Z",
+          "completed_at": "2026-11-27T06:28:25Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T06:28:25Z",
+          "completed_at": "2026-11-27T06:28:27Z"
+        },
+        {
+          "name": "Run npm run test:aj-home-auth",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-27T06:28:27Z",
+          "completed_at": "2026-11-27T06:28:47Z"
+        },
+        {
+          "name": "Browser evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-27T06:28:47Z",
+          "completed_at": "2026-11-27T06:33:12Z"
+        },
+        {
+          "name": "Preserve raw evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T06:33:12Z",
+          "completed_at": "2026-11-27T06:33:16Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-27T06:33:16Z",
+          "completed_at": "2026-11-27T06:33:16Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-27T06:33:16Z",
+          "completed_at": "2026-11-27T06:33:16Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-27T06:33:16Z",
+          "completed_at": "2026-11-27T06:33:16Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140349575347",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001524,
+      "runner_name": "GitHub Actions 1000001524",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
