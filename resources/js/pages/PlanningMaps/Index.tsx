@@ -21,6 +21,7 @@ import type { PlanningPermissions } from '../Plans/Index';
 export type ServerPlanningMap = {
     id: string;
     dbId: number;
+    developmentPlanId?: number|null; plateAttachmentId?: number|null; platePreviewUrl?: string|null; sourceAttribution?: string|null; effectivePeriod?: string|null; authority?: string|null; legendNotes?: string|null;
     canEdit?: boolean;
     canDelete?: boolean;
     canUploadAttachments?: boolean;
@@ -35,8 +36,8 @@ export type ServerPlanningMap = {
     status: string;
     provenanceStatus: string;
     summary: string;
-    centerLat: number;
-    centerLng: number;
+    centerLat: number|null;
+    centerLng: number|null;
     defaultZoom: number;
     barangays: string[];
     relatedPlanCodes: string[];
@@ -44,6 +45,7 @@ export type ServerPlanningMap = {
 };
 
 type Props = {
+    planOptions?: Array<{id:number;code:string;title:string}>;
     planningMaps?: ServerPlanningMap[];
     attachments?: ServerPlanningAttachment[];
     planningPermissions?: PlanningPermissions;
@@ -60,7 +62,7 @@ const categories = [
 
 export default function PlanningMapsIndex({
     planningMaps = [],
-    attachments = [],
+    attachments = [], planOptions = [],
     planningPermissions,
 }: Props) {
     const [hiddenPinCategories,setHiddenPinCategories]=useState<string[]>([]);
@@ -83,6 +85,8 @@ export default function PlanningMapsIndex({
     const [barangaysInput, setBarangaysInput] = useState('Poblacion, San Jose');
     const [busy, setBusy] = useState(false);
     const [submissionError,setSubmissionError]=useState('');
+    const [dossier,setDossier]=useState<Record<string,string>>({});
+    const [coordinatesSupplied,setCoordinatesSupplied]=useState(false);
     const [coordinates,setCoordinates]=useState({lat:10.1531,lng:124.3268});
 
     const filteredMaps = useMemo(() => {
@@ -108,7 +112,8 @@ export default function PlanningMapsIndex({
         filteredMaps.find((m) => m.code === selectedMapCode) ?? filteredMaps[0] ?? null;
 
     const openMapStudio=(map:ServerPlanningMap|null)=>{
-        setEditingMap(map);setSubmissionError('');setMapCode(map?.code??'');setTitle(map?.title??'');setCategory(map?.category??'Macro & Spatial');setPlanCode(map?.planCode??'');setScale(map?.scale??'1:25,000');setCrs(map?.crs??'PRS92 / Luzon 1911');setCoverage(map?.coverage??'');setStatus(map?.status??'For Review');setSummary(map?.summary??'');setBarangaysInput(map?.barangays.join(', ')??'');setCoordinates({lat:map?.centerLat??10.151,lng:map?.centerLng??124.327});setShowCreateModal(true);
+        setDossier({development_plan_id:String(map?.developmentPlanId??''),plate_attachment_id:String(map?.plateAttachmentId??''),source_attribution:map?.sourceAttribution??'',effective_period:map?.effectivePeriod??'',authority:map?.authority??'',legend_notes:map?.legendNotes??''});setCoordinatesSupplied(map?.centerLat!=null&&map?.centerLng!=null);
+        setEditingMap(map);setSubmissionError('');setMapCode(map?.code??'');setTitle(map?.title??'');setCategory(map?.category??'Macro & Spatial');setPlanCode(map?.planCode??'');setScale(map?.scale==='Not supplied'?'':map?.scale??'');setCrs(map?.crs==='Not supplied'?'':map?.crs??'');setCoverage(map?.coverage??'');setStatus(map?.status??'For Review');setSummary(map?.summary??'');setBarangaysInput(map?.barangays.join(', ')??'');setCoordinates({lat:map?.centerLat??10.151,lng:map?.centerLng??124.327});setShowCreateModal(true);
     };
 
     const handleCreateMap = (event: FormEvent<HTMLFormElement>) => {
@@ -123,18 +128,21 @@ export default function PlanningMapsIndex({
             .filter(Boolean);
 
         const data = {
+                development_plan_id: dossier.development_plan_id?Number(dossier.development_plan_id):null,
+                plate_attachment_id: dossier.plate_attachment_id?Number(dossier.plate_attachment_id):null,
+                source_attribution:dossier.source_attribution||null,effective_period:dossier.effective_period||null,authority:dossier.authority||null,legend_notes:dossier.legend_notes||null,
                 map_code: mapCode.trim(),
                 title: title.trim(),
                 category,
                 plan_code: planCode.trim(),
-                scale: scale.trim() || '1:25,000',
-                crs: crs.trim() || 'PRS92 / Luzon 1911',
-                coverage: coverage.trim() || 'Municipality-wide (25 Barangays)',
+                scale: scale.trim() || null,
+                crs: crs.trim() || null,
+                coverage: coverage.trim() || null,
                 status,
                 summary: summary.trim() || undefined,
                 barangays,
-                center_lat: coordinates.lat,
-                center_lng: coordinates.lng,
+                center_lat: coordinatesSupplied?coordinates.lat:null,
+                center_lng: coordinatesSupplied?coordinates.lng:null,
             };
         const options = {
                 preserveScroll: true,
@@ -372,8 +380,8 @@ export default function PlanningMapsIndex({
                                             Talibon Spatial Reference Grid · {selectedMap.crs}
                                         </span>
                                         <span className="font-mono">
-                                            {selectedMap.centerLat.toFixed(4)}° N,{' '}
-                                            {selectedMap.centerLng.toFixed(4)}° E · Scale{' '}
+                                            {selectedMap.centerLat?.toFixed(4)??'Not supplied'}° N,{' '}
+                                            {selectedMap.centerLng?.toFixed(4)??'Not supplied'}° E · Scale{' '}
                                             {selectedMap.scale}
                                         </span>
                                     </div>
@@ -389,9 +397,9 @@ export default function PlanningMapsIndex({
 
                                 <section id="planning-map-explorer" aria-label="Planning map explorer" className="mt-4 grid w-full min-w-0 gap-4 lg:grid-cols-[minmax(0,1.85fr)_minmax(290px,0.85fr)]">
                                     <InteractiveReferenceMap
-                                        pins={filteredMaps.filter(map => !hiddenPinCategories.includes(map.category) && Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
+                                        pins={filteredMaps.filter(map => !hiddenPinCategories.includes(map.category) && Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat??Infinity) <= 90 && Math.abs(map.centerLng??Infinity) <= 180).map(map => ({
                                             id: map.code, code: map.code, title: map.title, category: map.category,
-                                            color: '#176b4a', lat: map.centerLat, lng: map.centerLng,
+                                            color: '#176b4a', lat: map.centerLat!, lng: map.centerLng!,
                                         }))}
                                         selectedPinId={selectedMap.code}
                                         onSelectPin={setSelectedMapCode}
@@ -434,6 +442,7 @@ export default function PlanningMapsIndex({
                                     </div>
                                 </dl>
 
+                                {selectedMap.platePreviewUrl&&<a className="municipal-secondary-button" href={selectedMap.platePreviewUrl} target="_blank" rel="noopener noreferrer">Open private cartographic plate</a>}
                                 <SupportingDocsPanel
                                     parentType="map"
                                     parentCode={selectedMap.code} parentRecordId={selectedMap.dbId}
@@ -459,17 +468,18 @@ export default function PlanningMapsIndex({
             ]} />}
 
             <MapStudioView error={submissionError} open={showCreateModal} editing={editingMap} onClose={()=>setShowCreateModal(false)} busy={busy}
-                values={{code:mapCode,title,category,status,description:summary,imageUrl:'',sourceAttribution:'Plate image upload is unavailable in the current registry contract.',barangaysText:barangaysInput,scale,projection:crs,effectivePeriod:'',authority:'',legendNotes:'',lat:coordinates.lat,lng:coordinates.lng}}
+                values={{code:mapCode,title,category,status,description:summary,imageUrl:'',sourceAttribution:dossier.source_attribution??'',barangaysText:barangaysInput,scale,projection:crs,effectivePeriod:dossier.effective_period??'',authority:dossier.authority??'',legendNotes:dossier.legend_notes??'',lat:coordinates.lat,lng:coordinates.lng}}
                 onChange={(field,value)=>{
-                    if(field==='lat'||field==='lng'){setCoordinates(coords=>({...coords,[field]:Number(value)}));return;}
+                    if(field==='lat'||field==='lng'){setCoordinatesSupplied(true);setCoordinates(coords=>({...coords,[field]:Number(value)}));return;}
+                    const keys:Record<string,string>={sourceAttribution:'source_attribution',effectivePeriod:'effective_period',authority:'authority',legendNotes:'legend_notes'};if(keys[field]){setDossier(d=>({...d,[keys[field]]:String(value)}));return;}
                     const setters:Record<string,(value:string)=>void>={code:setMapCode,title:setTitle,category:setCategory,status:setStatus,description:setSummary,barangaysText:setBarangaysInput,scale:setScale,projection:setCrs};
                     setters[field]?.(String(value));
                 }}
                 onSubmit={handleCreateMap} categories={Object.fromEntries(categories.filter(category=>category!=='All').map(category=>[category,{label:category}]))}
                 templates={[]} barangays={[]} statuses={['Draft','For Review',...(planningPermissions?.canPublishOrArchive?['Published','Archived']:[])].map(value=>({value,label:value,description:value==='Published'?'Visible according to server authorization':'Provisional registry record'}))}
-                onFileUpload={()=>{}} unavailable={[...(editingMap?['code' as const]:[]),'imageUrl','sourceAttribution','effectivePeriod','authority','legendNotes']}
-                coordinatePicker={<InteractiveReferenceMap pins={[]} pickMode pickedCoords={coordinates} onPickCoords={setCoordinates} ariaLabel="Click to pick map pin coordinates in Talibon" heightClass="h-52" />}
-                referenceFields={<div className="grid gap-3 sm:grid-cols-2"><label className="text-xs font-semibold">Linked Plan Reference<input required value={planCode} onChange={event=>setPlanCode(event.target.value)} className="tcds-input mt-1" /></label><label className="text-xs font-semibold">Coverage Scope<input value={coverage} onChange={event=>setCoverage(event.target.value)} className="tcds-input mt-1" /></label></div>}
+                onFileUpload={()=>{}} unavailable={[...(editingMap?['code' as const]:[]),'imageUrl']}
+                coordinatePicker={<InteractiveReferenceMap pins={[]} pickMode pickedCoords={coordinates} onPickCoords={value=>{setCoordinatesSupplied(true);setCoordinates(value);}} ariaLabel="Click to pick map pin coordinates in Talibon" heightClass="h-52" />}
+                referenceFields={<div className="grid gap-3 sm:grid-cols-2"><label className="text-xs font-semibold">Verified development plan<select className="tcds-input" value={dossier.development_plan_id??''} onChange={e=>setDossier(d=>({...d,development_plan_id:e.target.value}))}><option value="">Not linked</option>{planOptions.map(p=><option key={p.id} value={p.id}>{p.code}</option>)}</select></label>{editingMap&&<label className="text-xs font-semibold">Private cartographic plate<select className="tcds-input" value={dossier.plate_attachment_id??''} onChange={e=>setDossier(d=>({...d,plate_attachment_id:e.target.value}))}><option value="">Not supplied</option>{attachments.filter(a=>a.parentType==='map'&&a.parentRecordId===editingMap.dbId&&a.category==='cartographic_plate').map(a=><option key={a.publicId} value={a.attachmentId}>{a.title}</option>)}</select></label>}<label className="text-xs font-semibold">Linked Plan Reference<input required value={planCode} onChange={event=>setPlanCode(event.target.value)} className="tcds-input mt-1" /></label><label className="text-xs font-semibold">Coverage Scope<input value={coverage} onChange={event=>setCoverage(event.target.value)} className="tcds-input mt-1" /></label></div>}
             />
         </AppLayout>
     );

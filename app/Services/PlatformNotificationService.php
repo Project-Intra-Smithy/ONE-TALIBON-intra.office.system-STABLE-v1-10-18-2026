@@ -5,11 +5,38 @@ namespace App\Services;
 use App\Models\Department;
 use App\Models\PlatformNotification;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 
 class PlatformNotificationService
 {
-    public function notifyUser(User $recipient, array $payload): PlatformNotification
+    public function notifyUser(User $recipient, array $payload): ?PlatformNotification
     {
+        return DB::transaction(fn () => $this->notifyLocked($recipient, $payload), attempts: 3);
+    }
+
+    private function notifyLocked(User $recipient, array $payload): ?PlatformNotification
+    {
+        try {
+            $recipient = app(AccountSessionEligibility::class)->lock($recipient);
+        } catch (AuthorizationException) {
+            return null;
+        }
+        if (! $recipient || $recipient->suspended_at !== null) {
+            return null;
+        }
+        $recipient->load('employee.department');
+        if (isset($payload['department_id']) && (int) $recipient->employee?->department_id !== (int) $payload['department_id']) {
+            return null;
+        }
+        if (($payload['source_type'] ?? null) === WorkflowTransaction::class) {
+            $source = WorkflowTransaction::query()->lockForUpdate()->find($payload['source_id'] ?? null);
+            if (! $source || ! $recipient->can('view', $source)) {
+                return null;
+            }
+        }
+
         return PlatformNotification::query()->firstOrCreate(
             [
                 'user_id' => $recipient->id,
@@ -32,22 +59,28 @@ class PlatformNotificationService
 
     public function notifyDepartment(Department $department, array $payload): int
     {
-        if (! $department->is_active || ! $department->is_routable) {
+        $department = Department::query()->find($department->id);
+        if (! $department || ! $department->is_active || ! $department->is_routable) {
             return 0;
         }
 
         $recipients = User::query()
             ->where('is_active', true)
+            ->where('account_status', 'active')
+            ->whereNull('suspended_at')
             ->whereHas('employee', fn ($query) => $query
                 ->where('department_id', $department->id)
-                ->where('employment_status', 'active'))
+                ->where('employment_status', 'active')->whereNull('separation_date'))
             ->with('employee:id,user_id,department_id')
             ->get();
 
+        $delivered = 0;
         foreach ($recipients as $recipient) {
-            $this->notifyUser($recipient, $payload + ['department_id' => $department->id]);
+            if ($this->notifyUser($recipient, [...$payload, 'department_id' => $department->id]) !== null) {
+                $delivered++;
+            }
         }
 
-        return $recipients->count();
+        return $delivered;
     }
 }

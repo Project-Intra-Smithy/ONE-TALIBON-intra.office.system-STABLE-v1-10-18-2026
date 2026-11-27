@@ -1,3 +1,4 @@
+import { planningTotal } from '../../lib/planningMoney';
 import { type FormEvent, type ReactNode, useId } from 'react';
 import { Button, Dialog, FormField } from '../ui';
 type PPAStatus = string;
@@ -27,7 +28,6 @@ export type PPAStudioValues = {
 };
 const FUNDING_SOURCES = ['20% Development Fund', 'General Fund', 'LDRRM Fund', 'GAD Fund', 'Special Education Fund (SEF)', 'Economic Enterprise Fund', 'National / External Grant'];
 const PRIORITIES = ['High', 'Medium', 'Routine'];
-const formatPhpCurrency = (value: number) => new Intl.NumberFormat('en-PH', {style:'currency', currency:'PHP', maximumFractionDigits:0}).format(value);
 export default function PPAStudioView({ open, editing, officeProposalMode, actorOfficeName, onClose, values, onChange, onSubmit: handleSubmit, plans, maps: DEFAULT_PLANNING_MAPS, sectors, offices, statuses: allowedStatuses, unavailable = [], busy = false, error, referenceFields, officeInputMode = false, fundingInputMode = false, years = [2025, 2026, 2027, 2028], lockAipCode = officeProposalMode }: {
     open: boolean; editing: {id:string} | null; officeProposalMode: boolean; actorOfficeName: string; onClose: () => void;
     values: PPAStudioValues; onChange: (field: keyof PPAStudioValues, value: string | number | boolean) => void;
@@ -38,7 +38,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
     const formId = useId();
     const { title, aipRefCode, sector, responsibleOffice, year, linkedPlanId, linkedMapId, fundingSource, status, priority, scheduleStart, scheduleEnd, barangaysInput, expectedOutputs, implementationContext, budgetPs, budgetMooe, budgetCo, ccaAmount, gadAttributed, drrmTagged } = values;
     const ppaOptions = {sectors,offices};
-    const total = [budgetPs,budgetMooe,budgetCo].reduce((sum,value)=>sum+(Number(value)||0),0);
+    const total = planningTotal([budgetPs,budgetMooe,budgetCo]);
     const setTitle = (value: string) => onChange('title',value);
     const setAipRefCode = (value: string) => onChange('aipRefCode',value);
     const setSector = (value: string) => onChange('sector',value);
@@ -79,7 +79,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
             footer={
                 <div className="flex w-full flex-wrap items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-[var(--ink-secondary)]">
-                        Total Allocation: <strong className="text-[var(--ink-primary)]">{formatPhpCurrency(total)}</strong>
+                        Total Allocation: <strong className="text-[var(--ink-primary)]">{total}</strong>
                     </span>
                     <div className="flex gap-2">
                         <Button variant="secondary" size="sm" onClick={onClose}>
@@ -349,10 +349,9 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                     </div>
                 </fieldset>
 
-                <FormField label="Expected Outputs (Deliverables)" htmlFor={`${formId}-outputs`} required>
+                <FormField label="Expected Outputs (Deliverables)" htmlFor={`${formId}-outputs`} optional>
                     <textarea
                         id={`${formId}-outputs`}
-                        required
                         rows={2}
                         disabled={unavailable.includes('expectedOutputs')} value={expectedOutputs}
                         onChange={(e) => setExpectedOutputs(e.target.value)}

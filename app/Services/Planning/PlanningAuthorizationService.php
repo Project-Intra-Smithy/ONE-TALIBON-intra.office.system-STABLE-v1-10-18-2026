@@ -166,6 +166,17 @@ final class PlanningAuthorizationService
             $remove = $edit && in_array($record->status, ['Draft', 'Planned'], true);
         }
 
+        if ($remove) {
+            try {
+                $type = $record instanceof DevelopmentPlan ? 'plan' : ($record instanceof PlanningMap ? 'map' : 'ppa');
+                $identifiers = $record instanceof DevelopmentPlan ? [$record->code, $record->plan_key]
+                    : [$record instanceof PlanningMap ? $record->map_code : $record->ppa_code];
+                app(PlanningAttachmentCustody::class)->assertDeletable($type, $record, $identifiers);
+            } catch (ValidationException) {
+                $remove = false;
+            }
+        }
+
         return ['canEdit' => $edit, 'canUploadAttachments' => $edit,
             'canDelete' => $perms['canDelete'] && $remove && $record->provenance_status !== 'reference_sample'];
     }
@@ -334,7 +345,7 @@ final class PlanningAuthorizationService
             && in_array($attachment->visibility, ['public_portal', 'lgu_internal', 'office_restricted', 'mpdc_executive'], true);
     }
 
-    public function authorizeAttachmentUpload(User $user, string $parentType, string $parentCode, string $visibility): array
+    public function authorizeAttachmentUpload(User $user, string $parentType, string $parentCode, string $visibility, ?int $parentId = null): array
     {
         $perms = $this->mutationPermissions($user);
         if (! $perms['canUploadAttachments']) {
@@ -345,7 +356,7 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('You are not authorized to upload executive-restricted planning attachments.');
         }
 
-        $parent = app(PlanningAttachmentCustody::class)->parent($parentType, $parentCode);
+        $parent = app(PlanningAttachmentCustody::class)->parent($parentType, $parentCode, $parentId);
 
         return match ($parentType) {
             'plan' => $this->authorizePlanMutation($user, existing: $parent),
@@ -372,8 +383,8 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('You are not authorized to remove this planning attachment.');
         }
 
-        $this->authorizeAttachmentUpload($user, $attachment->parent_type, $attachment->parent_code, $attachment->visibility);
-        $parent = app(PlanningAttachmentCustody::class)->parent($attachment->parent_type, $attachment->parent_code);
+        $this->authorizeAttachmentUpload($user, $attachment->parent_type, $attachment->parent_code, $attachment->visibility, $attachment->parent_record_id);
+        $parent = app(PlanningAttachmentCustody::class)->parent($attachment->parent_type, $attachment->parent_code, $attachment->parent_record_id);
         if ($attachment->parent_record_id === null || (int) $parent->getKey() !== $attachment->parent_record_id) {
             throw new AuthorizationException('Historical or mismatched attachment identity requires explicit reconciliation.');
         }

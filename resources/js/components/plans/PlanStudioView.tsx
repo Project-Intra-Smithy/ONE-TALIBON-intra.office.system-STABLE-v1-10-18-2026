@@ -24,7 +24,8 @@ export type PlanStudioValues = {
     requiredAction: string;
     linkedMapIds: string[];
 };
-export default function PlanStudioView({ open, editing, onClose, values, onChange, onSubmit: handleSubmit, maps: DEFAULT_PLANNING_MAPS, horizons: HORIZONS, statuses: EDITABLE_STATUSES, unavailable = [], busy = false, error, coverageBounds }: {
+export default function PlanStudioView({ open, editing, onClose, values, onChange, onSubmit: handleSubmit, maps: DEFAULT_PLANNING_MAPS, horizons: HORIZONS, statuses: EDITABLE_STATUSES, unavailable = [], busy = false, error, coverageBounds, chapterNotes, onChapterNotesChange }: {
+    chapterNotes?: string; onChapterNotesChange?: (value:string)=>void;
     open: boolean; editing: { code: string } | null; onClose: () => void;
     values: PlanStudioValues; onChange: (field: keyof PlanStudioValues, value: string | string[]) => void;
     onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -245,7 +246,7 @@ export default function PlanStudioView({ open, editing, onClose, values, onChang
                         <input
                             id={`${formId}-sec-total`}
                             type="number"
-                            min="1"
+                            min="0"
                             disabled={unavailable.includes('sectionsTotal')} value={sectionsTotal}
                             onChange={(e) => setSectionsTotal(e.target.value)}
                             className="tcds-input font-mono"
@@ -273,6 +274,7 @@ export default function PlanStudioView({ open, editing, onClose, values, onChang
                     </FormField>
                 </div>
 
+                {onChapterNotesChange&&<FormField label="Chapter notes (one per line)" htmlFor={`${formId}-chapters`}><textarea id={`${formId}-chapters`} className="tcds-input" value={chapterNotes??''} onChange={event=>onChapterNotesChange(event.target.value)} /></FormField>}
                 <fieldset className="space-y-2 rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3.5">
                     <legend className="px-1 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
                         Linked Spatial Planning Maps

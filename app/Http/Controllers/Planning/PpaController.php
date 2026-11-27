@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Planning;
 
 use App\Http\Controllers\Controller;
+use App\Models\DevelopmentPlan;
 use App\Models\PlanningAttachment;
+use App\Models\PlanningMap;
 use App\Models\PpaRecord;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAmounts;
 use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningReferences;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +39,7 @@ final class PpaController extends Controller
         $user = $request->user();
         $permissions = $this->authorization->resolve($user);
 
-        $records = PpaRecord::query()
+        $records = PpaRecord::query()->with(['developmentPlan', 'planningMap'])
             ->orderByDesc('year')
             ->orderBy('ppa_code')
             ->get()
@@ -55,8 +59,8 @@ final class PpaController extends Controller
                 'relatedProjectCount' => $ppa->related_project_count,
                 'priority' => $ppa->priority,
                 'implementationContext' => $ppa->implementation_context ?? '',
-                'location' => $ppa->location ?? 'Municipality of Talibon',
-                'barangay' => $ppa->barangay ?? 'Poblacion',
+                'location' => $ppa->location ?? '',
+                'barangay' => $ppa->barangay ?? '',
                 'appropriationAmount' => (float) $ppa->appropriation_amount,
                 'psAmount' => (float) $ppa->ps_amount,
                 'mooeAmount' => (float) $ppa->mooe_amount,
@@ -66,9 +70,15 @@ final class PpaController extends Controller
                 'gadAttributed' => (bool) $ppa->gad_attributed,
                 'drrmTagged' => (bool) $ppa->drrm_tagged,
                 'aipReferenceCode' => $ppa->aip_reference_code,
-                'targetQuarter' => $ppa->target_quarter ?? 'Q4 '.$ppa->year,
+                'targetQuarter' => $ppa->target_quarter,
                 'mapCode' => $ppa->map_code,
                 'provenanceStatus' => $ppa->provenance_status,
+                'amounts' => array_combine(PlanningAmounts::FIELDS, array_map(fn ($field) => $ppa->{$field}, PlanningAmounts::FIELDS)),
+                'linkedDevelopmentPlan' => $ppa->developmentPlan ? ['code' => $ppa->developmentPlan->code, 'title' => $ppa->developmentPlan->title] : null,
+                'linkedPlanningMap' => $ppa->planningMap ? ['code' => $ppa->planningMap->map_code, 'title' => $ppa->planningMap->title] : null,
+                'developmentPlanId' => $ppa->development_plan_id, 'planningMapId' => $ppa->planning_map_id,
+                'scheduleStart' => $ppa->schedule_start?->format('Y-m-d'), 'scheduleEnd' => $ppa->schedule_end?->format('Y-m-d'),
+                'expectedOutputs' => $ppa->expected_outputs, 'coveredBarangays' => $ppa->covered_barangays,
             ])
             ->values();
 
@@ -98,6 +108,8 @@ final class PpaController extends Controller
 
         return Inertia::render('PPAs/Index', [
             'ppaRecords' => $records,
+            'planOptions' => DevelopmentPlan::query()->orderBy('code')->get(['id', 'code', 'title']),
+            'mapOptions' => PlanningMap::query()->orderBy('map_code')->get(['id', 'map_code as code', 'title']),
             'attachments' => $attachments,
             'planningPermissions' => $permissions,
         ]);
@@ -132,6 +144,14 @@ final class PpaController extends Controller
                 'aip_reference_code' => ['nullable', 'string', 'max:120'],
                 'target_quarter' => ['nullable', 'string', 'max:32'],
                 'map_code' => ['nullable', 'string', 'max:100'],
+                'development_plan_id' => ['nullable', 'integer', 'min:1'],
+                'planning_map_id' => ['nullable', 'integer', 'min:1'],
+                'schedule_start' => ['nullable', 'date_format:Y-m-d'],
+                'schedule_end' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:schedule_start'],
+                'expected_outputs' => ['nullable', 'string', 'max:10000'],
+                'covered_barangays' => ['nullable', 'array', 'max:100'],
+                'covered_barangays.*' => ['required', 'string', 'max:120', 'distinct'],
+
             ]);
 
             $targetStatus = $data['status'] ?? 'Planned';
@@ -144,19 +164,17 @@ final class PpaController extends Controller
 
             $office = $this->authorization->officeIdentity($responsibleOffice, 'responsible_office');
 
-            $ps = (float) ($data['ps_amount'] ?? 0);
-            $mooe = (float) ($data['mooe_amount'] ?? 0);
-            $co = (float) ($data['co_amount'] ?? 0);
-            $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
-                ? (float) $data['appropriation_amount']
-                : ($ps + $mooe + $co);
+            $amounts = app(PlanningAmounts::class)->values($data);
+            $links = app(PlanningReferences::class)->links($data);
 
             $code = isset($data['ppa_code']) && trim($data['ppa_code']) !== ''
                 ? trim($data['ppa_code'])
-                : sprintf('PPA-%d-%03d', (int) $data['year'], PpaRecord::query()->where('year', (int) $data['year'])->count() + 101);
+                : app(PlanningReferences::class)->nextPpa((int) $data['year']);
 
             app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('ppa', [$code], 'ppa_code');
             $ppa = PpaRecord::query()->create([
+                ...$amounts, ...$links,
+                ...array_intersect_key($data, array_flip(['schedule_start', 'schedule_end', 'expected_outputs', 'covered_barangays'])),
                 'ppa_code' => $code,
                 'title' => trim($data['title']),
                 'sector' => trim($data['sector']),
@@ -168,19 +186,14 @@ final class PpaController extends Controller
                 'status' => $targetStatus,
                 'related_project_count' => 0,
                 'priority' => $data['priority'] ?? 'Routine',
-                'implementation_context' => $data['implementation_context'] ?? 'Submitted through the Local Development Planning Suite.',
-                'location' => $data['location'] ?? 'Municipality of Talibon',
-                'barangay' => $data['barangay'] ?? 'Poblacion',
-                'appropriation_amount' => $appropriation,
-                'ps_amount' => $ps,
-                'mooe_amount' => $mooe,
-                'co_amount' => $co,
-                'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? 0),
-                'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? 0),
+                'implementation_context' => $data['implementation_context'] ?? null,
+                'location' => $data['location'] ?? null,
+                'barangay' => $data['barangay'] ?? null,
+
                 'gad_attributed' => (bool) ($data['gad_attributed'] ?? false),
                 'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? false),
                 'aip_reference_code' => $data['aip_reference_code'] ?? null,
-                'target_quarter' => $data['target_quarter'] ?? 'Q4 '.$data['year'],
+                'target_quarter' => $data['target_quarter'] ?? null,
                 'map_code' => $data['map_code'] ?? null,
                 'provenance_status' => 'provisional_draft',
                 'created_by_user_id' => $user->id,
@@ -229,6 +242,14 @@ final class PpaController extends Controller
                 'aip_reference_code' => ['nullable', 'string', 'max:120'],
                 'target_quarter' => ['nullable', 'string', 'max:32'],
                 'map_code' => ['nullable', 'string', 'max:100'],
+                'development_plan_id' => ['nullable', 'integer', 'min:1'],
+                'planning_map_id' => ['nullable', 'integer', 'min:1'],
+                'schedule_start' => ['nullable', 'date_format:Y-m-d'],
+                'schedule_end' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:schedule_start'],
+                'expected_outputs' => ['nullable', 'string', 'max:10000'],
+                'covered_barangays' => ['nullable', 'array', 'max:100'],
+                'covered_barangays.*' => ['required', 'string', 'max:120', 'distinct'],
+
             ]);
 
             $perms = $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
@@ -239,14 +260,12 @@ final class PpaController extends Controller
                 throw ValidationException::withMessages(['responsible_office' => 'Office reassignment requires a separately authorized reconciliation; the recorded office identity is preserved.']);
             }
 
-            $ps = (float) ($data['ps_amount'] ?? $ppa->ps_amount);
-            $mooe = (float) ($data['mooe_amount'] ?? $ppa->mooe_amount);
-            $co = (float) ($data['co_amount'] ?? $ppa->co_amount);
-            $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
-                ? (float) $data['appropriation_amount']
-                : ($ps + $mooe + $co);
+            $amounts = app(PlanningAmounts::class)->values($data, $ppa);
+            $links = app(PlanningReferences::class)->links($data);
 
             $ppa->update([
+                ...$amounts, ...$links,
+                ...array_intersect_key($data, array_flip(['schedule_start', 'schedule_end', 'expected_outputs', 'covered_barangays'])),
                 'title' => trim($data['title']),
                 'sector' => trim($data['sector']),
                 'responsible_office' => $office?->name ?? $ppa->responsible_office,
@@ -259,12 +278,7 @@ final class PpaController extends Controller
                 'implementation_context' => $data['implementation_context'] ?? $ppa->implementation_context,
                 'location' => $data['location'] ?? $ppa->location,
                 'barangay' => $data['barangay'] ?? $ppa->barangay,
-                'appropriation_amount' => $appropriation,
-                'ps_amount' => $ps,
-                'mooe_amount' => $mooe,
-                'co_amount' => $co,
-                'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? $ppa->climate_adaptation_amount),
-                'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? $ppa->climate_mitigation_amount),
+
                 'gad_attributed' => (bool) ($data['gad_attributed'] ?? $ppa->gad_attributed),
                 'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? $ppa->drrm_tagged),
                 'aip_reference_code' => $data['aip_reference_code'] ?? $ppa->aip_reference_code,
@@ -422,12 +436,12 @@ final class PpaController extends Controller
                     self::sanitizeCsvCell($row->related_development_plan),
                     self::sanitizeCsvCell($row->funding_source),
                     self::sanitizeCsvCell($row->status),
-                    number_format((float) $row->ps_amount, 2, '.', ''),
-                    number_format((float) $row->mooe_amount, 2, '.', ''),
-                    number_format((float) $row->co_amount, 2, '.', ''),
-                    number_format((float) $row->appropriation_amount, 2, '.', ''),
-                    number_format((float) $row->climate_adaptation_amount, 2, '.', ''),
-                    number_format((float) $row->climate_mitigation_amount, 2, '.', ''),
+                    (string) ($row->ps_amount ?? ''),
+                    (string) ($row->mooe_amount ?? ''),
+                    (string) ($row->co_amount ?? ''),
+                    (string) ($row->appropriation_amount ?? ''),
+                    (string) ($row->climate_adaptation_amount ?? ''),
+                    (string) ($row->climate_mitigation_amount ?? ''),
                     $row->gad_attributed ? 'YES' : 'NO',
                     $row->drrm_tagged ? 'YES' : 'NO',
                     self::sanitizeCsvCell($row->target_quarter ?? ''),

@@ -9,9 +9,12 @@ use App\Models\DesignatedPlanningStaff;
 use App\Models\DevelopmentPlan;
 use App\Models\Employee;
 use App\Models\PlanningAttachment;
+use App\Models\PlanningMap;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningDossier;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +40,7 @@ final class DevelopmentPlanController extends Controller
         $user = $request->user();
         $permissions = $this->authorization->resolve($user);
 
-        $plans = DevelopmentPlan::query()
+        $plans = DevelopmentPlan::query()->with(['ppas', 'maps'])
             ->orderBy('id')
             ->get()
             ->map(fn (DevelopmentPlan $plan): array => [
@@ -55,13 +58,17 @@ final class DevelopmentPlanController extends Controller
                 'sectionsComplete' => $plan->sections_complete,
                 'sectionsTotal' => $plan->sections_total,
                 'lastAction' => $plan->last_action ?? 'Provisional draft recorded',
-                'lastActionDate' => $plan->last_action_date ?? now()->format('Y-m-d'),
-                'nextMilestone' => $plan->next_milestone ?? 'Technical review pending',
-                'nextMilestoneDate' => $plan->next_milestone_date ?? now()->addMonth()->format('Y-m-d'),
-                'requiredAction' => $plan->required_action ?? 'Awaiting MPDC review.',
-                'authority' => $plan->authority ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
+                'lastActionDate' => $plan->last_action_date ?? '',
+                'nextMilestone' => $plan->next_milestone ?? '',
+                'nextMilestoneDate' => $plan->next_milestone_date ?? '',
+                'requiredAction' => $plan->required_action ?? '',
+                'authority' => $plan->authority ?? '',
                 'documentRef' => $plan->document_ref ?? $plan->code,
                 'provenanceStatus' => $plan->provenance_status,
+                'linkedPpas' => $plan->ppas->map(fn ($ppa) => ['id' => $ppa->ppa_code, 'title' => $ppa->title, 'office' => $ppa->responsible_office, 'budget' => $ppa->appropriation_amount, 'href' => '/ppas?search='.urlencode($ppa->ppa_code)]),
+                'linkedMapIds' => $plan->maps->pluck('id'),
+                'chapterNotes' => $plan->chapters ?? [], 'sbResolutionNo' => $plan->adoption_reference,
+                'sbAdoptedDate' => $plan->adoption_date?->format('Y-m-d'), 'mdcResolutionNo' => $plan->mdc_reference, 'higherReviewRef' => $plan->higher_review_reference,
             ])
             ->values();
 
@@ -76,6 +83,7 @@ final class DevelopmentPlanController extends Controller
 
         return Inertia::render('Plans/Index', [
             'plans' => $plans,
+            'mapOptions' => PlanningMap::query()->orderBy('map_code')->get(['id', 'map_code as code', 'title']),
             'attachments' => $attachments,
             'planningPermissions' => $permissions,
             'designatedStaff' => $this->presentDesignatedStaff($permissions['canDesignateStaff']),
@@ -99,7 +107,7 @@ final class DevelopmentPlanController extends Controller
                 'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
                 'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
                 'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
-                'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
+                'sections_total' => ['nullable', 'integer', 'min:0', 'max:100'],
                 'last_action' => ['nullable', 'string', 'max:255'],
                 'last_action_date' => ['nullable', 'string', 'max:32'],
                 'next_milestone' => ['nullable', 'string', 'max:255'],
@@ -107,6 +115,15 @@ final class DevelopmentPlanController extends Controller
                 'required_action' => ['nullable', 'string', 'max:2000'],
                 'authority' => ['nullable', 'string', 'max:255'],
                 'document_ref' => ['nullable', 'string', 'max:120'],
+                'linked_map_ids' => ['nullable', 'array', 'max:100'],
+                'linked_map_ids.*' => ['required', 'integer', 'distinct', 'min:1'],
+                'chapters' => ['nullable', 'array', 'max:100'],
+                'chapters.*' => ['required', 'string', 'max:2000'],
+                'adoption_date' => ['nullable', 'date_format:Y-m-d'],
+                'adoption_reference' => ['nullable', 'string', 'max:255'],
+                'mdc_reference' => ['nullable', 'string', 'max:255'],
+                'higher_review_reference' => ['nullable', 'string', 'max:255'],
+
             ]);
 
             $perms = $this->authorization->authorizePlanMutation($user, $data['status']);
@@ -121,6 +138,7 @@ final class DevelopmentPlanController extends Controller
             $planKey = 'plan-'.Str::slug($data['code']).'-'.Str::lower(Str::random(4));
             app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('plan', [trim($data['code']), $planKey], 'code');
             $plan = DevelopmentPlan::query()->create([
+                ...$this->dossier($data, $perms),
                 'plan_key' => $planKey,
                 'code' => trim($data['code']),
                 'title' => trim($data['title']),
@@ -131,20 +149,21 @@ final class DevelopmentPlanController extends Controller
                 'coverage_start' => (int) $data['coverage_start'],
                 'coverage_end' => (int) $data['coverage_end'],
                 'status' => $data['status'],
-                'sections_complete' => (int) ($data['sections_complete'] ?? 1),
-                'sections_total' => max(1, (int) ($data['sections_total'] ?? 10)),
+                'sections_complete' => (int) ($data['sections_complete'] ?? 0),
+                'sections_total' => (int) ($data['sections_total'] ?? 0),
                 'last_action' => $data['last_action'] ?? 'Plan record created',
                 'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
-                'next_milestone' => $data['next_milestone'] ?? 'Technical review',
-                'next_milestone_date' => $data['next_milestone_date'] ?? now()->addMonth()->format('Y-m-d'),
-                'required_action' => $data['required_action'] ?? 'Submit supporting documents for MPDC review.',
-                'authority' => $data['authority'] ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
+                'next_milestone' => $data['next_milestone'] ?? null,
+                'next_milestone_date' => $data['next_milestone_date'] ?? null,
+                'required_action' => $data['required_action'] ?? null,
+                'authority' => $data['authority'] ?? null,
                 'document_ref' => $data['document_ref'] ?? trim($data['code']),
                 'provenance_status' => 'provisional_draft',
                 'created_by_user_id' => $user->id,
                 'updated_by_user_id' => $user->id,
             ]);
 
+            app(PlanningDossier::class)->syncMaps($plan, $data);
             $this->audit->record(
                 actor: $user,
                 action: 'planning.plan.created',
@@ -174,7 +193,7 @@ final class DevelopmentPlanController extends Controller
                 'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
                 'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
                 'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
-                'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
+                'sections_total' => ['nullable', 'integer', 'min:0', 'max:100'],
                 'last_action' => ['nullable', 'string', 'max:255'],
                 'last_action_date' => ['nullable', 'string', 'max:32'],
                 'next_milestone' => ['nullable', 'string', 'max:255'],
@@ -182,13 +201,22 @@ final class DevelopmentPlanController extends Controller
                 'required_action' => ['nullable', 'string', 'max:2000'],
                 'authority' => ['nullable', 'string', 'max:255'],
                 'document_ref' => ['nullable', 'string', 'max:120'],
+                'linked_map_ids' => ['nullable', 'array', 'max:100'],
+                'linked_map_ids.*' => ['required', 'integer', 'distinct', 'min:1'],
+                'chapters' => ['nullable', 'array', 'max:100'],
+                'chapters.*' => ['required', 'string', 'max:2000'],
+                'adoption_date' => ['nullable', 'date_format:Y-m-d'],
+                'adoption_reference' => ['nullable', 'string', 'max:255'],
+                'mdc_reference' => ['nullable', 'string', 'max:255'],
+                'higher_review_reference' => ['nullable', 'string', 'max:255'],
+
             ]);
 
             $requestedAuthority = $request->exists('authority')
                 ? (string) ($data['authority'] ?? '')
                 : null;
 
-            $this->authorization->authorizePlanMutation(
+            $perms = $this->authorization->authorizePlanMutation(
                 user: $user,
                 targetStatus: $data['status'],
                 existing: $plan,
@@ -197,6 +225,7 @@ final class DevelopmentPlanController extends Controller
 
             $office = $this->authorization->officeIdentity($data['lead_office'], 'lead_office');
             $plan->update([
+                ...$this->dossier($data, $perms, $plan),
                 'title' => trim($data['title']),
                 'horizon' => $data['horizon'],
                 'lead_office' => $office->name,
@@ -206,7 +235,7 @@ final class DevelopmentPlanController extends Controller
                 'coverage_end' => (int) $data['coverage_end'],
                 'status' => $data['status'],
                 'sections_complete' => (int) ($data['sections_complete'] ?? $plan->sections_complete),
-                'sections_total' => max(1, (int) ($data['sections_total'] ?? $plan->sections_total)),
+                'sections_total' => (int) ($data['sections_total'] ?? $plan->sections_total),
                 'last_action' => $data['last_action'] ?? $plan->last_action,
                 'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
                 'next_milestone' => $data['next_milestone'] ?? $plan->next_milestone,
@@ -219,6 +248,7 @@ final class DevelopmentPlanController extends Controller
                 'updated_by_user_id' => $user->id,
             ]);
 
+            app(PlanningDossier::class)->syncMaps($plan, $data);
             $this->audit->record(
                 actor: $user,
                 action: 'planning.plan.updated',
@@ -247,7 +277,7 @@ final class DevelopmentPlanController extends Controller
                 ? (string) $data['authority']
                 : null;
 
-            $this->authorization->authorizePlanMutation(
+            $perms = $this->authorization->authorizePlanMutation(
                 user: $user,
                 targetStatus: $data['status'],
                 existing: $plan,
@@ -396,5 +426,23 @@ final class DevelopmentPlanController extends Controller
             ])
             ->values()
             ->all();
+    }
+
+    private function dossier(array $data, array $permissions, ?DevelopmentPlan $existing = null): array
+    {
+        $fields = array_intersect_key($data, array_flip(['chapters', 'adoption_date', 'adoption_reference', 'mdc_reference', 'higher_review_reference']));
+        foreach (['adoption_date', 'adoption_reference', 'mdc_reference', 'higher_review_reference'] as $field) {
+            if (array_key_exists($field, $fields) && (string) $fields[$field] !== (string) ($existing?->{$field} instanceof \DateTimeInterface ? $existing->{$field}->format('Y-m-d') : $existing?->{$field})
+                && ! $permissions['canPublishOrArchive']) {
+                throw new AuthorizationException('Only the authorized Planning Head may record adoption and review references.');
+            }
+        }
+        $complete = $data['sections_complete'] ?? $existing?->sections_complete ?? 0;
+        $total = $data['sections_total'] ?? $existing?->sections_total ?? 0;
+        if ($complete > $total) {
+            throw ValidationException::withMessages(['sections_complete' => 'Completed sections cannot exceed the recorded total.']);
+        }
+
+        return $fields;
     }
 }

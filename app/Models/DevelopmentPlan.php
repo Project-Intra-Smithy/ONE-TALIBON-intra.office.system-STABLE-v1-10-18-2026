@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DevelopmentPlan extends Model
 {
     protected $fillable = [
-        'plan_key',
+        'plan_key', 'chapters', 'adoption_date', 'adoption_reference', 'mdc_reference', 'higher_review_reference',
         'code',
         'title',
         'horizon',
@@ -35,7 +37,7 @@ class DevelopmentPlan extends Model
     protected function casts(): array
     {
         return [
-            'coordinating_offices' => 'array',
+            'coordinating_offices' => 'array', 'chapters' => 'array', 'adoption_date' => 'date',
             'coverage_start' => 'integer',
             'coverage_end' => 'integer',
             'sections_complete' => 'integer',
@@ -46,5 +48,15 @@ class DevelopmentPlan extends Model
     public function leadDepartment(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'lead_department_id');
+    }
+
+    public function ppas(): HasMany
+    {
+        return $this->hasMany(PpaRecord::class);
+    }
+
+    public function maps(): BelongsToMany
+    {
+        return $this->belongsToMany(PlanningMap::class, 'planning_plan_map_links', 'development_plan_id', 'planning_map_id');
     }
 }

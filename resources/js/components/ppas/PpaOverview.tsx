@@ -1,7 +1,8 @@
+import { planningAmount } from '../../lib/planningMoney';
 import { Building2, CalendarRange, Landmark } from 'lucide-react';
 import { formatPHP } from '../../lib/format';
-export type PpaOverviewRecord = {expectedOutputs?:string;implementationContext:string;fundingSource:string;budgetPs?:number;budgetMooe?:number;budgetCo?:number;budgetTotal?:number;ccaAmount?:number;ccmAmount?:number;responsibleOffice:string;scheduleStart?:string;scheduleEnd?:string};
-const formatPhpCurrency=(value:number|undefined)=>value===undefined?'Not supplied':formatPHP(value);
+export type PpaOverviewRecord = {expectedOutputs?:string;implementationContext:string;fundingSource:string;budgetPs?:number|string|null;budgetMooe?:number|string|null;budgetCo?:number|string|null;budgetTotal?:number|string|null;ccaAmount?:number|string|null;ccmAmount?:number|string|null;responsibleOffice:string;scheduleStart?:string;scheduleEnd?:string};
+const formatPhpCurrency=(value:number|string|null|undefined)=>typeof value==='number'?formatPHP(value):planningAmount(value);
 export default function PpaOverview({record}:{record:PpaOverviewRecord}){return (
                         <div className="space-y-4">
                             <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">

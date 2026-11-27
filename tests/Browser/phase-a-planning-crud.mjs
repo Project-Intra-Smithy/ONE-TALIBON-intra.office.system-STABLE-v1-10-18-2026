@@ -24,6 +24,8 @@ export async function planningCrud(page,context,origin,interactions) {
     await form.getByLabel('Lifecycle Status').selectOption('Draft');
     await form.getByLabel('Coverage Start Year').fill('2000');
     await form.getByLabel('Coverage End Year').fill('2100');
+    await form.getByLabel('Chapter notes (one per line)').fill('Synthetic chapter evidence');
+    await form.getByLabel('SB Adoption Resolution / Ord.',{exact:true}).fill('Synthetic reference only');
     await save('Create plan');
     let plan=(await props('/development-plans')).plans.find(record=>record.code===planCode);
     assert.ok(plan?.dbId,'Created plan must have a real database identifier');
@@ -55,12 +57,14 @@ export async function planningCrud(page,context,origin,interactions) {
     await page.getByRole('button',{name:'Register PPA Entry',exact:true}).click();
     form=page.getByRole('dialog');
     await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA ${suffix}`);
+    await form.getByLabel('Expected Outputs (Deliverables)').fill('Synthetic measurable deliverable');
     await form.getByLabel('Related Development Plan Reference').fill('Synthetic test reference');
     await form.getByLabel('Budget / Program Year').selectOption('2035');
     await form.getByLabel('Funding Source').fill('Synthetic external funding source');
     await save('Save PPA');
     const ppa=(await props('/ppas')).ppaRecords.find(record=>record.title===`Synthetic PPA ${suffix}`);
     assert.ok(ppa?.dbId);
+    assert.equal(ppa.expectedOutputs,'Synthetic measurable deliverable');
     assert.equal(ppa.year,2035);assert.equal(ppa.fundingSource,'Synthetic external funding source');
     await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
     await page.getByRole('button',{name:'Edit PPA',exact:true}).click();

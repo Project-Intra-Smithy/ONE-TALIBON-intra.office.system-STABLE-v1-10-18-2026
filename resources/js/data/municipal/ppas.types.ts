@@ -4,6 +4,9 @@ export type PPAPriority = 'High' | 'Medium' | 'Routine';
 export type PPARecord = {
     id: string;
     dbId?: number;
+    linkedDevelopmentPlan?: {code:string;title:string}|null; linkedPlanningMap?: {code:string;title:string}|null;
+    amounts?: Record<string,string|null>; developmentPlanId?: number|null; planningMapId?: number|null;
+    scheduleStart?: string; scheduleEnd?: string; expectedOutputs?: string; coveredBarangays?: string[];
     canEdit?: boolean;
     canDelete?: boolean;
     canUploadAttachments?: boolean;

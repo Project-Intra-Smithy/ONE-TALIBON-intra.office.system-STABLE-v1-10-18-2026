@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PpaRecord extends Model
 {
     protected $fillable = [
-        'ppa_code',
+        'ppa_code', 'development_plan_id', 'planning_map_id', 'schedule_start', 'schedule_end', 'expected_outputs', 'covered_barangays',
         'title',
         'sector',
         'responsible_office',
@@ -42,13 +42,14 @@ class PpaRecord extends Model
     {
         return [
             'year' => 'integer',
+            'schedule_start' => 'date', 'schedule_end' => 'date', 'covered_barangays' => 'array',
             'related_project_count' => 'integer',
-            'appropriation_amount' => 'float',
-            'ps_amount' => 'float',
-            'mooe_amount' => 'float',
-            'co_amount' => 'float',
-            'climate_adaptation_amount' => 'float',
-            'climate_mitigation_amount' => 'float',
+            'appropriation_amount' => 'decimal:2',
+            'ps_amount' => 'decimal:2',
+            'mooe_amount' => 'decimal:2',
+            'co_amount' => 'decimal:2',
+            'climate_adaptation_amount' => 'decimal:2',
+            'climate_mitigation_amount' => 'decimal:2',
             'gad_attributed' => 'boolean',
             'drrm_tagged' => 'boolean',
         ];
@@ -57,5 +58,15 @@ class PpaRecord extends Model
     public function implementingDepartment(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'implementing_department_id');
+    }
+
+    public function developmentPlan(): BelongsTo
+    {
+        return $this->belongsTo(DevelopmentPlan::class);
+    }
+
+    public function planningMap(): BelongsTo
+    {
+        return $this->belongsTo(PlanningMap::class);
     }
 }

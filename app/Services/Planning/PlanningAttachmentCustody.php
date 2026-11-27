@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 final class PlanningAttachmentCustody
 {
-    public function parent(string $type, string $code): Model
+    public function parent(string $type, string $code, ?int $id = null): Model
     {
         $query = match ($type) {
             'plan' => DevelopmentPlan::query()->where(fn ($q) => $q->where('code', $code)->orWhere('plan_key', $code)),
@@ -23,6 +23,12 @@ final class PlanningAttachmentCustody
             'map' => PlanningMap::query()->where('map_code', $code),
             default => throw new AuthorizationException('Unsupported attachment parent.'),
         };
+        if ($id !== null) {
+            $query = match ($type) {
+                'plan' => DevelopmentPlan::query(), 'ppa' => PpaRecord::query(), 'map' => PlanningMap::query(),
+            };
+            $query->whereKey($id);
+        }
         $parents = $query->when(DB::transactionLevel() > 0, fn ($q) => $q->lockForUpdate())->get();
         if ($parents->count() !== 1) {
             throw new AuthorizationException('Attachment parent requires explicit identity reconciliation.');
@@ -49,6 +55,17 @@ final class PlanningAttachmentCustody
 
     public function assertDeletable(string $type, Model $parent, array $identifiers): void
     {
+        $referenced = match ($type) {
+            'plan' => PpaRecord::query()->where('development_plan_id', $parent->getKey())->exists()
+                || PlanningMap::query()->where('development_plan_id', $parent->getKey())->exists()
+                || DB::table('planning_plan_map_links')->where('development_plan_id', $parent->getKey())->exists(),
+            'map' => PpaRecord::query()->where('planning_map_id', $parent->getKey())->exists()
+                || DB::table('planning_plan_map_links')->where('planning_map_id', $parent->getKey())->exists(),
+            default => false,
+        };
+        if ($referenced) {
+            throw ValidationException::withMessages(['reference' => 'Existing typed Planning references prevent deletion; reconcile the links first.']);
+        }
         // Call only after locking the parent, the same boundary used by uploads.
         if (PlanningAttachment::query()->where('parent_type', $type)->where(fn ($q) => $q
             ->where('parent_record_id', $parent->getKey())->orWhereIn('parent_code', $identifiers))->exists()) {

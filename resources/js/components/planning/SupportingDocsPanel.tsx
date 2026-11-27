@@ -8,6 +8,7 @@ import Button from '../ui/Button';
 
 export type ServerPlanningAttachment = {
     publicId: string;
+    attachmentId?: number;
     parentType: 'plan' | 'ppa' | 'map';
     parentCode: string;
     parentRecordId?: number | null;
@@ -186,7 +187,7 @@ export default function SupportingDocsPanel({
                 </ul>
             )}
 
-            {historical.length > 0 && <section aria-label="Historical documents requiring reconciliation"><h4>Historical documents — parent association requires reconciliation</h4>{historical.map(doc => <p key={doc.publicId}>{doc.title} ({doc.parentCode}) <a href={doc.previewUrl} target="_blank" rel="noopener noreferrer">Preview</a> <a href={doc.downloadUrl}>Download</a></p>)}</section>}
+            {historical.length > 0 && <section aria-label="Historical documents requiring reconciliation"><a className="municipal-secondary-button" href="/planning/attachment-custody">Planning document custody</a><h4>Historical documents — parent association requires reconciliation</h4>{historical.map(doc => <p key={doc.publicId}>{doc.title} ({doc.parentCode}) <a href={doc.previewUrl} target="_blank" rel="noopener noreferrer">Preview</a> <a href={doc.downloadUrl}>Download</a></p>)}</section>}
             {inspecting && <DocumentPreviewPresentation key={inspecting.publicId} metadataOnly attachment={{title:inspecting.title,controlRef:inspecting.publicId,filename:inspecting.fileName,formatLabel:inspecting.fileName.split('.').pop()?.toUpperCase()??inspecting.mimeType,sizeLabel:`${new Intl.NumberFormat('en-PH').format(inspecting.sizeBytes)} bytes`,visibility:inspecting.visibility,uploadedAt:inspecting.createdAt??'',uploadedBy:'Not supplied by current record',previewFields:[['Parent reference',inspecting.parentCode],['MIME type',inspecting.mimeType],['Category',categoryLabels[inspecting.category]??inspecting.category]]}} onClose={()=>setInspectingId(null)} categoryMeta={{label:categoryLabels[inspecting.category]??inspecting.category,tone:'info'}} visibilityMeta={{label:visibilityLabels[inspecting.visibility]??inspecting.visibility,shortLabel:visibilityLabels[inspecting.visibility]??inspecting.visibility}} nativePreviewUrl={inspecting.previewUrl} onDownload={()=>window.location.assign(inspecting.downloadUrl)} />}
         </section>
     );
