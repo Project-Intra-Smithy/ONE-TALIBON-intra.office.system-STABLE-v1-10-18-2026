@@ -27,13 +27,15 @@ final class PlanningAmounts
             }
             $values[$field] = (string) BigDecimal::of((string) $raw)->toScale(2);
         }
-        // Derive only an initially missing total. Updates preserve the recorded total unless explicitly supplied.
+        // An omitted initial total requires all components; updates preserve the recorded total.
         if (! array_key_exists('appropriation_amount', $data)
             && $existing === null
-            && array_filter(array_intersect_key($values, array_flip(['ps_amount', 'mooe_amount', 'co_amount'])), fn ($v) => $v !== null)) {
+            && $values['ps_amount'] !== null
+            && $values['mooe_amount'] !== null
+            && $values['co_amount'] !== null) {
             $sum = BigDecimal::zero()->toScale(2);
             foreach (['ps_amount', 'mooe_amount', 'co_amount'] as $field) {
-                $sum = $sum->plus($values[$field] ?? '0.00');
+                $sum = $sum->plus($values[$field]);
             }
             if ($sum->isGreaterThan('9999999999999.99')) {
                 throw ValidationException::withMessages(['appropriation_amount' => 'The component total exceeds the supported amount.']);

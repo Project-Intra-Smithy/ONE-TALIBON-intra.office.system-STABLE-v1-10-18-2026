@@ -79,7 +79,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
             footer={
                 <div className="flex w-full flex-wrap items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-[var(--ink-secondary)]">
-                        Component total: <strong className="text-[var(--ink-primary)]">{total}</strong>
+                        Component total (all three required): <strong className="text-[var(--ink-primary)]">{total}</strong>
                     </span>
                     <div className="flex gap-2">
                         <Button variant="secondary" size="sm" onClick={onClose}>
