@@ -1,0 +1,502 @@
+[
+  {
+    "object": "function public.ops009_verify_close_audit()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_verify_close_audit()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.planning_ppa_identifiers_immutable()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.planning_ppa_identifiers_immutable()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.planning_reconciliation_immutable()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.planning_reconciliation_immutable()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "index deployment_control.installations_installation_id_key",
+    "reference": "constraint installations_installation_id_key on table deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "index deployment_control.installations_pkey",
+    "reference": "constraint installations_pkey on table deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.bindings_generation_id_key",
+    "reference": "constraint bindings_generation_id_key on table legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.bindings_operation_id_ordinal_key",
+    "reference": "constraint bindings_operation_id_ordinal_key on table legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.bindings_pkey",
+    "reference": "constraint bindings_pkey on table legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.bindings_upload_audit_id_key",
+    "reference": "constraint bindings_upload_audit_id_key on table legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.classification_events_audit_log_id_key",
+    "reference": "constraint classification_events_audit_log_id_key on table legacy_custody.classification_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.classification_events_pkey",
+    "reference": "constraint classification_events_pkey on table legacy_custody.classification_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.command_results_pkey",
+    "reference": "constraint command_results_pkey on table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.compensation_outcomes_pkey",
+    "reference": "constraint compensation_outcomes_pkey on table legacy_custody.compensation_outcomes",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.compensation_outcomes_tombstone_id_key",
+    "reference": "constraint compensation_outcomes_tombstone_id_key on table legacy_custody.compensation_outcomes",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.compensation_tombstones_generation_id_key",
+    "reference": "constraint compensation_tombstones_generation_id_key on table legacy_custody.compensation_tombstones",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.compensation_tombstones_pkey",
+    "reference": "constraint compensation_tombstones_pkey on table legacy_custody.compensation_tombstones",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.generations_namespace_id_locator_key",
+    "reference": "constraint generations_namespace_id_locator_key on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.generations_namespace_id_provider_object_identity_key",
+    "reference": "constraint generations_namespace_id_provider_object_identity_key on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.generations_operation_id_ordinal_generation_id_key",
+    "reference": "constraint generations_operation_id_ordinal_generation_id_key on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.generations_pkey",
+    "reference": "constraint generations_pkey on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.generations_staging_receipt_id_key",
+    "reference": "constraint generations_staging_receipt_id_key on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.n03_classification_events_doc_occurred",
+    "reference": "column classification_event_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_classification_events_doc_occurred",
+    "reference": "column document_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_classification_events_doc_occurred",
+    "reference": "column occurred_at of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_command_results_unique_correspondence_event",
+    "reference": "constraint n03_command_results_unique_correspondence_event on table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.n03_command_results_unique_transaction_event",
+    "reference": "constraint n03_command_results_unique_transaction_event on table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.n03_command_results_unique_travel_event",
+    "reference": "constraint n03_command_results_unique_travel_event on table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.n03_compensation_tombstones_operation",
+    "reference": "column operation_id of table legacy_custody.compensation_tombstones",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_generation_compensation_tuple",
+    "reference": "constraint n03_generation_compensation_tuple on table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.n03_generation_operation",
+    "reference": "column operation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_operation_event_operation",
+    "reference": "column operation_id of table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_watermark_checkpoints_ns_seq",
+    "reference": "column checkpoint_seq of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.n03_watermark_checkpoints_ns_seq",
+    "reference": "column namespace_id of table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "index legacy_custody.namespaces_backend_kind_provider_identity_key",
+    "reference": "constraint namespaces_backend_kind_provider_identity_key on table legacy_custody.namespaces",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.namespaces_backend_kind_root_claim_key",
+    "reference": "constraint namespaces_backend_kind_root_claim_key on table legacy_custody.namespaces",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.namespaces_pkey",
+    "reference": "constraint namespaces_pkey on table legacy_custody.namespaces",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_events_pkey",
+    "reference": "constraint operation_events_pkey on table legacy_custody.operation_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_gates_pkey",
+    "reference": "constraint operation_gates_pkey on table legacy_custody.operation_gates",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_generation_id_key",
+    "reference": "constraint operation_items_generation_id_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_namespace_id_locator_key",
+    "reference": "constraint operation_items_namespace_id_locator_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_operation_id_ordinal_generation_id_namespac_key",
+    "reference": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operation_items_pkey",
+    "reference": "constraint operation_items_pkey on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_namespace_id_actor_user_id_office_id_service_ide_key",
+    "reference": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_operation_id_actor_user_id_office_id_correlation_key",
+    "reference": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_operation_id_namespace_id_epoch_key",
+    "reference": "constraint operations_operation_id_namespace_id_epoch_key on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.operations_pkey",
+    "reference": "constraint operations_pkey on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.ownership_links_pkey",
+    "reference": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.ownership_links_public_document_link_id_key",
+    "reference": "constraint ownership_links_public_document_link_id_key on table legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.terminal_receipts_pkey",
+    "reference": "constraint terminal_receipts_pkey on table legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.terminal_receipts_receipt_uuid_key",
+    "reference": "constraint terminal_receipts_receipt_uuid_key on table legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "index legacy_custody.watermark_checkpoints_pkey",
+    "reference": "constraint watermark_checkpoints_pkey on table legacy_custody.watermark_checkpoints",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_assignments_assignment_type_index",
+    "reference": "column assignment_type of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.asset_assignments_pkey",
+    "reference": "constraint asset_assignments_pkey on table public.asset_assignments",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_assignments_returned_at_index",
+    "reference": "column returned_at of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.asset_disposals_pkey",
+    "reference": "constraint asset_disposals_pkey on table public.asset_disposals",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_events_event_type_index",
+    "reference": "column event_type of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.asset_events_pkey",
+    "reference": "constraint asset_events_pkey on table public.asset_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_inventory_scan_unique",
+    "reference": "constraint asset_inventory_scan_unique on table public.asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_inventory_scans_pkey",
+    "reference": "constraint asset_inventory_scans_pkey on table public.asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_inventory_sessions_pkey",
+    "reference": "constraint asset_inventory_sessions_pkey on table public.asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_inventory_sessions_session_code_unique",
+    "reference": "constraint asset_inventory_sessions_session_code_unique on table public.asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_maintenance_records_pkey",
+    "reference": "constraint asset_maintenance_records_pkey on table public.asset_maintenance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.asset_reconciliations_pkey",
+    "reference": "constraint asset_reconciliations_pkey on table public.asset_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.assets_category_index",
+    "reference": "column category of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.assets_condition_index",
+    "reference": "column condition of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.assets_pkey",
+    "reference": "constraint assets_pkey on table public.assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.assets_property_number_unique",
+    "reference": "constraint assets_property_number_unique on table public.assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.assets_qr_value_unique",
+    "reference": "constraint assets_qr_value_unique on table public.assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.assets_reconciliation_status_index",
+    "reference": "column reconciliation_status of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.assets_serial_number_index",
+    "reference": "column serial_number of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.assets_status_index",
+    "reference": "column status of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.assets_warranty_until_index",
+    "reference": "column warranty_until of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_employee_id_occurred_at_index",
+    "reference": "column employee_id of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_employee_id_occurred_at_index",
+    "reference": "column occurred_at of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_event_type_index",
+    "reference": "column event_type of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_external_reference_index",
+    "reference": "column external_reference of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_occurred_at_index",
+    "reference": "column occurred_at of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.attendance_logs_pkey",
+    "reference": "constraint attendance_logs_pkey on table public.attendance_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.audit_logs_action_index",
+    "reference": "column action of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_correlation_id_index",
+    "reference": "column correlation_id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_created_at_index",
+    "reference": "column created_at of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_entity_id_index",
+    "reference": "column entity_id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_entity_type_index",
+    "reference": "column entity_type of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_outcome_index",
+    "reference": "column outcome of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.audit_logs_pkey",
+    "reference": "constraint audit_logs_pkey on table public.audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.calendar_events_department_id_starts_at_index",
+    "reference": "column department_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_department_id_starts_at_index",
+    "reference": "column starts_at of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_event_key_unique",
+    "reference": "constraint calendar_events_event_key_unique on table public.calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.calendar_events_event_type_index",
+    "reference": "column event_type of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_pkey",
+    "reference": "constraint calendar_events_pkey on table public.calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.calendar_events_priority_index",
+    "reference": "column priority of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_scope_index",
+    "reference": "column scope of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_source_domain_index",
+    "reference": "column source_domain of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_source_domain_source_id_index",
+    "reference": "column source_domain of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_source_domain_source_id_index",
+    "reference": "column source_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_starts_at_index",
+    "reference": "column starts_at of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_status_index",
+    "reference": "column status of table public.calendar_events",
+    "deptype": "a"
+  }
+]

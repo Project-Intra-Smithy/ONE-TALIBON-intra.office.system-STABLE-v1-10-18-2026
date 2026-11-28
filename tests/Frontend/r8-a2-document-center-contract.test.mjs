@@ -9,26 +9,29 @@ const archive = source('resources/js/components/documents/DocumentArchive.tsx');
 const metadata = source('resources/js/components/documents/DocumentMetadataPanel.tsx');
 const css = source('resources/css/r8-documents.css');
 test('server-backed records and files remain distinct modes', () => {
- assert.match(page, /mode === 'files' \? <DocumentArchive archive={archive}/);
+ assert.match(page, /mode === 'files' \? \(\s*<DocumentArchive archive={archive}/);
  assert.match(page, /mode: 'records'/);
  assert.match(archive, /mode: 'files'/);
  assert.match(page, /href="\/documents\?mode=files"/);
 });
-test('selected authorized record metadata has a dedicated desktop pane and mobile inline disclosure', () => {
- assert.match(page, /className="r8-documents-details"/);
- assert.match(page, /<DocumentMetadataPanel record={selected}/);
- assert.match(register, /aria-pressed={selected}/);
- assert.match(register, /aria-expanded={selected}/);
- assert.match(register, /dc-inline-metadata/);
- assert.match(metadata, /onClick={onClose}/);
- assert.match(css, /max-width:1279px/);
+test('selected metadata uses an accessible donor drawer and remains bound to current authorized records', () => {
+ assert.match(page, /records\.data\.find\(record => record\.detailUrl === selectedUrl\)/);
+ assert.match(page, /open={Boolean\(selectedRecord\)}/);
+ assert.match(page, /variant="drawer-right"/);
+ assert.match(page, /onClose={\(\) => setSelectedUrl\(null\)}/);
+ assert.match(page, /href={selectedRecord\.detailUrl}/);
+ assert.match(page, /selectedRecord\.source/);
+ assert.match(page, /selectedRecord\.assignedEmployee\?\.name/);
 });
 test('pagination, server filters and legitimate empty state are retained', () => {
  assert.match(page, /records\.next_page_url/);
  assert.match(page, /params\.set\('mode', 'records'\)/);
  assert.match(page, /date_from/);
  assert.match(page, /office_id/);
- assert.match(register, /No authorized records match these filters/);
+ assert.match(page, /No matching documents/);
+ assert.match(page, /draft\.date_from/);
+ assert.match(page, /draft\.date_to/);
+ assert.match(page, /permissions\.navigation/);
 });
 test('classification and file actions remain tied to server projection', () => {
  assert.match(archive, /classification: string/);
@@ -36,4 +39,13 @@ test('classification and file actions remain tied to server projection', () => {
  assert.match(archive, /selected\.downloadUrl/);
  assert.doesNotMatch(page + register + metadata, /UploadCloud|downloadUrl|uploadUrl/);
  assert.doesNotMatch(css, /(^|\n)\s*(html|body|:root)\b/);
+});
+
+test('authorized preview projection uses native isolated new-tab anchors and retains download', () => {
+ const evidence = source('resources/js/components/documents/EvidenceList.tsx');
+ assert.match(archive, /<a href=\{selected\.previewUrl\} target="_blank" rel="noopener noreferrer"/);
+ assert.match(evidence, /<a href=\{item\.previewUrl\} target="_blank" rel="noopener noreferrer"/);
+ assert.match(archive, /<a href=\{selected\.downloadUrl\}/);
+ assert.match(evidence, /href=\{item\.downloadUrl\}/);
+ assert.doesNotMatch(archive + evidence, /<iframe|createObjectURL|window\.open/);
 });

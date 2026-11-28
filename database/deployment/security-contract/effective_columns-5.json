@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.contract_end_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.date_of_birth",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.emergency_contact_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.emergency_contact_phone",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.emergency_contact_relationship",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.employee_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.employment_start_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.employment_status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.employment_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.full_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.gsis_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.home_address",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.mobile_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.pagibig_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.personal_email",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.philhealth_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.position_title",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.separation_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.supervisor_employee_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.tin_number",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.employees.work_email",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.initial_admin_bootstraps.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.initial_admin_bootstraps.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.initial_admin_bootstraps.user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.expires_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.integration_client_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.issued_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.issued_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.last_used_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.public_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.revoked_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.scopes",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.secret_hash",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_client_credentials.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.contact_email",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.contact_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.created_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.description",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.is_active",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.public_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.requests_per_minute",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_clients.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.completed_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.execution_attempts",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.failed_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.idempotency_key_hash",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.integration_client_credential_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.integration_client_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.operation",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.processing_token",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.request_fingerprint",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.response_body",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.response_status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.started_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_idempotency_records.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.integration_client_credential_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.integration_client_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.operation",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.public_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.integration_proof_writes.value",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.balance",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.employee_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.leave_type_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_accounts.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.actor_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.amount",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.entry_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.leave_credit_account_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.notes",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.source_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_credit_transactions.source_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.employee_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.end_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.leave_type_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.reason",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.review_notes",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.reviewed_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.leave_requests.reviewed_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  }
+]

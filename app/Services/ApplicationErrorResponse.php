@@ -16,6 +16,7 @@ class ApplicationErrorResponse
 
     private const NATIVE_ROUTE_NAMES = [
         'documents.download',
+        'documents.preview',
         'reports.export',
     ];
 

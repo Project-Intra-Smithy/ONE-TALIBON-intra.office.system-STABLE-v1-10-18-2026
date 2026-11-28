@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint employee_health_records_created_by_user_id_foreign on table public.employee_health_records",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_records_created_by_user_id_foreign on table public.employee_health_records",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_records_employee_id_foreign on table public.employee_health_records",
+    "reference": "column employee_id of table public.employee_health_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_records_employee_id_foreign on table public.employee_health_records",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_records_employee_id_foreign on table public.employee_health_records",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_records_pkey on table public.employee_health_records",
+    "reference": "column id of table public.employee_health_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_completed_by_user_id_foreign on table public.employee_movement_tasks",
+    "reference": "column completed_by_user_id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_completed_by_user_id_foreign on table public.employee_movement_tasks",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_completed_by_user_id_foreign on table public.employee_movement_tasks",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_employee_movement_id_foreign on table public.employee_movement_tasks",
+    "reference": "column employee_movement_id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_employee_movement_id_foreign on table public.employee_movement_tasks",
+    "reference": "column id of table public.employee_movements",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_employee_movement_id_foreign on table public.employee_movement_tasks",
+    "reference": "index public.employee_movements_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_employee_movement_id_task_key_unique on table public.employee_movement_tasks",
+    "reference": "column employee_movement_id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_employee_movement_id_task_key_unique on table public.employee_movement_tasks",
+    "reference": "column task_key of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_owner_department_id_foreign on table public.employee_movement_tasks",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_owner_department_id_foreign on table public.employee_movement_tasks",
+    "reference": "column owner_department_id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movement_tasks_owner_department_id_foreign on table public.employee_movement_tasks",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movement_tasks_pkey on table public.employee_movement_tasks",
+    "reference": "column id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_employee_id_foreign on table public.employee_movements",
+    "reference": "column employee_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_employee_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_employee_id_foreign on table public.employee_movements",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_from_department_id_foreign on table public.employee_movements",
+    "reference": "column from_department_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_from_department_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_from_department_id_foreign on table public.employee_movements",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_initiated_by_user_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_initiated_by_user_id_foreign on table public.employee_movements",
+    "reference": "column initiated_by_user_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_initiated_by_user_id_foreign on table public.employee_movements",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_new_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_new_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "column new_supervisor_employee_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_new_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_pkey on table public.employee_movements",
+    "reference": "column id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_previous_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_previous_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "column previous_supervisor_employee_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_previous_supervisor_employee_id_foreign on table public.employee_movements",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_to_department_id_foreign on table public.employee_movements",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_movements_to_department_id_foreign on table public.employee_movements",
+    "reference": "column to_department_id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_movements_to_department_id_foreign on table public.employee_movements",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_department_id_foreign on table public.employees",
+    "reference": "column department_id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employees_department_id_foreign on table public.employees",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_department_id_foreign on table public.employees",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_employee_number_unique on table public.employees",
+    "reference": "column employee_number of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employees_pkey on table public.employees",
+    "reference": "column id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employees_supervisor_employee_id_foreign on table public.employees",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_supervisor_employee_id_foreign on table public.employees",
+    "reference": "column supervisor_employee_id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employees_supervisor_employee_id_foreign on table public.employees",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_user_id_foreign on table public.employees",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_user_id_foreign on table public.employees",
+    "reference": "column user_id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employees_user_id_foreign on table public.employees",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employees_user_id_unique on table public.employees",
+    "reference": "column user_id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_namespace_id_locator_key on table legacy_custody.generations",
+    "reference": "column locator of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_namespace_id_locator_key on table legacy_custody.generations",
+    "reference": "column namespace_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_namespace_id_provider_object_identity_key on table legacy_custody.generations",
+    "reference": "column namespace_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_namespace_id_provider_object_identity_key on table legacy_custody.generations",
+    "reference": "column provider_object_identity of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_key on table legacy_custody.generations",
+    "reference": "column generation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_key on table legacy_custody.generations",
+    "reference": "column operation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_key on table legacy_custody.generations",
+    "reference": "column ordinal of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column epoch of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column epoch of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column generation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column generation_id of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column locator of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column locator of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column mime_type of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column mime_type of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column namespace_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column namespace_id of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column operation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column operation_id of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column ordinal of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column ordinal of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column sha256 of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column sha256 of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column size_bytes of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "column size_bytes of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_operation_id_ordinal_generation_id_namespace_i_fkey on table legacy_custody.generations",
+    "reference": "index legacy_custody.operation_items_operation_id_ordinal_generation_id_namespac_key",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_pkey on table legacy_custody.generations",
+    "reference": "column generation_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_provider_object_identity_check on table legacy_custody.generations",
+    "reference": "column provider_object_identity of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_provider_object_identity_check on table legacy_custody.generations",
+    "reference": "column provider_object_identity of table legacy_custody.generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_staged_fence_check on table legacy_custody.generations",
+    "reference": "column staged_fence of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint generations_staged_fence_check on table legacy_custody.generations",
+    "reference": "column staged_fence of table legacy_custody.generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint generations_staging_receipt_id_key on table legacy_custody.generations",
+    "reference": "column staging_receipt_id of table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint initial_admin_bootstraps_pkey on table public.initial_admin_bootstraps",
+    "reference": "column id of table public.initial_admin_bootstraps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint initial_admin_bootstraps_user_id_foreign on table public.initial_admin_bootstraps",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint initial_admin_bootstraps_user_id_foreign on table public.initial_admin_bootstraps",
+    "reference": "column user_id of table public.initial_admin_bootstraps",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint initial_admin_bootstraps_user_id_foreign on table public.initial_admin_bootstraps",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_authority_check on table deployment_control.installations",
+    "reference": "column authority of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_authority_check on table deployment_control.installations",
+    "reference": "column authority of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_format_check on table deployment_control.installations",
+    "reference": "column format of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_format_check on table deployment_control.installations",
+    "reference": "column format of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_installation_id_key on table deployment_control.installations",
+    "reference": "column installation_id of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_ledger_sha256_check on table deployment_control.installations",
+    "reference": "column ledger_sha256 of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_ledger_sha256_check on table deployment_control.installations",
+    "reference": "column ledger_sha256 of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_package_sha256_check on table deployment_control.installations",
+    "reference": "column package_sha256 of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_package_sha256_check on table deployment_control.installations",
+    "reference": "column package_sha256 of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_pkey on table deployment_control.installations",
+    "reference": "column singleton of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_singleton_check on table deployment_control.installations",
+    "reference": "column singleton of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_singleton_check on table deployment_control.installations",
+    "reference": "column singleton of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_source_sha_check on table deployment_control.installations",
+    "reference": "column source_sha of table deployment_control.installations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint installations_source_sha_check on table deployment_control.installations",
+    "reference": "column source_sha of table deployment_control.installations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint installations_tree_sha_check on table deployment_control.installations",
+    "reference": "column tree_sha of table deployment_control.installations",
+    "deptype": "a"
+  }
+]

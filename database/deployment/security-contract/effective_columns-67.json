@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.instructions",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.owning_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.source_domain",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.source_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.source_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.state",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.task_kind",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.tasks.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.action",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.from_assigned_employee_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.from_department_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.new_status",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.previous_status",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.remarks",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.to_assigned_employee_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.to_department_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transaction_events.transaction_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.action_required",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.assigned_employee_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.assigned_to_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.closed_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.completed_at",
+    "rights": "{t,f,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.created_by_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.current_department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.description",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.due_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.origin_department_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.priority",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.received_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.reference_no",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.request_category",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.request_type",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.title",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.transaction_type",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.transactions.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee.created_at",
+    "rights": "{f,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee.employee_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee.travel_order_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_employee.updated_at",
+    "rights": "{f,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.event",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.from_status",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.occurred_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.remarks",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.to_status",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_order_events.travel_order_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.department_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.destination",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.issuance_date",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.public_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.purpose",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.recorded_by_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.reference_number",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.status_updated_by_user_id",
+    "rights": "{t,f,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.travel_end_date",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.travel_start_date",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.travel_orders.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.account_status",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.email",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.email_verified_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.is_active",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.last_seen_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.mfa_confirmed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.mfa_recovery_codes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.mfa_recovery_codes_generated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.mfa_secret",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.mfa_version",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.password",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.remember_token",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.role",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.session_version",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.suspended_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.suspended_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.users.username",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.authority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.format",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.installation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.ledger_sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.package_sha256",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.singleton",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.source_sha",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "deployment_control.installations.tree_sha",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

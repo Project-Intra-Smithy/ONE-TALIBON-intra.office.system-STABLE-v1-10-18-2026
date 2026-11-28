@@ -1,0 +1,34 @@
+type Props = {
+    offices: string[];
+    size?: 'sm' | 'md';
+};
+
+function initials(office: string): string {
+    return office
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0])
+        .join('')
+        .toUpperCase();
+}
+
+export default function GroupIdentity({ offices, size = 'md' }: Props) {
+    const visible = offices.slice(0, 3);
+    const dimensions = size === 'sm' ? 'h-7 w-7 text-xs' : 'h-9 w-9 text-xs';
+
+    return (
+        <div className="flex -space-x-2" aria-hidden="true">
+            {visible.map((office, index) => (
+                <div
+                    key={office}
+                    className={`${dimensions} flex items-center justify-center rounded-full border-2 border-[var(--surface-card)] bg-[var(--brand-soft)] font-bold text-[var(--brand-ink)] ring-1 ring-[var(--brand-soft-border)]`}
+                    style={{ zIndex: visible.length - index }}
+                    title={office}
+                >
+                    {initials(office)}
+                </div>
+            ))}
+        </div>
+    );
+}

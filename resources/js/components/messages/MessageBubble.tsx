@@ -28,12 +28,12 @@ export default function MessageBubble({ message, showSender }: Props) {
             >
                 {!message.isMine && showSender && (
                     <div className="mb-1.5">
-                        <div className="text-[11px] font-bold text-[var(--municipal-brand)]">{sender}</div>
+                        <div className="text-[11px] font-bold text-[var(--brand-ink)]">{sender}</div>
                         {office && <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{office}</div>}
                     </div>
                 )}
                 <p className="whitespace-pre-wrap break-words text-sm leading-5">{message.body}</p>
-                <div className={`mt-1 text-right text-[9px] ${message.isMine ? 'text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)]'}`}>
+                <div className={`mt-1 text-right text-[9px] ${message.isMine ? 'text-[var(--brand-ink)]' : 'text-[var(--municipal-muted)]'}`}>
                     <time dateTime={message.createdAt}>{time}</time>
                 </div>
             </article>

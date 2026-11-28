@@ -2,9 +2,9 @@
 
 use App\Http\Middleware\AssignIntegrationCorrelationId;
 use App\Http\Middleware\AssignRequestId;
-use App\Http\Middleware\EnsureTaskJsonAccept;
 use App\Http\Middleware\AuditIntegrationRequest;
 use App\Http\Middleware\AuthenticateIntegrationClient;
+use App\Http\Middleware\EnsureTaskJsonAccept;
 use App\Http\Middleware\ExecuteIdempotentIntegrationRequest;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireActiveAccount;
@@ -13,10 +13,12 @@ use App\Http\Middleware\RequireIntegrationScope;
 use App\Http\Middleware\RequireMfaAssurance;
 use App\Http\Middleware\RequireMfaSubject;
 use App\Http\Middleware\ThrottleIntegrationClient;
+use App\Http\Middleware\TrustConfiguredProxies;
 use App\Services\ApplicationErrorResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->trustProxies(at: '*');
+        $middleware->replace(TrustProxies::class, TrustConfiguredProxies::class);
         // Normalize /tasks requests before web auth, CSRF or exception handling.
         $middleware->prepend(EnsureTaskJsonAccept::class);
         $middleware->append(AssignRequestId::class);
@@ -47,6 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->dontFlash(['code', 'recovery_code']);
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request): Response {
             return app(ApplicationErrorResponse::class)->respond($response, $exception, $request);
         });

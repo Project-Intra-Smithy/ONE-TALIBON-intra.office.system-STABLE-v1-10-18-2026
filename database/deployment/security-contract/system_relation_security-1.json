@@ -1,0 +1,5424 @@
+[
+  {
+    "name": "pg_catalog.pg_cast_source_target_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_class",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_class_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_class_relname_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_class_tblspc_relfilenode_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_collation",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_collation_name_enc_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_collation_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_config",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": " SELECT name,\n    setting\n   FROM pg_config() pg_config(name, setting);"
+  },
+  {
+    "name": "pg_catalog.pg_constraint",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_constraint_conname_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_constraint_conparentid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_constraint_conrelid_contypid_conname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_constraint_contypid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_constraint_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_conversion",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_conversion_default_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_conversion_name_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_conversion_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_cursors",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT name,\n    statement,\n    is_holdable,\n    is_binary,\n    is_scrollable,\n    creation_time\n   FROM pg_cursor() c(name, statement, is_holdable, is_binary, is_scrollable, creation_time);"
+  },
+  {
+    "name": "pg_catalog.pg_database",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_database_datname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_database_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_db_role_setting",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_db_role_setting_databaseid_rol_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_default_acl",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_default_acl_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_default_acl_role_nsp_obj_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_depend",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_depend_depender_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_depend_reference_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_description",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_description_o_c_o_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_enum",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_enum_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_enum_typid_label_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_enum_typid_sortorder_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_event_trigger",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_event_trigger_evtname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_event_trigger_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_extension",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_extension_name_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_extension_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_file_settings",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": " SELECT sourcefile,\n    sourceline,\n    seqno,\n    name,\n    setting,\n    applied,\n    error\n   FROM pg_show_all_file_settings() a(sourcefile, sourceline, seqno, name, setting, applied, error);"
+  },
+  {
+    "name": "pg_catalog.pg_foreign_data_wrapper",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_data_wrapper_name_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_data_wrapper_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_server",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_server_name_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_server_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_table",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_foreign_table_relid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_group",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT rolname AS groname,\n    oid AS grosysid,\n    ARRAY( SELECT pg_auth_members.member\n           FROM pg_auth_members\n          WHERE pg_auth_members.roleid = pg_authid.oid) AS grolist\n   FROM pg_authid\n  WHERE NOT rolcanlogin;"
+  },
+  {
+    "name": "pg_catalog.pg_hba_file_rules",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": " SELECT rule_number,\n    file_name,\n    line_number,\n    type,\n    database,\n    user_name,\n    address,\n    netmask,\n    auth_method,\n    options,\n    error\n   FROM pg_hba_file_rules() a(rule_number, file_name, line_number, type, database, user_name, address, netmask, auth_method, options, error);"
+  },
+  {
+    "name": "pg_catalog.pg_ident_file_mappings",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": " SELECT map_number,\n    file_name,\n    line_number,\n    map_name,\n    sys_name,\n    pg_username,\n    error\n   FROM pg_ident_file_mappings() a(map_number, file_name, line_number, map_name, sys_name, pg_username, error);"
+  },
+  {
+    "name": "pg_catalog.pg_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_index_indexrelid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_index_indrelid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_indexes",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT n.nspname AS schemaname,\n    c.relname AS tablename,\n    i.relname AS indexname,\n    t.spcname AS tablespace,\n    pg_get_indexdef(i.oid) AS indexdef\n   FROM pg_index x\n     JOIN pg_class c ON c.oid = x.indrelid\n     JOIN pg_class i ON i.oid = x.indexrelid\n     LEFT JOIN pg_namespace n ON n.oid = c.relnamespace\n     LEFT JOIN pg_tablespace t ON t.oid = i.reltablespace\n  WHERE (c.relkind = ANY (ARRAY['r'::\"char\", 'm'::\"char\", 'p'::\"char\"])) AND (i.relkind = ANY (ARRAY['i'::\"char\", 'I'::\"char\"]));"
+  },
+  {
+    "name": "pg_catalog.pg_inherits",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_inherits_parent_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_inherits_relid_seqno_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_init_privs",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_init_privs_o_c_o_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_language",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_language_name_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_language_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_largeobject",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_largeobject_loid_pn_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_largeobject_metadata",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_largeobject_metadata_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_locks",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT locktype,\n    database,\n    relation,\n    page,\n    tuple,\n    virtualxid,\n    transactionid,\n    classid,\n    objid,\n    objsubid,\n    virtualtransaction,\n    pid,\n    mode,\n    granted,\n    fastpath,\n    waitstart\n   FROM pg_lock_status() l(locktype, database, relation, page, tuple, virtualxid, transactionid, classid, objid, objsubid, virtualtransaction, pid, mode, granted, fastpath, waitstart);"
+  },
+  {
+    "name": "pg_catalog.pg_matviews",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT n.nspname AS schemaname,\n    c.relname AS matviewname,\n    pg_get_userbyid(c.relowner) AS matviewowner,\n    t.spcname AS tablespace,\n    c.relhasindex AS hasindexes,\n    c.relispopulated AS ispopulated,\n    pg_get_viewdef(c.oid) AS definition\n   FROM pg_class c\n     LEFT JOIN pg_namespace n ON n.oid = c.relnamespace\n     LEFT JOIN pg_tablespace t ON t.oid = c.reltablespace\n  WHERE c.relkind = 'm'::\"char\";"
+  },
+  {
+    "name": "pg_catalog.pg_namespace",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_namespace_nspname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_namespace_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opclass",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opclass_am_name_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opclass_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_operator",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_operator_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_operator_oprname_l_r_n_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opfamily",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opfamily_am_name_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_opfamily_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_parameter_acl",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_parameter_acl_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_parameter_acl_parname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_partitioned_table",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_partitioned_table_partrelid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_policies",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT n.nspname AS schemaname,\n    c.relname AS tablename,\n    pol.polname AS policyname,\n        CASE\n            WHEN pol.polpermissive THEN 'PERMISSIVE'::text\n            ELSE 'RESTRICTIVE'::text\n        END AS permissive,\n        CASE\n            WHEN pol.polroles = '{0}'::oid[] THEN string_to_array('public'::text, ''::text)::name[]\n            ELSE ARRAY( SELECT pg_authid.rolname\n               FROM pg_authid\n              WHERE pg_authid.oid = ANY (pol.polroles)\n              ORDER BY pg_authid.rolname)\n        END AS roles,\n        CASE pol.polcmd\n            WHEN 'r'::\"char\" THEN 'SELECT'::text\n            WHEN 'a'::\"char\" THEN 'INSERT'::text\n            WHEN 'w'::\"char\" THEN 'UPDATE'::text\n            WHEN 'd'::\"char\" THEN 'DELETE'::text\n            WHEN '*'::\"char\" THEN 'ALL'::text\n            ELSE NULL::text\n        END AS cmd,\n    pg_get_expr(pol.polqual, pol.polrelid) AS qual,\n    pg_get_expr(pol.polwithcheck, pol.polrelid) AS with_check\n   FROM pg_policy pol\n     JOIN pg_class c ON c.oid = pol.polrelid\n     LEFT JOIN pg_namespace n ON n.oid = c.relnamespace;"
+  },
+  {
+    "name": "pg_catalog.pg_policy",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_policy_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_policy_polrelid_polname_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_prepared_statements",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT name,\n    statement,\n    prepare_time,\n    parameter_types,\n    result_types,\n    from_sql,\n    generic_plans,\n    custom_plans\n   FROM pg_prepared_statement() p(name, statement, prepare_time, parameter_types, result_types, from_sql, generic_plans, custom_plans);"
+  },
+  {
+    "name": "pg_catalog.pg_prepared_xacts",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": " SELECT p.transaction,\n    p.gid,\n    p.prepared,\n    u.rolname AS owner,\n    d.datname AS database\n   FROM pg_prepared_xact() p(transaction, gid, prepared, ownerid, dbid)\n     LEFT JOIN pg_authid u ON p.ownerid = u.oid\n     LEFT JOIN pg_database d ON p.dbid = d.oid;"
+  },
+  {
+    "name": "pg_catalog.pg_proc",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_proc_oid_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_proc_proname_args_nsp_index",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "pg_catalog.pg_publication",
+    "owner": "@bootstrap",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "DELETE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "INSERT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "REFERENCES",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "SELECT",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRIGGER",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "UPDATE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ],
+    "definition": null
+  }
+]

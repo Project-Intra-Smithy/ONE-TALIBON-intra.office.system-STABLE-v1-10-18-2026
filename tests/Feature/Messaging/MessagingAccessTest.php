@@ -36,6 +36,7 @@ final class MessagingAccessTest extends TestCase
         $user = $this->makeUser(true);
 
         $this->be($user)
+            ->withSession(['auth_session_version' => (int) $user->session_version])
             ->get(route('messages.feed.index', ['channel' => 'General']))
             ->assertRedirect(route('mfa.enroll'));
     }

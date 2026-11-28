@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint correspondence_records_routed_by_user_id_foreign on table public.correspondence_records",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint correspondence_records_workflow_transaction_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.transactions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint correspondence_records_workflow_transaction_id_foreign on table public.correspondence_records",
+    "reference": "column workflow_transaction_id of table public.correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint correspondence_records_workflow_transaction_id_foreign on table public.correspondence_records",
+    "reference": "index public.transactions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint correspondence_records_workflow_transaction_id_unique on table public.correspondence_records",
+    "reference": "column workflow_transaction_id of table public.correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint correspondence_reference_counters_pkey on table public.correspondence_reference_counters",
+    "reference": "column year of table public.correspondence_reference_counters",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint departments_code_unique on table public.departments",
+    "reference": "column code of table public.departments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint departments_parent_department_id_foreign on table public.departments",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint departments_parent_department_id_foreign on table public.departments",
+    "reference": "column parent_department_id of table public.departments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint departments_parent_department_id_foreign on table public.departments",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint departments_pkey on table public.departments",
+    "reference": "column id of table public.departments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_department_id_foreign on table public.designated_planning_staff",
+    "reference": "column department_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_department_id_foreign on table public.designated_planning_staff",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_department_id_foreign on table public.designated_planning_staff",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_designated_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column designated_by_user_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_designated_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_designated_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_employee_id_foreign on table public.designated_planning_staff",
+    "reference": "column employee_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_employee_id_foreign on table public.designated_planning_staff",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_employee_id_foreign on table public.designated_planning_staff",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_pkey on table public.designated_planning_staff",
+    "reference": "column id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_revoked_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_revoked_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column revoked_by_user_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_revoked_by_user_id_foreign on table public.designated_planning_staff",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint designated_planning_staff_user_id_foreign on table public.designated_planning_staff",
+    "reference": "column user_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint designated_planning_staff_user_id_foreign on table public.designated_planning_staff",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_code_unique on table public.development_plans",
+    "reference": "column code of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_created_by_user_id_foreign on table public.development_plans",
+    "reference": "column created_by_user_id of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_created_by_user_id_foreign on table public.development_plans",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_created_by_user_id_foreign on table public.development_plans",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_lead_department_id_foreign on table public.development_plans",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_lead_department_id_foreign on table public.development_plans",
+    "reference": "column lead_department_id of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_lead_department_id_foreign on table public.development_plans",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_pkey on table public.development_plans",
+    "reference": "column id of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_plan_key_unique on table public.development_plans",
+    "reference": "column plan_key of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_updated_by_user_id_foreign on table public.development_plans",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint development_plans_updated_by_user_id_foreign on table public.development_plans",
+    "reference": "column updated_by_user_id of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint development_plans_updated_by_user_id_foreign on table public.development_plans",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint document_links_created_by_user_id_foreign on table public.document_links",
+    "reference": "column created_by_user_id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_created_by_user_id_foreign on table public.document_links",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint document_links_created_by_user_id_foreign on table public.document_links",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint document_links_document_id_foreign on table public.document_links",
+    "reference": "column document_id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_document_id_foreign on table public.document_links",
+    "reference": "column id of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint document_links_document_id_foreign on table public.document_links",
+    "reference": "index public.documents_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint document_links_pkey on table public.document_links",
+    "reference": "column id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_unique on table public.document_links",
+    "reference": "column document_id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_unique on table public.document_links",
+    "reference": "column linkable_id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_unique on table public.document_links",
+    "reference": "column linkable_type of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint document_links_unique on table public.document_links",
+    "reference": "column relationship of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_owner_department_id_foreign on table public.documents",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint documents_owner_department_id_foreign on table public.documents",
+    "reference": "column owner_department_id of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_owner_department_id_foreign on table public.documents",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint documents_pkey on table public.documents",
+    "reference": "column id of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_plan_origin_domain_check on table public.documents",
+    "reference": "column security_domain of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_plan_origin_domain_check on table public.documents",
+    "reference": "column security_domain of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint documents_public_id_unique on table public.documents",
+    "reference": "column public_id of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_uploaded_by_user_id_foreign on table public.documents",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint documents_uploaded_by_user_id_foreign on table public.documents",
+    "reference": "column uploaded_by_user_id of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint documents_uploaded_by_user_id_foreign on table public.documents",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_daily_employee_date_unique on table public.dtr_daily_summaries",
+    "reference": "column dtr_period_id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_daily_employee_date_unique on table public.dtr_daily_summaries",
+    "reference": "column employee_id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_daily_employee_date_unique on table public.dtr_daily_summaries",
+    "reference": "column work_date of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_dtr_period_id_foreign on table public.dtr_daily_summaries",
+    "reference": "column dtr_period_id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_dtr_period_id_foreign on table public.dtr_daily_summaries",
+    "reference": "column id of table public.dtr_periods",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_dtr_period_id_foreign on table public.dtr_daily_summaries",
+    "reference": "index public.dtr_periods_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_employee_id_foreign on table public.dtr_daily_summaries",
+    "reference": "column employee_id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_employee_id_foreign on table public.dtr_daily_summaries",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_employee_id_foreign on table public.dtr_daily_summaries",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_daily_summaries_pkey on table public.dtr_daily_summaries",
+    "reference": "column id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_periods_generated_by_user_id_foreign on table public.dtr_periods",
+    "reference": "column generated_by_user_id of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_periods_generated_by_user_id_foreign on table public.dtr_periods",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_periods_generated_by_user_id_foreign on table public.dtr_periods",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_periods_locked_by_user_id_foreign on table public.dtr_periods",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_periods_locked_by_user_id_foreign on table public.dtr_periods",
+    "reference": "column locked_by_user_id of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_periods_locked_by_user_id_foreign on table public.dtr_periods",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint dtr_periods_period_start_period_end_unique on table public.dtr_periods",
+    "reference": "column period_end of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_periods_period_start_period_end_unique on table public.dtr_periods",
+    "reference": "column period_start of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint dtr_periods_pkey on table public.dtr_periods",
+    "reference": "column id of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_development_records_created_by_user_id_foreign on table public.employee_development_records",
+    "reference": "column created_by_user_id of table public.employee_development_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_development_records_created_by_user_id_foreign on table public.employee_development_records",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_development_records_created_by_user_id_foreign on table public.employee_development_records",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_development_records_employee_id_foreign on table public.employee_development_records",
+    "reference": "column employee_id of table public.employee_development_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_development_records_employee_id_foreign on table public.employee_development_records",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_development_records_employee_id_foreign on table public.employee_development_records",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_development_records_pkey on table public.employee_development_records",
+    "reference": "column id of table public.employee_development_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_employee_id_foreign on table public.employee_health_access_grants",
+    "reference": "column employee_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_employee_id_foreign on table public.employee_health_access_grants",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_employee_id_foreign on table public.employee_health_access_grants",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_granted_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column granted_by_user_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_granted_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_granted_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_pkey on table public.employee_health_access_grants",
+    "reference": "column id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_revoked_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_revoked_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column revoked_by_user_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_revoked_by_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_access_grants_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "column user_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint employee_health_access_grants_user_id_foreign on table public.employee_health_access_grants",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint employee_health_records_created_by_user_id_foreign on table public.employee_health_records",
+    "reference": "column created_by_user_id of table public.employee_health_records",
+    "deptype": "a"
+  }
+]

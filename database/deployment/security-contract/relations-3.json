@@ -1,0 +1,5510 @@
+[
+  {
+    "name": "public.memo_recipients_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX memo_recipients_pkey ON public.memo_recipients USING btree (id)"
+  },
+  {
+    "name": "public.memo_recipients_user_id_viewed_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX memo_recipients_user_id_viewed_at_index ON public.memo_recipients USING btree (user_id, viewed_at)"
+  },
+  {
+    "name": "public.memo_recipients_viewed_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX memo_recipients_viewed_at_index ON public.memo_recipients USING btree (viewed_at)"
+  },
+  {
+    "name": "public.memoranda",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.memoranda_expires_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX memoranda_expires_at_index ON public.memoranda USING btree (expires_at)"
+  },
+  {
+    "name": "public.memoranda_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.memoranda_memo_number_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX memoranda_memo_number_unique ON public.memoranda USING btree (memo_number)"
+  },
+  {
+    "name": "public.memoranda_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX memoranda_pkey ON public.memoranda USING btree (id)"
+  },
+  {
+    "name": "public.memoranda_published_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX memoranda_published_at_index ON public.memoranda USING btree (published_at)"
+  },
+  {
+    "name": "public.memoranda_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX memoranda_status_index ON public.memoranda USING btree (status)"
+  },
+  {
+    "name": "public.migrations",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.migrations_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.migrations_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX migrations_pkey ON public.migrations USING btree (id)"
+  },
+  {
+    "name": "public.n03_audit_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_audit_tuple ON public.audit_logs USING btree (id, custody_operation_id, entity_id)"
+  },
+  {
+    "name": "public.n03_correspondence_event_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_correspondence_event_tuple ON public.correspondence_events USING btree (id, correspondence_record_id, actor_user_id, event, office_department_id, correlation_id, n03_municipal_actor)"
+  },
+  {
+    "name": "public.n03_document_binding_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_document_binding_tuple ON public.documents USING btree (id, public_id, custody_operation_id, custody_ordinal)"
+  },
+  {
+    "name": "public.n03_document_item_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_document_item_unique ON public.documents USING btree (custody_operation_id, custody_ordinal)"
+  },
+  {
+    "name": "public.n03_document_op_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_document_op_unique ON public.documents USING btree (id, custody_operation_id)"
+  },
+  {
+    "name": "public.n03_link_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_link_tuple ON public.document_links USING btree (id, document_id, linkable_type, linkable_id, relationship, created_by_user_id)"
+  },
+  {
+    "name": "public.n03_marked_audit_operation",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX n03_marked_audit_operation ON public.audit_logs USING btree (custody_operation_id) WHERE (custody_operation_id IS NOT NULL)"
+  },
+  {
+    "name": "public.n03_one_marked_upload",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_one_marked_upload ON public.audit_logs USING btree (entity_id) WHERE (custody_operation_id IS NOT NULL)"
+  },
+  {
+    "name": "public.n03_transaction_event_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_transaction_event_tuple ON public.transaction_events USING btree (id, transaction_id, actor_user_id, action)"
+  },
+  {
+    "name": "public.n03_travel_event_tuple",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX n03_travel_event_tuple ON public.travel_order_events USING btree (id, travel_order_id, actor_user_id, event)"
+  },
+  {
+    "name": "public.offboarding_cases",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.offboarding_cases_employee_id_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX offboarding_cases_employee_id_status_index ON public.offboarding_cases USING btree (employee_id, status)"
+  },
+  {
+    "name": "public.offboarding_cases_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.offboarding_cases_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX offboarding_cases_pkey ON public.offboarding_cases USING btree (id)"
+  },
+  {
+    "name": "public.offboarding_tasks",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.offboarding_tasks_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.offboarding_tasks_offboarding_case_id_task_key_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX offboarding_tasks_offboarding_case_id_task_key_unique ON public.offboarding_tasks USING btree (offboarding_case_id, task_key)"
+  },
+  {
+    "name": "public.offboarding_tasks_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX offboarding_tasks_pkey ON public.offboarding_tasks USING btree (id)"
+  },
+  {
+    "name": "public.onboarding_cases",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.onboarding_cases_employee_id_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX onboarding_cases_employee_id_unique ON public.onboarding_cases USING btree (employee_id)"
+  },
+  {
+    "name": "public.onboarding_cases_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.onboarding_cases_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX onboarding_cases_pkey ON public.onboarding_cases USING btree (id)"
+  },
+  {
+    "name": "public.onboarding_cases_planned_start_date_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_cases_planned_start_date_index ON public.onboarding_cases USING btree (planned_start_date)"
+  },
+  {
+    "name": "public.onboarding_cases_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_cases_status_index ON public.onboarding_cases USING btree (status)"
+  },
+  {
+    "name": "public.onboarding_tasks",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.onboarding_tasks_category_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_tasks_category_index ON public.onboarding_tasks USING btree (category)"
+  },
+  {
+    "name": "public.onboarding_tasks_due_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_tasks_due_at_index ON public.onboarding_tasks USING btree (due_at)"
+  },
+  {
+    "name": "public.onboarding_tasks_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.onboarding_tasks_is_required_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_tasks_is_required_index ON public.onboarding_tasks USING btree (is_required)"
+  },
+  {
+    "name": "public.onboarding_tasks_onboarding_case_id_task_key_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX onboarding_tasks_onboarding_case_id_task_key_unique ON public.onboarding_tasks USING btree (onboarding_case_id, task_key)"
+  },
+  {
+    "name": "public.onboarding_tasks_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX onboarding_tasks_pkey ON public.onboarding_tasks USING btree (id)"
+  },
+  {
+    "name": "public.onboarding_tasks_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX onboarding_tasks_status_index ON public.onboarding_tasks USING btree (status)"
+  },
+  {
+    "name": "public.operational_items",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.operational_items_department_id_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_department_id_status_index ON public.operational_items USING btree (department_id, status)"
+  },
+  {
+    "name": "public.operational_items_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.operational_items_item_type_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_item_type_index ON public.operational_items USING btree (item_type)"
+  },
+  {
+    "name": "public.operational_items_item_type_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_item_type_status_index ON public.operational_items USING btree (item_type, status)"
+  },
+  {
+    "name": "public.operational_items_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX operational_items_pkey ON public.operational_items USING btree (id)"
+  },
+  {
+    "name": "public.operational_items_priority_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_priority_index ON public.operational_items USING btree (priority)"
+  },
+  {
+    "name": "public.operational_items_reference_no_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX operational_items_reference_no_unique ON public.operational_items USING btree (reference_no)"
+  },
+  {
+    "name": "public.operational_items_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_status_index ON public.operational_items USING btree (status)"
+  },
+  {
+    "name": "public.operational_items_target_date_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX operational_items_target_date_index ON public.operational_items USING btree (target_date)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_operation_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_close_audit_bindings_operation_id_key ON public.ops009_close_audit_bindings USING btree (operation_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_close_audit_bindings_pkey ON public.ops009_close_audit_bindings USING btree (audit_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_transaction_event_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_close_audit_bindings_transaction_event_id_key ON public.ops009_close_audit_bindings USING btree (transaction_event_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings_transaction_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_close_audit_bindings_transaction_id_key ON public.ops009_close_audit_bindings USING btree (transaction_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_action_exception_id_action_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exception_action_exception_id_action_key ON public.ops009_origin_delivery_exception_actions USING btree (exception_id, action)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exception_actions_pkey ON public.ops009_origin_delivery_exception_actions USING btree (id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_operation_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exceptions_operation_id_key ON public.ops009_origin_delivery_exceptions USING btree (operation_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exceptions_pkey ON public.ops009_origin_delivery_exceptions USING btree (id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_transaction_event_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exceptions_transaction_event_id_key ON public.ops009_origin_delivery_exceptions USING btree (transaction_event_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions_transaction_id_key",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX ops009_origin_delivery_exceptions_transaction_id_key ON public.ops009_origin_delivery_exceptions USING btree (transaction_id)"
+  },
+  {
+    "name": "public.outbox_messages",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.outbox_messages_available_at_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX outbox_messages_available_at_index ON public.outbox_messages USING btree (available_at)"
+  },
+  {
+    "name": "public.outbox_messages_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.outbox_messages_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX outbox_messages_pkey ON public.outbox_messages USING btree (id)"
+  },
+  {
+    "name": "public.outbox_messages_public_id_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX outbox_messages_public_id_unique ON public.outbox_messages USING btree (public_id)"
+  },
+  {
+    "name": "public.outbox_messages_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX outbox_messages_status_index ON public.outbox_messages USING btree (status)"
+  },
+  {
+    "name": "public.outbox_pending_dispatch_idx",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX outbox_pending_dispatch_idx ON public.outbox_messages USING btree (status, available_at)"
+  },
+  {
+    "name": "public.password_reset_tokens",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.password_reset_tokens_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX password_reset_tokens_pkey ON public.password_reset_tokens USING btree (email)"
+  },
+  {
+    "name": "public.payroll_entries",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.payroll_entries_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.payroll_entries_payroll_period_id_employee_id_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX payroll_entries_payroll_period_id_employee_id_unique ON public.payroll_entries USING btree (payroll_period_id, employee_id)"
+  },
+  {
+    "name": "public.payroll_entries_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX payroll_entries_pkey ON public.payroll_entries USING btree (id)"
+  },
+  {
+    "name": "public.payroll_entries_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX payroll_entries_status_index ON public.payroll_entries USING btree (status)"
+  },
+  {
+    "name": "public.payroll_periods",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.payroll_periods_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.payroll_periods_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX payroll_periods_pkey ON public.payroll_periods USING btree (id)"
+  },
+  {
+    "name": "public.payroll_periods_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX payroll_periods_status_index ON public.payroll_periods USING btree (status)"
+  },
+  {
+    "name": "public.performance_records",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.performance_records_employee_id_period_end_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX performance_records_employee_id_period_end_index ON public.performance_records USING btree (employee_id, period_end)"
+  },
+  {
+    "name": "public.performance_records_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.performance_records_period_end_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX performance_records_period_end_index ON public.performance_records USING btree (period_end)"
+  },
+  {
+    "name": "public.performance_records_period_start_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX performance_records_period_start_index ON public.performance_records USING btree (period_start)"
+  },
+  {
+    "name": "public.performance_records_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX performance_records_pkey ON public.performance_records USING btree (id)"
+  },
+  {
+    "name": "public.performance_records_status_index",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE INDEX performance_records_status_index ON public.performance_records USING btree (status)"
+  },
+  {
+    "name": "public.plan_bindings_edition_role_revision_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX plan_bindings_edition_role_revision_unique ON public.plan_document_bindings USING btree (plan_edition_id, role, revision_no)"
+  },
+  {
+    "name": "public.plan_custody_events",
+    "relkind": "r",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_custody",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_custody",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.plan_custody_events_event_id_unique",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX plan_custody_events_event_id_unique ON public.plan_custody_events USING btree (event_id)"
+  },
+  {
+    "name": "public.plan_custody_events_id_seq",
+    "relkind": "S",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_custody",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_custody",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ],
+    "definition": null
+  },
+  {
+    "name": "public.plan_custody_events_pkey",
+    "relkind": "i",
+    "relpersistence": "p",
+    "owner": "kirion_g1b_owner",
+    "relrowsecurity": false,
+    "relforcerowsecurity": false,
+    "reloptions": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "DELETE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "REFERENCES",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRIGGER",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "TRUNCATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "UPDATE",
+        false
+      ]
+    ],
+    "definition": "CREATE UNIQUE INDEX plan_custody_events_pkey ON public.plan_custody_events USING btree (id)"
+  }
+]

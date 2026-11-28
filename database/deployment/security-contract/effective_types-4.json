@@ -1,0 +1,602 @@
+[
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.classification_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.command_results",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.compensation_outcomes",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.compensation_tombstones",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.namespaces",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.operation_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.operation_gates",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.operation_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.operations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.ownership_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.terminal_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "legacy_custody.watermark_checkpoints",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_assignments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_disposals",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_inventory_scans",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_inventory_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_maintenance_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._asset_reconciliations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._assets",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._attendance_logs",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._audit_logs",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._calendar_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._correspondence_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._correspondence_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._correspondence_reference_counters",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._departments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._designated_planning_staff",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._development_plans",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._document_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._documents",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._dtr_daily_summaries",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._dtr_periods",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employee_development_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employee_health_access_grants",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employee_health_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employee_movement_tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employee_movements",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._employees",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._initial_admin_bootstraps",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._integration_client_credentials",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._integration_clients",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._integration_idempotency_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._integration_proof_writes",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._leave_credit_accounts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._leave_credit_transactions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._leave_requests",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._leave_types",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._legislative_agenda_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._legislative_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._legislative_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._memo_recipients",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._memoranda",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._migrations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._offboarding_cases",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._offboarding_tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._onboarding_cases",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._onboarding_tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._operational_items",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._ops009_close_audit_bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._ops009_origin_delivery_exception_actions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._ops009_origin_delivery_exceptions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._outbox_messages",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._password_reset_tokens",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._payroll_entries",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._payroll_periods",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._performance_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_custody_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_custody_generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_custody_scan_evidence",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_document_bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_document_origin_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_editions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._plan_families",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_attachment_reconciliations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_attachments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_maps",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_plan_map_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_ppa_identifiers",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._planning_reference_counters",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._platform_notifications",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._portal_presence_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._ppa_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._prototype_messages",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._staff_activation_invitations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._task_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._transaction_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._transactions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._travel_order_employee",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._travel_order_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._travel_orders",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public._users",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.asset_assignments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.asset_disposals",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.asset_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.asset_inventory_scans",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.asset_inventory_sessions",
+    "usage": true,
+    "grantable": false
+  }
+]

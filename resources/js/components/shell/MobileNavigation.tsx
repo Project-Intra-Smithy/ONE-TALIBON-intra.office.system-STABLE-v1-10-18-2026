@@ -1,56 +1,62 @@
 import { X } from 'lucide-react';
-import { useEffect, useRef, type PropsWithChildren } from 'react';
+import { type PropsWithChildren, useEffect, useRef } from 'react';
 
 type Props = PropsWithChildren<{ onClose: () => void; onDesktop: () => void }>;
 
+/**
+ * Native top-layer mobile navigation drawer using <dialog> + showModal().
+ * Avoids document.body overflow hacks and manual Tab focus traps.
+ */
 export default function MobileNavigation({ children, onClose, onDesktop }: Props) {
     const dialog = useRef<HTMLDialogElement>(null);
-    const closeButton = useRef<HTMLButtonElement>(null);
+
     useEffect(() => {
         const element = dialog.current;
-        const previousOverflow = document.body.style.overflow;
-        const previousFocus = document.activeElement as HTMLElement | null;
-        element?.showModal();
-        closeButton.current?.focus();
-        document.body.style.overflow = 'hidden';
-        const keepFocusInside = (event: KeyboardEvent) => {
-            if (event.key !== 'Tab' || !element) return;
-            const controls = Array.from(element.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), [tabindex="0"]'))
-                .filter(control => control.tabIndex >= 0 && control.getClientRects().length > 0);
-            const first = controls[0];
-            const last = controls[controls.length - 1];
-            if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault(); last?.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault(); first?.focus();
-            }
-        };
-        element?.addEventListener('keydown', keepFocusInside);
+        if (!element) return;
+        if (!element.open) element.showModal();
+        const handleClose = () => onClose();
+        element.addEventListener('close', handleClose);
         return () => {
-            element?.removeEventListener('keydown', keepFocusInside);
-            element?.close();
-            document.body.style.overflow = previousOverflow;
-            previousFocus?.focus();
+            element.removeEventListener('close', handleClose);
+            if (element.open) element.close();
         };
-    }, []);
+    }, [onClose]);
+
     useEffect(() => {
         const desktop = window.matchMedia('(min-width: 1024px)');
-        const closeOnDesktop = () => { if (desktop.matches) onDesktop(); };
+        const closeOnDesktop = () => {
+            if (desktop.matches) onDesktop();
+        };
         desktop.addEventListener('change', closeOnDesktop);
         return () => desktop.removeEventListener('change', closeOnDesktop);
     }, [onDesktop]);
-    return <dialog id="portal-mobile-navigation" ref={dialog}
-        onCancel={(event) => { event.preventDefault(); onClose(); }}
-        aria-label="Municipal navigation" className="portal-mobile-navigation">
-        <button type="button" onClick={onClose} className="portal-drawer-backdrop" aria-label="Dismiss navigation backdrop" tabIndex={-1} />
-        <div className="portal-drawer">
-            <div className="portal-drawer-heading">
-                <span>Navigation</span>
-                <button ref={closeButton} type="button" onClick={onClose} aria-label="Close navigation">
-                    <X size={20} aria-hidden="true" /><span>Close</span>
-                </button>
+
+    return (
+        <dialog
+            id="portal-mobile-navigation"
+            ref={dialog}
+            aria-label="Municipal navigation"
+            className="tcds-drawer-left"
+            {...({ closedby: 'any' } as Record<string, string>)}
+        >
+            <div className="flex h-full flex-col">
+                <div className="flex shrink-0 items-center justify-between border-b border-[var(--surface-sidebar-border)] px-4 py-2.5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--surface-sidebar-muted)]">
+                        Navigation
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => dialog.current?.close()}
+                        aria-label="Close navigation"
+                        autoFocus
+                        className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-white hover:bg-[var(--surface-sidebar-hover)] focus-visible:outline-[var(--focus-ring-sidebar)]"
+                    >
+                        <X size={18} aria-hidden="true" />
+                        <span>Close</span>
+                    </button>
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
             </div>
-            <div className="portal-drawer-content">{children}</div>
-        </div>
-    </dialog>;
+        </dialog>
+    );
 }

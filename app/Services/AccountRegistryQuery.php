@@ -14,7 +14,7 @@ final class AccountRegistryQuery
     public function paginate(array $filters): LengthAwarePaginator
     {
         $query = User::query()
-            ->select(['id', 'name', 'email', 'role', 'is_active', 'mfa_confirmed_at'])
+            ->select(['id', 'name', 'username', 'email', 'role', 'is_active', 'account_status', 'mfa_confirmed_at'])
             ->with([
                 'employee' => fn ($query) => $query
                     ->select([
@@ -34,6 +34,7 @@ final class AccountRegistryQuery
             $pattern = '%'.$search.'%';
             $query->where(function ($query) use ($pattern): void {
                 $query->where('email', 'like', $pattern)
+                    ->orWhere('username', 'like', $pattern)
                     ->orWhereHas('employee', function ($query) use ($pattern): void {
                         $query->where('full_name', 'like', $pattern)
                             ->orWhere('employee_number', 'like', $pattern);
@@ -94,6 +95,45 @@ final class AccountRegistryQuery
             ->all();
     }
 
+    /** @return array<int, array<string, mixed>> */
+    public function eligibleEmployees(): array
+    {
+        return \App\Models\Employee::query()
+            ->with('department:id,code,name,short_name,is_active')
+            ->where('employment_status', 'active')
+            ->whereNull('separation_date')
+            ->where(function ($query): void {
+                $query->whereNull('user_id')->orWhereHas('user', fn ($user) => $user->where('account_status', 'pending'));
+            })
+            ->whereHas('department', fn ($query) => $query->where('is_active', true))
+            ->orderBy('full_name')->get()
+            ->map(fn ($employee): array => [
+                'id' => (int) $employee->id,
+                'name' => $employee->full_name ?: 'Employee record #'.$employee->id,
+                'employeeNumber' => $employee->employee_number,
+                'office' => $employee->department?->short_name ?: $employee->department?->name,
+                'departmentId' => (int) $employee->department_id,
+            ])->all();
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    public function pendingInvitations(): array
+    {
+        return \App\Models\StaffActivationInvitation::query()
+            ->with(['employee:id,full_name', 'department:id,name,short_name'])
+            ->whereNull('consumed_at')->whereNull('revoked_at')
+            ->latest()->limit(50)->get()
+            ->map(fn ($invitation): array => [
+                'id' => (int) $invitation->id,
+                'employee' => $invitation->employee?->full_name,
+                'username' => $invitation->username,
+                'role' => $invitation->role,
+                'office' => $invitation->department?->short_name ?: $invitation->department?->name,
+                'expiresAt' => $invitation->expires_at->toIso8601String(),
+                'expired' => $invitation->expires_at->isPast(),
+            ])->all();
+    }
+
     /** @return array<string, mixed> */
     private function present(User $user): array
     {
@@ -101,6 +141,7 @@ final class AccountRegistryQuery
         $department = $employee?->department;
 
         return [
+            'id' => (int) $user->id,
             'employee' => $employee?->full_name,
             'employeeNumber' => $employee?->employee_number,
             'department' => $department ? [
@@ -110,7 +151,9 @@ final class AccountRegistryQuery
             ] : null,
             'position' => $employee?->position_title,
             'role' => $user->role,
+            'username' => $user->username,
             'loginEmail' => $user->email,
+            'accountStatus' => $user->account_status,
             'active' => (bool) $user->is_active,
             'mfaEnrolled' => $user->mfa_confirmed_at !== null,
         ];

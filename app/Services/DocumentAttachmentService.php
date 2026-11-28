@@ -180,8 +180,29 @@ final class DocumentAttachmentService
                 throw new RuntimeException('Protected Plan files require dedicated retention custody.');
             }
 
-            if ($document->storage_path && $document->storage_disk) {
-                Storage::disk($document->storage_disk)->delete($document->storage_path);
+            $storage = app(LegacyDocumentBytes::class);
+            try {
+                $fresh = $document->fresh();
+                if (! $fresh || ! $storage->sameDescriptor($document, $fresh)
+                    || PlanDocumentOriginGuard::isProtected($fresh)) {
+                    throw new RuntimeException('Unverified legacy storage custody.');
+                }
+                $object = $storage->verifiedObject($fresh);
+                $current = $fresh->fresh();
+                if ($object === null || ! $current
+                    || ! $storage->sameDescriptor($fresh, $current)
+                    || PlanDocumentOriginGuard::isProtected($current)
+                    || ! $storage->unambiguousLocator($current)
+                    || ! $storage->samePathObject($current, $object)) {
+                    throw new RuntimeException('Unverified legacy storage custody.');
+                }
+
+                // Existing cleanup only; check-to-unlink is not atomic.
+                if (! @unlink($object['path'])) {
+                    throw new RuntimeException('Unverified legacy storage custody.');
+                }
+            } catch (Throwable) {
+                throw new RuntimeException('Unverified legacy storage custody.');
             }
         }
     }

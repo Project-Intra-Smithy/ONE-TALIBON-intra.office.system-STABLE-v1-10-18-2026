@@ -1,0 +1,502 @@
+[
+  {
+    "object": "type legacy_custody.operations[]",
+    "reference": "type legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.ownership_links",
+    "reference": "table legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.ownership_links[]",
+    "reference": "type legacy_custody.ownership_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.terminal_receipts",
+    "reference": "table legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.terminal_receipts[]",
+    "reference": "type legacy_custody.terminal_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.watermark_checkpoints",
+    "reference": "table legacy_custody.watermark_checkpoints",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.watermark_checkpoints[]",
+    "reference": "type legacy_custody.watermark_checkpoints",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_assignments",
+    "reference": "table public.asset_assignments",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_assignments[]",
+    "reference": "type public.asset_assignments",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_disposals",
+    "reference": "table public.asset_disposals",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_disposals[]",
+    "reference": "type public.asset_disposals",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_events",
+    "reference": "table public.asset_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_events[]",
+    "reference": "type public.asset_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_inventory_scans",
+    "reference": "table public.asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_inventory_scans[]",
+    "reference": "type public.asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_inventory_sessions",
+    "reference": "table public.asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_inventory_sessions[]",
+    "reference": "type public.asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_maintenance_records",
+    "reference": "table public.asset_maintenance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_maintenance_records[]",
+    "reference": "type public.asset_maintenance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_reconciliations",
+    "reference": "table public.asset_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.asset_reconciliations[]",
+    "reference": "type public.asset_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.assets",
+    "reference": "table public.assets",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.assets[]",
+    "reference": "type public.assets",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.attendance_logs",
+    "reference": "table public.attendance_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.attendance_logs[]",
+    "reference": "type public.attendance_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.audit_logs",
+    "reference": "table public.audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.audit_logs[]",
+    "reference": "type public.audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.calendar_events",
+    "reference": "table public.calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.calendar_events[]",
+    "reference": "type public.calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_events",
+    "reference": "table public.correspondence_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_events[]",
+    "reference": "type public.correspondence_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_records",
+    "reference": "table public.correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_records[]",
+    "reference": "type public.correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_reference_counters",
+    "reference": "table public.correspondence_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.correspondence_reference_counters[]",
+    "reference": "type public.correspondence_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.departments",
+    "reference": "table public.departments",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.departments[]",
+    "reference": "type public.departments",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.designated_planning_staff",
+    "reference": "table public.designated_planning_staff",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.designated_planning_staff[]",
+    "reference": "type public.designated_planning_staff",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.development_plans",
+    "reference": "table public.development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.development_plans[]",
+    "reference": "type public.development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.document_links",
+    "reference": "table public.document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.document_links[]",
+    "reference": "type public.document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.documents",
+    "reference": "table public.documents",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.documents[]",
+    "reference": "type public.documents",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.dtr_daily_summaries",
+    "reference": "table public.dtr_daily_summaries",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.dtr_daily_summaries[]",
+    "reference": "type public.dtr_daily_summaries",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.dtr_periods",
+    "reference": "table public.dtr_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.dtr_periods[]",
+    "reference": "type public.dtr_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_development_records",
+    "reference": "table public.employee_development_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_development_records[]",
+    "reference": "type public.employee_development_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_health_access_grants",
+    "reference": "table public.employee_health_access_grants",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_health_access_grants[]",
+    "reference": "type public.employee_health_access_grants",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_health_records",
+    "reference": "table public.employee_health_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_health_records[]",
+    "reference": "type public.employee_health_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_movement_tasks",
+    "reference": "table public.employee_movement_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_movement_tasks[]",
+    "reference": "type public.employee_movement_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_movements",
+    "reference": "table public.employee_movements",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employee_movements[]",
+    "reference": "type public.employee_movements",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employees",
+    "reference": "table public.employees",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.employees[]",
+    "reference": "type public.employees",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.initial_admin_bootstraps",
+    "reference": "table public.initial_admin_bootstraps",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.initial_admin_bootstraps[]",
+    "reference": "type public.initial_admin_bootstraps",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_client_credentials",
+    "reference": "table public.integration_client_credentials",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_client_credentials[]",
+    "reference": "type public.integration_client_credentials",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_clients",
+    "reference": "table public.integration_clients",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_clients[]",
+    "reference": "type public.integration_clients",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_idempotency_records",
+    "reference": "table public.integration_idempotency_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_idempotency_records[]",
+    "reference": "type public.integration_idempotency_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_proof_writes",
+    "reference": "table public.integration_proof_writes",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.integration_proof_writes[]",
+    "reference": "type public.integration_proof_writes",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_credit_accounts",
+    "reference": "table public.leave_credit_accounts",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_credit_accounts[]",
+    "reference": "type public.leave_credit_accounts",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_credit_transactions",
+    "reference": "table public.leave_credit_transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_credit_transactions[]",
+    "reference": "type public.leave_credit_transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_requests",
+    "reference": "table public.leave_requests",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_requests[]",
+    "reference": "type public.leave_requests",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_types",
+    "reference": "table public.leave_types",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.leave_types[]",
+    "reference": "type public.leave_types",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_agenda_items",
+    "reference": "table public.legislative_agenda_items",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_agenda_items[]",
+    "reference": "type public.legislative_agenda_items",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_records",
+    "reference": "table public.legislative_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_records[]",
+    "reference": "type public.legislative_records",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_sessions",
+    "reference": "table public.legislative_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.legislative_sessions[]",
+    "reference": "type public.legislative_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.memo_recipients",
+    "reference": "table public.memo_recipients",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.memo_recipients[]",
+    "reference": "type public.memo_recipients",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.memoranda",
+    "reference": "table public.memoranda",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.memoranda[]",
+    "reference": "type public.memoranda",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.migrations",
+    "reference": "table public.migrations",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.migrations[]",
+    "reference": "type public.migrations",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.offboarding_cases",
+    "reference": "table public.offboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.offboarding_cases[]",
+    "reference": "type public.offboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.offboarding_tasks",
+    "reference": "table public.offboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.offboarding_tasks[]",
+    "reference": "type public.offboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.onboarding_cases",
+    "reference": "table public.onboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.onboarding_cases[]",
+    "reference": "type public.onboarding_cases",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.onboarding_tasks",
+    "reference": "table public.onboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.onboarding_tasks[]",
+    "reference": "type public.onboarding_tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "type public.operational_items",
+    "reference": "table public.operational_items",
+    "deptype": "i"
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.travel_order_employee_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.travel_order_events",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.travel_order_events_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.travel_orders",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.travel_orders_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.users",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.users_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "deployment_control.installations",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.bindings",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.classification_events",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.command_results",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.compensation_outcomes",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.compensation_tombstones",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.generations",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.namespaces",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operation_events",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operation_gates",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operation_items",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operations",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_reconciliations",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_reconciliations_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.assets",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.assets_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.attendance_logs",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.attendance_logs_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.audit_logs",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.audit_logs_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.calendar_events",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.calendar_events_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.correspondence_events",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.correspondence_events_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.correspondence_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.correspondence_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.correspondence_reference_counters",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.departments",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.departments_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.designated_planning_staff",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.designated_planning_staff_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.development_plans",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.development_plans_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.document_links",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.document_links_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.documents",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.documents_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.dtr_daily_summaries",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.dtr_daily_summaries_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.dtr_periods",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.dtr_periods_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_development_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_development_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_health_access_grants",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_health_access_grants_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_health_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_health_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_movement_tasks",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_movement_tasks_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_movements",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employee_movements_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employees",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.employees_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.initial_admin_bootstraps",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_client_credentials",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_client_credentials_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_clients",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_clients_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_idempotency_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_idempotency_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_proof_writes",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.integration_proof_writes_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_credit_accounts",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_credit_accounts_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_credit_transactions",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_credit_transactions_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_requests",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_requests_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients",
+    "rights": "{t,t,t,t,t,t,t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients_id_seq",
+    "rights": "{t,t,t,t,t,t}"
+  }
+]

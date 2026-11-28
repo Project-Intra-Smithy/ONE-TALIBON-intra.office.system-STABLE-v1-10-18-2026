@@ -12,8 +12,7 @@ final readonly class TransactionPolicy
     public function __construct(
         private TransactionAuthorizationContextFactory $contexts,
         private TransactionAccessDecider $access,
-    ) {
-    }
+    ) {}
 
     public function viewAny(User $user): bool
     {
@@ -33,6 +32,11 @@ final readonly class TransactionPolicy
     public function transition(User $user, WorkflowTransaction $transaction): bool
     {
         return $this->allows($user, TransactionAccessDecider::TRANSITION, $transaction);
+    }
+
+    public function close(User $user, WorkflowTransaction $transaction): bool
+    {
+        return $this->allows($user, TransactionAccessDecider::CLOSE, $transaction);
     }
 
     public function assign(User $user, WorkflowTransaction $transaction): bool

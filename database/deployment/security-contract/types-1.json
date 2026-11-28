@@ -1,0 +1,1750 @@
+[
+  {
+    "name": "public._ppa_records",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._prototype_messages",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._staff_activation_invitations",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._task_events",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._tasks",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._transaction_events",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._transactions",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._travel_order_employee",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._travel_order_events",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._travel_orders",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public._users",
+    "typtype": "b",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_assignments",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_disposals",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_inventory_scans",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_inventory_sessions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_maintenance_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.asset_reconciliations",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.assets",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.attendance_logs",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.audit_logs",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.calendar_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_reference_counters",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.departments",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.designated_planning_staff",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.development_plans",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.document_links",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.dtr_daily_summaries",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.dtr_periods",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employee_development_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employee_health_access_grants",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employee_health_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employee_movement_tasks",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employee_movements",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.employees",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.initial_admin_bootstraps",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.integration_client_credentials",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.integration_clients",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.integration_idempotency_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.integration_proof_writes",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.leave_credit_accounts",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.leave_credit_transactions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.leave_requests",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.leave_types",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.legislative_agenda_items",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.legislative_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.legislative_sessions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.memo_recipients",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.memoranda",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.migrations",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.offboarding_cases",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.offboarding_tasks",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.onboarding_cases",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.onboarding_tasks",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.operational_items",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_close_audit_bindings",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.outbox_messages",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.password_reset_tokens",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.payroll_entries",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.payroll_periods",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.performance_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_custody_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_custody_generations",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_custody_scan_evidence",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_document_bindings",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_document_origin_receipts",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_editions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.plan_families",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_attachment_reconciliations",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_attachments",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_maps",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_plan_map_links",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_ppa_identifiers",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_reference_counters",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.platform_notifications",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.portal_presence_sessions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ppa_records",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.prototype_messages",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.staff_activation_invitations",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.task_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.tasks",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.transaction_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.transactions",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_order_employee",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_order_events",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users",
+    "typtype": "c",
+    "owner": "kirion_g1b_owner",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "PUBLIC",
+        "USAGE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "USAGE",
+        false
+      ]
+    ]
+  }
+]

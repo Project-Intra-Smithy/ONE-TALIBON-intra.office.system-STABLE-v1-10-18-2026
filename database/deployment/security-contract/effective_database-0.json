@@ -1,0 +1,38 @@
+[
+  {
+    "rolname": "kirion_g1b_app",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_custody",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "rights": "{t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "rights": "{t,f,f,f,f,f}"
+  }
+]

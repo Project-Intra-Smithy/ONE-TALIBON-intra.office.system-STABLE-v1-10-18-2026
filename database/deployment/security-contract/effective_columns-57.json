@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.command_results.transaction_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.command_results.travel_event_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.command_results.travel_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_outcomes.broker_receipt_ref",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_outcomes.disposition",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_outcomes.outcome_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_outcomes.recorded_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_outcomes.tombstone_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.close_ack_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.generation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.locator",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.namespace_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.provider_object_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.compensation_tombstones.tombstone_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.epoch",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.generation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.locator",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.mime_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.ordinal",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.provider_object_identity",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.sha256",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.size_bytes",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.staged_fence",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.staging_receipt_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.generations.verified_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.namespaces.backend_kind",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.namespaces.created_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.namespaces.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.namespaces.provider_identity",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.namespaces.root_claim",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.event_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.evidence_ref",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.fence_no",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.kind",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.occurred_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_events.operation_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_gates.fence_no",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_gates.lock_stub",
+    "rights": "{t,f,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_gates.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_gates.state",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.epoch",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.generation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.locator",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.mime_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.ordinal",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.sha256",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operation_items.size_bytes",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.actor_user_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.command_action",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.command_kind",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.correlation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.created_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.epoch",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.idempotency_hash",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.item_count",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.manifest_digest",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.office_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.operations.service_identity",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.binding_document_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.created_by_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.linkable_type",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.public_document_link_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.relationship",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.ownership_links.source_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.evidence_ref",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.fence_no",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.manifest_digest",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.operation_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.outcome",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.receipt_uuid",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.terminal_receipts.service_identity",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.checkpoint_seq",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.epoch",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.event_kind",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.namespace_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.recorded_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.watermark_checkpoints.state_anchor_digest",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.asset_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.assigned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.assignment_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.condition_at_issue",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.condition_at_return",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.reference_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_command",
+    "name": "public.asset_assignments.returned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

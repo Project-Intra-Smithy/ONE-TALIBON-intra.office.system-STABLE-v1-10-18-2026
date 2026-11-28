@@ -5,6 +5,10 @@ on:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
       - 'KIRCH-TALIBON-UIUX-W*'
+      - candidate/codex-iam-admin-provisioning-r2
+      - candidate/unified-system-integration-r1
+      - candidate/security-hardening-r1
+      - candidate/operationforge-devtest-compatibility-r1
   pull_request:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
@@ -23,10 +27,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -43,14 +47,27 @@ jobs:
   backend:
     name: Laravel feature tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: iam_candidate_disposable
+      N03_DISPOSABLE_LEASE: ${{ (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1' || github.ref_name == 'candidate/operationforge-devtest-compatibility-r1') && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
     services:
       postgres:
         image: postgres:16
         env:
           POSTGRES_DB: talibon_portal_test
           POSTGRES_USER: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: iam_candidate_disposable
         ports:
           - 5432:5432
         options: >-
@@ -61,10 +78,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
           coverage: none
@@ -77,6 +94,59 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          # Fail closed: this runner must use a newly provisioned empty test DB.
+          php -r '$p = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test", "postgres", "iam_candidate_disposable"); if ($p->query("select current_database()")->fetchColumn() !== "talibon_portal_test" || (int)$p->query("select count(*) from pg_tables where schemaname = current_schema()")->fetchColumn() !== 0) {fwrite(STDERR,"Refusing nonempty/incorrect database\\n");exit(1);}'
+          php artisan migrate --force --no-interaction
 
-      - name: Run feature tests
-        run: composer test
+      - name: Disposable regression schema lifecycle bootstrap
+        if: (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1' || github.ref_name == 'candidate/operationforge-devtest-compatibility-r1')
+        env:
+          N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/n03-regression-bootstrap.php" <<'PHP'
+          <?php
+          require getenv('GITHUB_WORKSPACE').'/vendor/autoload.php';
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'
+              || getenv('DB_DATABASE') !== 'talibon_portal_test'
+              || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
+              || getenv('N03_ROLE_SUITE') === '1') {
+              throw new RuntimeException('Unsafe N03 regression bootstrap.');
+          }
+          \Illuminate\Database\Connection::resolverFor('pgsql', static function ($connection, $database, $prefix, $config) {
+              return new class($connection, $database, $prefix, $config) extends \Illuminate\Database\PostgresConnection {
+                  public function getSchemaBuilder()
+                  {
+                      if (is_null($this->schemaGrammar)) {
+                          $this->useDefaultSchemaGrammar();
+                      }
+                      return new class($this) extends \Illuminate\Database\Schema\PostgresBuilder {
+                          public function dropAllTables()
+                          {
+                              $db = $this->connection;
+                              $db->transaction(function () use ($db) {
+                                  $guard = $db->selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%') AS role_cluster");
+                                  if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000
+                                      || $guard->bootstrap !== 'on' || $guard->role_cluster) {
+                                      throw new RuntimeException('Refusing N03 regression wipe outside the normal isolated cluster.');
+                                  }
+                                  if ($guard->present) {
+                                      $db->unprepared('DROP SCHEMA legacy_custody CASCADE');
+                                  }
+                                  parent::dropAllTables();
+                              });
+                          }
+                      };
+                  }
+              };
+          });
+          PHP
+          php -l "$RUNNER_TEMP/n03-regression-bootstrap.php"
+
+      - name: Run full Feature regression
+        run: |
+          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/operationforge-devtest-compatibility-r1" ]; }; then
+            N03_DISPOSABLE_LEASE=EXCLUSIVE_PG16_SYNTHETIC_ONLY php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature
+          else
+            php artisan test --testsuite=Feature
+          fi

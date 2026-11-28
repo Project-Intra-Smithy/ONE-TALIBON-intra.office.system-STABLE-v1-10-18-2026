@@ -1,0 +1,502 @@
+[
+  {
+    "object": "index public.transactions_office_status_due_idx",
+    "reference": "column status of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_origin_department_id_created_at_index",
+    "reference": "column created_at of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_origin_department_id_created_at_index",
+    "reference": "column origin_department_id of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_pkey",
+    "reference": "constraint transactions_pkey on table public.transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.transactions_priority_index",
+    "reference": "column priority of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_received_at_index",
+    "reference": "column received_at of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_reference_no_unique",
+    "reference": "constraint transactions_reference_no_unique on table public.transactions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.transactions_request_category_index",
+    "reference": "column request_category of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_request_type_index",
+    "reference": "column request_type of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_status_index",
+    "reference": "column status of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_transaction_type_index",
+    "reference": "column transaction_type of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_order_employee_employee_id_index",
+    "reference": "column employee_id of table public.travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_order_employee_pkey",
+    "reference": "constraint travel_order_employee_pkey on table public.travel_order_employee",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.travel_order_employee_travel_order_id_employee_id_unique",
+    "reference": "constraint travel_order_employee_travel_order_id_employee_id_unique on table public.travel_order_employee",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.travel_order_events_pkey",
+    "reference": "constraint travel_order_events_pkey on table public.travel_order_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.travel_order_events_travel_order_id_occurred_at_index",
+    "reference": "column occurred_at of table public.travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_order_events_travel_order_id_occurred_at_index",
+    "reference": "column travel_order_id of table public.travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_orders_department_id_status_index",
+    "reference": "column department_id of table public.travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_orders_department_id_status_index",
+    "reference": "column status of table public.travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_orders_issuance_date_index",
+    "reference": "column issuance_date of table public.travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.travel_orders_pkey",
+    "reference": "constraint travel_orders_pkey on table public.travel_orders",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.travel_orders_public_id_unique",
+    "reference": "constraint travel_orders_public_id_unique on table public.travel_orders",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.travel_orders_reference_number_unique",
+    "reference": "constraint travel_orders_reference_number_unique on table public.travel_orders",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.users_account_status_index",
+    "reference": "column account_status of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_email_unique",
+    "reference": "constraint users_email_unique on table public.users",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.users_iam_email_normalized_unique",
+    "reference": "column email of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_iam_email_normalized_unique",
+    "reference": "column email of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_iam_email_normalized_unique",
+    "reference": "table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_iam_username_normalized_unique",
+    "reference": "column username of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_iam_username_normalized_unique",
+    "reference": "column username of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_iam_username_normalized_unique",
+    "reference": "table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_is_active_index",
+    "reference": "column is_active of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_last_seen_at_index",
+    "reference": "column last_seen_at of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_pkey",
+    "reference": "constraint users_pkey on table public.users",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.users_role_index",
+    "reference": "column role of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.users_username_unique",
+    "reference": "constraint users_username_unique on table public.users",
+    "deptype": "i"
+  },
+  {
+    "object": "sequence public.asset_assignments_id_seq",
+    "reference": "column id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_assignments_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_disposals_id_seq",
+    "reference": "column id of table public.asset_disposals",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_disposals_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_events_id_seq",
+    "reference": "column id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_inventory_scans_id_seq",
+    "reference": "column id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_inventory_scans_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_inventory_sessions_id_seq",
+    "reference": "column id of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_inventory_sessions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_maintenance_records_id_seq",
+    "reference": "column id of table public.asset_maintenance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_maintenance_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.asset_reconciliations_id_seq",
+    "reference": "column id of table public.asset_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.asset_reconciliations_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.assets_id_seq",
+    "reference": "column id of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.assets_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.attendance_logs_id_seq",
+    "reference": "column id of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.attendance_logs_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.audit_logs_id_seq",
+    "reference": "column id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.audit_logs_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.calendar_events_id_seq",
+    "reference": "column id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.calendar_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.correspondence_events_id_seq",
+    "reference": "column id of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.correspondence_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.correspondence_records_id_seq",
+    "reference": "column id of table public.correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.correspondence_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.departments_id_seq",
+    "reference": "column id of table public.departments",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.departments_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.designated_planning_staff_id_seq",
+    "reference": "column id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.designated_planning_staff_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.development_plans_id_seq",
+    "reference": "column id of table public.development_plans",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.development_plans_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.document_links_id_seq",
+    "reference": "column id of table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.document_links_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.documents_id_seq",
+    "reference": "column id of table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.documents_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.dtr_daily_summaries_id_seq",
+    "reference": "column id of table public.dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.dtr_daily_summaries_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.dtr_periods_id_seq",
+    "reference": "column id of table public.dtr_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.dtr_periods_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employee_development_records_id_seq",
+    "reference": "column id of table public.employee_development_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employee_development_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employee_health_access_grants_id_seq",
+    "reference": "column id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employee_health_access_grants_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employee_health_records_id_seq",
+    "reference": "column id of table public.employee_health_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employee_health_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employee_movement_tasks_id_seq",
+    "reference": "column id of table public.employee_movement_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employee_movement_tasks_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employee_movements_id_seq",
+    "reference": "column id of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employee_movements_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.employees_id_seq",
+    "reference": "column id of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.employees_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.integration_client_credentials_id_seq",
+    "reference": "column id of table public.integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.integration_client_credentials_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.integration_clients_id_seq",
+    "reference": "column id of table public.integration_clients",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.integration_clients_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.integration_idempotency_records_id_seq",
+    "reference": "column id of table public.integration_idempotency_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.integration_idempotency_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.integration_proof_writes_id_seq",
+    "reference": "column id of table public.integration_proof_writes",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.integration_proof_writes_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.leave_credit_accounts_id_seq",
+    "reference": "column id of table public.leave_credit_accounts",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.leave_credit_accounts_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.leave_credit_transactions_id_seq",
+    "reference": "column id of table public.leave_credit_transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.leave_credit_transactions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  }
+]

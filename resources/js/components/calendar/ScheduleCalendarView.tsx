@@ -37,7 +37,7 @@ export default function ScheduleCalendarView({ events, calendar, onEventOpen }: 
                         <span className="line-clamp-2">{event.location || '—'}</span>
                     </div>
                 </div>
-                <ArrowRight size={12} className="justify-self-end text-[var(--municipal-brand)]" aria-hidden="true" />
+                <ArrowRight size={12} className="justify-self-end text-[var(--brand-ink)]" aria-hidden="true" />
             </button>)}
             {ordered.length === 0 && <p className="px-3 py-8 text-center text-[11px] text-[var(--municipal-muted)]">No events in this period.</p>}
         </div>

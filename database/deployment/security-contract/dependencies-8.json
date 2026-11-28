@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column epoch of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column epoch of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column namespace_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column namespace_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column operation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_operation_id_namespace_id_epoch_fkey on table legacy_custody.operation_items",
+    "reference": "index legacy_custody.operations_operation_id_namespace_id_epoch_key",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column epoch of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column generation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column locator of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column mime_type of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column namespace_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column operation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column ordinal of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column sha256 of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_operation_id_ordinal_generation_id_namespac_key on table legacy_custody.operation_items",
+    "reference": "column size_bytes of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_ordinal_check on table legacy_custody.operation_items",
+    "reference": "column ordinal of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_ordinal_check on table legacy_custody.operation_items",
+    "reference": "column ordinal of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_pkey on table legacy_custody.operation_items",
+    "reference": "column operation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_pkey on table legacy_custody.operation_items",
+    "reference": "column ordinal of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_sha256_check on table legacy_custody.operation_items",
+    "reference": "column sha256 of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_sha256_check on table legacy_custody.operation_items",
+    "reference": "column sha256 of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_size_bytes_check on table legacy_custody.operation_items",
+    "reference": "column size_bytes of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_size_bytes_check on table legacy_custody.operation_items",
+    "reference": "column size_bytes of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "column department_id of table public.operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operational_items_pkey on table public.operational_items",
+    "reference": "column id of table public.operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operational_items_reference_no_unique on table public.operational_items",
+    "reference": "column reference_no of table public.operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "column responsible_employee_id of table public.operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_actor_user_id_fkey on table legacy_custody.operations",
+    "reference": "column actor_user_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_actor_user_id_fkey on table legacy_custody.operations",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_actor_user_id_fkey on table legacy_custody.operations",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_check on table legacy_custody.operations",
+    "reference": "column command_action of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_check on table legacy_custody.operations",
+    "reference": "column command_action of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_check on table legacy_custody.operations",
+    "reference": "column command_kind of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_check on table legacy_custody.operations",
+    "reference": "column command_kind of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_epoch_check on table legacy_custody.operations",
+    "reference": "column epoch of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_epoch_check on table legacy_custody.operations",
+    "reference": "column epoch of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_idempotency_hash_check on table legacy_custody.operations",
+    "reference": "column idempotency_hash of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_idempotency_hash_check on table legacy_custody.operations",
+    "reference": "column idempotency_hash of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_item_count_check on table legacy_custody.operations",
+    "reference": "column item_count of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_item_count_check on table legacy_custody.operations",
+    "reference": "column item_count of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_manifest_digest_check on table legacy_custody.operations",
+    "reference": "column manifest_digest of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_manifest_digest_check on table legacy_custody.operations",
+    "reference": "column manifest_digest of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column actor_user_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column command_kind of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column idempotency_hash of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column namespace_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column office_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_actor_user_id_office_id_service_ide_key on table legacy_custody.operations",
+    "reference": "column service_identity of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_fkey on table legacy_custody.operations",
+    "reference": "column namespace_id of table legacy_custody.namespaces",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_namespace_id_fkey on table legacy_custody.operations",
+    "reference": "column namespace_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_namespace_id_fkey on table legacy_custody.operations",
+    "reference": "index legacy_custody.namespaces_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_office_id_fkey on table legacy_custody.operations",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_office_id_fkey on table legacy_custody.operations",
+    "reference": "column office_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_office_id_fkey on table legacy_custody.operations",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "reference": "column actor_user_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "reference": "column correlation_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "reference": "column office_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_actor_user_id_office_id_correlation_key on table legacy_custody.operations",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_namespace_id_epoch_key on table legacy_custody.operations",
+    "reference": "column epoch of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_namespace_id_epoch_key on table legacy_custody.operations",
+    "reference": "column namespace_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_operation_id_namespace_id_epoch_key on table legacy_custody.operations",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_pkey on table legacy_custody.operations",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_service_identity_check on table legacy_custody.operations",
+    "reference": "column service_identity of table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operations_service_identity_check on table legacy_custody.operations",
+    "reference": "column service_identity of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column audit_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.audit_logs_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column operation_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index legacy_custody.operations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_operation_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column operation_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_pkey on table public.ops009_close_audit_bindings",
+    "reference": "column audit_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.transaction_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_event_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.transaction_events_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_event_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.transactions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.transactions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_close_audit_bindings_transaction_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_id of table public.ops009_close_audit_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column actor_department_id of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column exception_id of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column actor_user_id of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column exception_id of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.ops009_origin_delivery_exceptions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.ops009_origin_delivery_exceptions_pkey",
+    "deptype": "n"
+  }
+]

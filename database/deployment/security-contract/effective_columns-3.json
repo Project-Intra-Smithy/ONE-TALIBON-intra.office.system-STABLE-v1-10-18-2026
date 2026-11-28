@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.municipal_reference_no",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.originating_external_reference",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.public_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.received_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.received_source_identity",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.receiving_department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.receiving_integration_client_credential_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.receiving_integration_client_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.registered_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.registered_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.routed_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.routed_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.sender_contact",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.sender_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.sender_organization",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.source",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.subject",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.summary",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_records.workflow_transaction_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_reference_counters.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_reference_counters.last_value",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_reference_counters.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.correspondence_reference_counters.year",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.branch",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.code",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.is_active",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.is_routable",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.office_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.parent_department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.short_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.sort_order",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.departments.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.can_manage_maps",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.can_manage_plans",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.can_manage_ppas",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.designated_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.employee_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.revoked_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.revoked_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.designated_planning_staff.user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.adoption_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.adoption_reference",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.authority",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.chapters",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.code",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.coordinating_offices",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.coverage_end",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.coverage_start",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.created_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.document_ref",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.higher_review_reference",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.horizon",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.last_action",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.last_action_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.lead_department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.lead_office",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.mdc_reference",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.next_milestone",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.next_milestone_date",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.plan_key",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.provenance_status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.required_action",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.sections_complete",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.sections_total",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.status",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.title",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.development_plans.updated_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.created_by_user_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.document_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.linkable_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.linkable_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.relationship",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.document_links.updated_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.checksum_sha256",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.classification",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.created_at",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.custody_mode",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.custody_operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.custody_ordinal",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.document_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.metadata",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.mime_type",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.original_name",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.owner_department_id",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.public_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_app",
+    "name": "public.documents.retention_code",
+    "rights": "{t,t,t,f,f,f,f,f}"
+  }
+]

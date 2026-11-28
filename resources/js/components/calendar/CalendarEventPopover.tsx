@@ -34,7 +34,7 @@ export default function CalendarEventPopover({ event, origin, onClose }: { event
         {event && <>
             <header className="flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                 <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">
+                    <div className="flex flex-wrap items-center gap-1.5 text-[9px] font-bold uppercase tracking-wide text-[var(--brand-ink)]">
                         <span>{event.event_type.replaceAll('_', ' ')}</span>
                         <span className="text-[var(--municipal-border-strong)]">·</span>
                         <span>{event.status.replaceAll('_', ' ')}</span>
