@@ -150,10 +150,12 @@ final class SecurityCatalog
         return $out;
     }
 
-    public function verify(string $bootstrap): void
+    public function verify(string $bootstrap, array $additionalRestrictiveDefaults = []): void
     {
         app(SupportedPg16::class)->verify();
         $expected = self::contract();
+        array_push($expected['defaults'], ...$additionalRestrictiveDefaults);
+        usort($expected['defaults'], static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
         $actual = $this->snapshot($bootstrap);
         foreach ($expected as $section => $value) {
             if (! array_key_exists($section, $actual) || $actual[$section] !== $value) {

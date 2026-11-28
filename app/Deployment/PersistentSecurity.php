@@ -37,7 +37,48 @@ final class PersistentSecurity
             (SELECT system_identifier::text FROM pg_control_system()) AS cluster,session_user AS bootstrap_role,
             (SELECT oid::text FROM pg_roles WHERE rolname=session_user) AS bootstrap_oid');
 
-        return ['target' => (array) $identity, 'host' => $target['host'], 'port' => (string) $target['port'], 'retirement' => $sets];
+        return ['target' => (array) $identity, 'host' => $target['host'], 'port' => (string) $target['port'], 'retirement' => $sets,
+            'restrictive_routine_default_owners' => $this->restrictiveDefaultIdentities($target)];
+    }
+
+    private function restrictiveDefaultIdentities(array $target): array
+    {
+        $names = $target['restrictive_routine_default_owners'] ?? [];
+        if (! is_array($names) || ! array_is_list($names) || count(array_unique($names, SORT_REGULAR)) !== count($names)) {
+            throw new RuntimeException('Restrictive routine defaults require an explicit unique identity list.');
+        }
+        $out = [];
+        foreach ($names as $name) {
+            if (! is_string($name) || ! preg_match('/^[a-z][a-z0-9_]{2,62}$/D', $name)
+                || ! in_array($name, array_merge([$target['bootstrap_role']], $target['legacy_owner_roles']), true)
+                || in_array($name, array_merge(SecurityCatalog::ROLES, $target['retired_runtime_roles']), true)) {
+                throw new RuntimeException('Unclassified restrictive routine default owner.');
+            }
+            $role = DB::selectOne('SELECT oid::text AS oid,rolname AS name FROM pg_roles WHERE rolname=?', [$name]);
+            if (! $role) {
+                throw new RuntimeException('Restrictive routine default identity no longer exists.');
+            }
+            $out[] = (array) $role;
+        }
+        usort($out, static fn ($a, $b) => strcmp($a['name'], $b['name']));
+
+        return $out;
+    }
+
+    /** Source-defined self-only EXECUTE rows; never derive an expected ACL from target ACLs. */
+    public function restrictiveDefaults(array $target, bool $postflight = false): array
+    {
+        $rows = [];
+        foreach ($this->restrictiveDefaultIdentities($target) as $role) {
+            if ($postflight && $role['name'] === $target['bootstrap_role']) {
+                continue; // The unchanged canonical postflight already requires the bootstrap row.
+            }
+            $owner = $role['name'] === $target['bootstrap_role'] ? '@bootstrap' : $role['name'];
+            $rows[] = ['owner' => $owner, 'schema' => '*', 'defaclobjtype' => 'f', 'acl' => [[$owner, $owner, 'EXECUTE', false]]];
+        }
+        usort($rows, static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+
+        return $rows;
     }
 
     public function preflight(array $target, bool $installed): array
@@ -56,16 +97,19 @@ final class PersistentSecurity
             }
         }
         if ($installed) {
-            app(SecurityCatalog::class)->verify($target['bootstrap_role']);
+            app(SecurityCatalog::class)->verify($target['bootstrap_role'], $this->restrictiveDefaults($target, true));
             $this->verifyRetired($legacy);
 
             return $legacy;
         }
-        if (DB::selectOne("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='deployment_control') OR EXISTS(SELECT 1 FROM pg_default_acl) AS unsafe")->unsafe) {
-            throw new RuntimeException('Unregistered control schema or default privilege drift.');
+        if (DB::selectOne("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='deployment_control') AS unsafe")->unsafe) {
+            throw new RuntimeException('Unregistered control schema.');
         }
         $expected = SecurityCatalog::contract();
         $actual = app(SecurityCatalog::class)->snapshot($target['bootstrap_role']);
+        if ($actual['defaults'] !== $this->restrictiveDefaults($target)) {
+            throw new RuntimeException('Unregistered restrictive default privilege profile mismatch.');
+        }
         foreach (['system_language_security', 'system_extension_security', 'system_schema_security', 'system_column_acl', 'system_type_security', 'system_routine_security', 'system_relation_security', 'system_rewrite_security'] as $family) {
             if ($actual[$family] !== $expected[$family]) {
                 throw new RuntimeException('Unsupported stock system-catalog deviation.');

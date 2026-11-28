@@ -209,7 +209,7 @@ final class PersistentInstaller
                         (string) Str::uuid(), $package['source_sha'], $package['tree_sha'], $package['package_sha256'], hash('sha256', json_encode($ledger, JSON_THROW_ON_ERROR)), json_encode($authority, JSON_THROW_ON_ERROR),
                     ]);
                 }
-                app(SecurityCatalog::class)->verify($target['bootstrap_role']);
+                app(SecurityCatalog::class)->verify($target['bootstrap_role'], $security->restrictiveDefaults($target, true));
                 $security->verifyRetired($legacy);
 
                 return ['status' => 'INSTALLED', 'installation' => json_decode(DB::selectOne('SELECT row_to_json(i)::text AS receipt FROM deployment_control.installations i')->receipt, true, 32, JSON_THROW_ON_ERROR), 'migration_count' => count($ran), 'existing_identity_preserved' => true,
