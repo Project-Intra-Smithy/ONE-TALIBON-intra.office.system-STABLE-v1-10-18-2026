@@ -19,6 +19,7 @@ ap = argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--pg-bin', type=Path, required=True)
 ap.add_argument('--output', type=Path, required=True)
 ap.add_argument('--compare-contract', action='store_true')
+ap.add_argument('--focused-defaults', action='store_true', help='Only target-shaped upgrade compatibility checks; retain full default regression mode')
 ap.add_argument('--target-defaults', action='store_true', help='Rehearse the explicitly declared restrictive bootstrap/legacy-owner routine defaults')
 ap.add_argument('--record-contract', action='store_true', help='Developer fixture on an exclusive disposable database only; never a persistent-install option')
 args = ap.parse_args()
@@ -89,7 +90,9 @@ if not (args.record_contract or args.compare_contract):
     php_digest=hashlib.sha256(Path(php).read_bytes()).hexdigest()
     ini_digest=hashlib.sha256(provisioning_ini.read_bytes()).hexdigest()
 
-for mode in (['contract'] if (args.record_contract or args.compare_contract) else ['fresh', 'upgrade']):
+if args.focused_defaults and not args.target_defaults:
+    ap.error('--focused-defaults requires --target-defaults')
+for mode in (['contract'] if (args.record_contract or args.compare_contract) else (['upgrade'] if args.focused_defaults else ['fresh', 'upgrade'])):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('PG', 'DB_', 'APP_', 'N03_', 'LEGACY_CUSTODY_', 'KIRION_'))}
     root = Path(tempfile.mkdtemp(prefix='ot-persistent-'+mode+'-'))
     if os.name == 'nt':
@@ -232,6 +235,22 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             manifest_file.chmod(0o600)
             return run(invocation(),extra_env or env,allowed=(expected,))
 
+        def restrictive_registered_checks():
+            check('restrictive_owner_row_retained', sql("SELECT count(*) FROM pg_default_acl WHERE defaclrole='legacy_owner'::regrole AND defaclnamespace=0 AND defaclobjtype='f' AND NOT EXISTS(SELECT 1 FROM aclexplode(defaclacl) a WHERE a.grantee<>'legacy_owner'::regrole OR a.grantor<>'legacy_owner'::regrole OR a.privilege_type<>'EXECUTE' OR a.is_grantable)").stdout.strip()=='1')
+            check('restrictive_no_public_default_execute', sql("SELECT count(*) FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) a WHERE a.grantee=0 AND a.privilege_type='EXECUTE'").stdout.strip()=='0')
+            check('restrictive_authority_oids_bound', [r['name'] for r in target['previous_installation']['authority']['restrictive_routine_default_owners']]==['legacy_owner','postgres'])
+            check('restrictive_exact_registered_rerun', '"status":"INSTALLED"' in install(target).stdout)
+            for label, owners in [('omitted',[]),('reduced',['postgres']),('runtime',['postgres','legacy_runtime'])]:
+                pre=sql(boundary_sql).stdout
+                check('restrictive_registered_profile_'+label,install(dict(target,restrictive_routine_default_owners=owners),1).returncode==1)
+                check('restrictive_registered_profile_'+label+'_unchanged',sql(boundary_sql).stdout==pre and sql(fingerprint_sql).stdout==before)
+            sql('ALTER ROLE legacy_owner RENAME TO previous_legacy_owner; CREATE ROLE legacy_owner NOLOGIN')
+            pre=sql(boundary_sql).stdout
+            check('restrictive_recreated_owner_oid_refused',install(target,1).returncode==1)
+            check('restrictive_recreated_owner_oid_unchanged',sql(boundary_sql).stdout==pre and sql(fingerprint_sql).stdout==before)
+            sql('DROP ROLE legacy_owner; ALTER ROLE previous_legacy_owner RENAME TO legacy_owner')
+
+
         if args.target_defaults and mode == 'upgrade':
             boundary_sql = "SELECT md5(coalesce(string_agg(to_jsonb(d)::text,'|' ORDER BY oid),'')) FROM pg_default_acl d; SELECT count(*) FROM migrations; SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%';"
             for label, owners in [('omitted', []), ('runtime', ['postgres','legacy_runtime']), ('unclassified', ['postgres','pg_read_all_data']), ('duplicate', ['postgres','legacy_owner','legacy_owner'])]:
@@ -252,6 +271,26 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
                 check('restrictive_initial_'+label+'_refused', install(target,1).returncode==1)
                 check('restrictive_initial_'+label+'_unchanged', sql(boundary_sql).stdout==pre and sql(fingerprint_sql).stdout==before)
                 sql(undo)
+
+        if args.focused_defaults:
+            sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
+            injected=sql(boundary_sql).stdout
+            late=install(target,1)
+            check('restrictive_late_rollback_diagnostic','complete security postflight' in late.stdout and 'drift: relations' in late.stdout)
+            check('restrictive_late_rollback_state',sql(boundary_sql).stdout==injected and sql(fingerprint_sql).stdout==before)
+            sql('ALTER TABLE migrations DISABLE ROW LEVEL SECURITY')
+            check('restrictive_target_shaped_install','"status":"INSTALLED"' in install(target).stdout)
+            check('restrictive_admin_preserved',sql(fingerprint_sql).stdout==before)
+            runtime=dict(env,PGUSER='kirion_g1b_app',PGPASSWORD=credentials['kirion_g1b_app'])
+            reader=dict(env,PGUSER='n03_reader',PGPASSWORD=credentials['n03_reader'])
+            check('restrictive_runtime_authentication',sql('SELECT current_user',runtime).stdout.strip()=='kirion_g1b_app')
+            check('restrictive_runtime_task_positive',sql("BEGIN; INSERT INTO tasks(title,state,created_by_user_id,created_at,updated_at) SELECT 'Synthetic privilege witness','open',id,now(),now() FROM users LIMIT 1; ROLLBACK",runtime).returncode==0)
+            check('restrictive_reader_mfa_denied',sql('SELECT mfa_secret FROM users',reader,allowed=(3,)).returncode==3)
+            target['expected_migrations']=sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines()
+            target['previous_installation']=json.loads(sql('SELECT row_to_json(i) FROM deployment_control.installations i').stdout)
+            restrictive_registered_checks()
+            check('restrictive_unrelated_database_roles_unchanged',sql(unrelated_query,other_env).stdout==unrelated_before)
+            continue
 
         for field, value in [('database','unauthorized_target'), ('system_identifier','0'), ('source_sha','0'*40), ('bootstrap_role','unauthorized_role'), ('app_key_sha256','0'*64), ('expected_migrations',['unknown_migration'])]:
             invalid = dict(target, **{field:value})
@@ -356,19 +395,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         target['previous_installation'] = json.loads(sql('SELECT row_to_json(i) FROM deployment_control.installations i').stdout)
 
         if args.target_defaults and mode == 'upgrade':
-            check('restrictive_owner_row_retained', sql("SELECT count(*) FROM pg_default_acl WHERE defaclrole='legacy_owner'::regrole AND defaclnamespace=0 AND defaclobjtype='f' AND NOT EXISTS(SELECT 1 FROM aclexplode(defaclacl) a WHERE a.grantee<>'legacy_owner'::regrole OR a.grantor<>'legacy_owner'::regrole OR a.privilege_type<>'EXECUTE' OR a.is_grantable)").stdout.strip()=='1')
-            check('restrictive_no_public_default_execute', sql("SELECT count(*) FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) a WHERE a.grantee=0 AND a.privilege_type='EXECUTE'").stdout.strip()=='0')
-            check('restrictive_authority_oids_bound', [r['name'] for r in target['previous_installation']['authority']['restrictive_routine_default_owners']]==['legacy_owner','postgres'])
-            check('restrictive_exact_registered_rerun', '"status":"INSTALLED"' in install(target).stdout)
-            for label, owners in [('omitted',[]),('reduced',['postgres']),('runtime',['postgres','legacy_runtime'])]:
-                pre=sql(boundary_sql).stdout
-                check('restrictive_registered_profile_'+label,install(dict(target,restrictive_routine_default_owners=owners),1).returncode==1)
-                check('restrictive_registered_profile_'+label+'_unchanged',sql(boundary_sql).stdout==pre and sql(fingerprint_sql).stdout==before)
-            sql('ALTER ROLE legacy_owner RENAME TO previous_legacy_owner; CREATE ROLE legacy_owner NOLOGIN')
-            pre=sql(boundary_sql).stdout
-            check('restrictive_recreated_owner_oid_refused',install(target,1).returncode==1)
-            check('restrictive_recreated_owner_oid_unchanged',sql(boundary_sql).stdout==pre and sql(fingerprint_sql).stdout==before)
-            sql('DROP ROLE legacy_owner; ALTER ROLE previous_legacy_owner RENAME TO legacy_owner')
+            restrictive_registered_checks()
 
         unsupported_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo json_encode(app(App\\Deployment\\SupportedPg16::class)->snapshot());"
         catalog_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo hash('sha256',json_encode(app(App\\Deployment\\SecurityCatalog::class)->snapshot('postgres')));"
