@@ -1,0 +1,3344 @@
+{
+  "probe_sha256": "0de88668422bfdade1393fb5d071cae69681449dc6d22f8de4120c43d7968af5",
+  "platform": "windows",
+  "source_sha": "d55228cba9fca025a5b8bcf9494df5da879b7995",
+  "tree_sha": "703f093c6be9d9ff16be4dd14c960d6ab6726a0b",
+  "package_manifest_sha256": "123be90e782061f2a29226890d4451da4a7c3c274d388f6937fb5e75ba46e19b",
+  "launcher_sha256": "800849047fe4ea4cd5cf26f1308fe7aa42046642dba1ad82d6b081a724e1bef1",
+  "server_version_num": "160015",
+  "queries": {
+    "tables_reloptions": "SELECT coalesce(c.reloptions::text,'<null>') FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='information_schema' AND c.relname='tables'",
+    "applicable_roles_viewdef": "SET search_path = pg_catalog; SELECT pg_get_viewdef('information_schema.applicable_roles'::regclass, true)",
+    "system_rules": "SET search_path = pg_catalog; SELECT coalesce(jsonb_agg(jsonb_build_object('name', n.nspname||'.'||c.relname||'.'||r.rulename, 'ev_type', r.ev_type, 'ev_enabled', r.ev_enabled, 'is_instead', r.is_instead, 'definition', pg_get_ruledef(r.oid, true)) ORDER BY n.nspname, c.relname, r.rulename), '[]'::jsonb)::text FROM pg_rewrite r JOIN pg_class c ON c.oid=r.ev_class JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
+    "qa_sys_rule_present": "SELECT count(*) FROM pg_rewrite r JOIN pg_class c ON c.oid=r.ev_class JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='information_schema' AND c.relname='tables' AND r.rulename='qa_sys_rule'",
+    "target_database_tablespace": "SELECT t.spcname FROM pg_database d JOIN pg_tablespace t ON t.oid=d.dattablespace WHERE d.datname=current_database()",
+    "raw_reltablespace_nonzero_count": "SELECT count(*) FROM pg_class WHERE reltablespace<>0",
+    "filtered_custom_reltablespace_count": "SELECT count(*) FROM pg_class c JOIN pg_tablespace t ON t.oid=c.reltablespace WHERE t.spcname NOT IN ('pg_default','pg_global')",
+    "unrelated_unused_tablespace_present": "SELECT count(*) FROM pg_tablespace WHERE spcname='qa_unused_ts'",
+    "migrations_table_present": "SELECT to_regclass('public.migrations') IS NOT NULL",
+    "migrations_ordered": "SELECT coalesce(jsonb_agg(jsonb_build_object('id',id,'migration',migration,'batch',batch) ORDER BY id), '[]'::jsonb)::text FROM public.migrations",
+    "roles_state": "SELECT coalesce(jsonb_agg(jsonb_build_object('rolname',rolname,'rolsuper',rolsuper,'rolinherit',rolinherit,'rolcreaterole',rolcreaterole,'rolcreatedb',rolcreatedb,'rolcanlogin',rolcanlogin,'rolreplication',rolreplication,'rolbypassrls',rolbypassrls,'rolconnlimit',rolconnlimit,'has_password',rolpassword IS NOT NULL,'is_scram',coalesce(rolpassword LIKE 'SCRAM-SHA-256$%',false)) ORDER BY rolname), '[]'::jsonb)::text FROM pg_authid WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%' OR rolname IN ('legacy_owner','legacy_runtime')",
+    "memberships_state": "SELECT coalesce(jsonb_agg(jsonb_build_object('role',r.rolname,'member',m.rolname,'grantor',pg_get_userbyid(a.grantor),'admin_option',a.admin_option,'inherit_option',a.inherit_option,'set_option',a.set_option) ORDER BY r.rolname, m.rolname, pg_get_userbyid(a.grantor)), '[]'::jsonb)::text FROM pg_auth_members a JOIN pg_roles r ON r.oid=a.roleid JOIN pg_roles m ON m.oid=a.member WHERE r.rolname LIKE 'kirion_g1b_%' OR m.rolname LIKE 'kirion_g1b_%' OR r.rolname LIKE 'n03_%' OR m.rolname LIKE 'n03_%' OR r.rolname IN ('legacy_owner','legacy_runtime') OR m.rolname IN ('legacy_owner','legacy_runtime')",
+    "effective_authority": "SELECT coalesce(jsonb_agg(jsonb_build_object('role',r.rolname,'db_connect',has_database_privilege(r.oid,current_database(),'CONNECT'),'db_create',has_database_privilege(r.oid,current_database(),'CREATE'),'db_temp',has_database_privilege(r.oid,current_database(),'TEMPORARY'),'pub_usage',has_schema_privilege(r.oid,'public','USAGE'),'pub_create',has_schema_privilege(r.oid,'public','CREATE')) ORDER BY r.rolname), '[]'::jsonb)::text FROM pg_roles r WHERE r.rolname LIKE 'kirion_g1b_%' OR r.rolname LIKE 'n03_%' OR r.rolname IN ('legacy_owner','legacy_runtime')",
+    "registry_schema_present": "SELECT to_regnamespace('deployment_control') IS NOT NULL",
+    "registry_table_present": "SELECT to_regclass('deployment_control.installations') IS NOT NULL",
+    "registry_rows": "SELECT coalesce(jsonb_agg(to_jsonb(i) ORDER BY singleton), '[]'::jsonb)::text FROM deployment_control.installations i",
+    "admin_tables_present": "SELECT jsonb_build_object('users', to_regclass('public.users') IS NOT NULL, 'employees', to_regclass('public.employees') IS NOT NULL, 'departments', to_regclass('public.departments') IS NOT NULL)::text",
+    "unrelated_service": "SELECT row_to_json(d) FROM pg_database d WHERE datname='unrelated_service'; SELECT row_to_json(r) FROM pg_roles r WHERE rolname IN ('legacy_owner','legacy_runtime') ORDER BY rolname; SELECT relacl::text,relowner::regrole FROM pg_class WHERE relname='unrelated_marker';"
+  },
+  "cells": [
+    {
+      "cell_id": "fresh_initial_system_view_security_options",
+      "mode": "fresh",
+      "phase": "initial",
+      "injection": "system_view_security_options",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_initial_system_view_definition",
+      "mode": "fresh",
+      "phase": "initial",
+      "injection": "system_view_definition",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_initial_system_rewrite_rule",
+      "mode": "fresh",
+      "phase": "initial",
+      "injection": "system_rewrite_rule",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_initial_default_database_tablespace",
+      "mode": "fresh",
+      "phase": "initial",
+      "injection": "default_database_tablespace",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported ONE TALIBON PG16 object family: user_tablespaces",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported ONE TALIBON PG16 object family: user_tablespaces"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": false,
+            "row_count": 0,
+            "ordered_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "roles_and_memberships": {
+            "roles_count": 0,
+            "roles_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": false,
+              "employees": false,
+              "departments": false
+            },
+            "users_count": null,
+            "users_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "employees_count": null,
+            "employees_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "departments_count": null,
+            "departments_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_registered_system_view_security_options",
+      "mode": "fresh",
+      "phase": "registered",
+      "injection": "system_view_security_options",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_relation_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_relation_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_registered_system_view_definition",
+      "mode": "fresh",
+      "phase": "registered",
+      "injection": "system_view_definition",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_relation_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_relation_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_registered_system_rewrite_rule",
+      "mode": "fresh",
+      "phase": "registered",
+      "injection": "system_rewrite_rule",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_rewrite_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_rewrite_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "fresh_registered_default_database_tablespace",
+      "mode": "fresh",
+      "phase": "registered",
+      "injection": "default_database_tablespace",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported ONE TALIBON PG16 object family: user_tablespaces",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported ONE TALIBON PG16 object family: user_tablespaces"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "693b1b38a8f963787cbb99e77e35573306a18d1e06d98ed8843ec43d3616310d"
+          },
+          "roles_and_memberships": {
+            "roles_count": 9,
+            "roles_digest": "14295eb2ac2e00dbaa8c939bbe36f62de0aad9f7285e88e404978bdf062b20d5",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7c175d47c5e34aee57cb613481647d5f404253b7625809eb75a68014ad0466a5"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "19a759cd91e79a1af8f071a1026b8e902913da376869d7dd40d0bc998099ecf1"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 0,
+            "users_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "employees_count": 0,
+            "employees_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "departments_count": 0,
+            "departments_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "password_and_mfa_totp_verified": null
+          },
+          "unrelated_service_digest": null
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_initial_system_view_security_options",
+      "mode": "upgrade",
+      "phase": "initial",
+      "injection": "system_view_security_options",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_initial_system_view_definition",
+      "mode": "upgrade",
+      "phase": "initial",
+      "injection": "system_view_definition",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_initial_system_rewrite_rule",
+      "mode": "upgrade",
+      "phase": "initial",
+      "injection": "system_rewrite_rule",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported stock system-catalog deviation.",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported stock system-catalog deviation."
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_initial_default_database_tablespace",
+      "mode": "upgrade",
+      "phase": "initial",
+      "injection": "default_database_tablespace",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported ONE TALIBON PG16 object family: user_tablespaces",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported ONE TALIBON PG16 object family: user_tablespaces"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 54,
+            "ordered_digest": "b1e5e82956be7da19b738bf5090adaa33d70d4d71a293d7f90c6c43be336f87f"
+          },
+          "roles_and_memberships": {
+            "roles_count": 2,
+            "roles_digest": "faf3d10946b30712d496fd3af3739c182f546eb9883060e5aeb4ede133a450d5",
+            "memberships_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "effective_authority_digest": "db91e0b22dfe3c8b63ffc3ae19d7bea080b4c7cfc2f2bcda47b84b5ab7950f53"
+          },
+          "registry_state": {
+            "schema_present": false,
+            "table_present": false,
+            "row_count": 0,
+            "rows_digest": "08b6a0bc6906cd596f1458be5ac2911c478709b27e4f3c52e8edd0293e2f4c56"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_registered_system_view_security_options",
+      "mode": "upgrade",
+      "phase": "registered",
+      "injection": "system_view_security_options",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_relation_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_relation_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "{security_invoker=true,security_barrier=true}",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_registered_system_view_definition",
+      "mode": "upgrade",
+      "phase": "registered",
+      "injection": "system_view_definition",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_relation_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_relation_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "1614790bf6de7c82ff8f49ea6c79e25bf86fd9144bee74dfbb6b277004bf3cf3",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "4248f1559179306610e83a55e34bf198c3b44412dc378f9f4ab94b2b8381a388",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_registered_system_rewrite_rule",
+      "mode": "upgrade",
+      "phase": "registered",
+      "injection": "system_rewrite_rule",
+      "exit_code": 1,
+      "expected_diagnostic": "Persistent security contract drift: system_rewrite_security",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Persistent security contract drift: system_rewrite_security"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 144,
+            "qa_sys_rule_present": true,
+            "system_rules_digest": "31c2d0debff9e1ee4cca995fb57ba63210933d57cc694dc4848a98a95e03ec21",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    },
+    {
+      "cell_id": "upgrade_registered_default_database_tablespace",
+      "mode": "upgrade",
+      "phase": "registered",
+      "injection": "default_database_tablespace",
+      "exit_code": 1,
+      "expected_diagnostic": "Unsupported ONE TALIBON PG16 object family: user_tablespaces",
+      "diagnostic_matched": true,
+      "refused_in_preflight": true,
+      "sanitized_diagnostic_lines": [
+        "Phase: preflight; error code: 0",
+        "Unsupported ONE TALIBON PG16 object family: user_tablespaces"
+      ],
+      "injection_applied": true,
+      "pre_post_refusal_unchanged": {
+        "injected_drift_state": true,
+        "migration_ledger": true,
+        "roles_and_memberships": true,
+        "registry_state": true,
+        "preserved_admin_state": true,
+        "unrelated_service": true
+      },
+      "restored_equals_clean_baseline": true,
+      "pass": true,
+      "observations": {
+        "clean_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "injected_pre_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "post_refusal": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "qa_target_ts",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        },
+        "restored_baseline": {
+          "injected_drift_state": {
+            "tables_reloptions": "<null>",
+            "applicable_roles_viewdef_sha256": "fe83224708ce28166d11c45de51da16fe2d1937b6c86769f88d23581d3a824ce",
+            "system_rules_count": 143,
+            "qa_sys_rule_present": false,
+            "system_rules_digest": "a6dc7011de8226cac2d7ed3e8d53de4ec2ff3789ba199d56c60ac4fcace76a11",
+            "target_database_tablespace": "pg_default",
+            "raw_reltablespace_nonzero_count": 50,
+            "filtered_custom_reltablespace_count": 0,
+            "unrelated_unused_tablespace_present": true
+          },
+          "migration_ledger": {
+            "table_present": true,
+            "row_count": 68,
+            "ordered_digest": "ff1792f734468be6f388a78e01f5a698d000490128e657f1d2fc690ea119a1dc"
+          },
+          "roles_and_memberships": {
+            "roles_count": 11,
+            "roles_digest": "e7fae81aea1c843a41b04378bbfc6a1f1648fe7b255a7d579ef52b50966f6a56",
+            "memberships_digest": "c04a5b85fa9c253c814a792f66ee5977bfb22278828a72c3926eaec124407adc",
+            "effective_authority_digest": "7cc9810693929199b35623f865bdd90c7e7a25f1ba898aaa0d02d8abcbd1516c"
+          },
+          "registry_state": {
+            "schema_present": true,
+            "table_present": true,
+            "row_count": 1,
+            "rows_digest": "05e7bc159ffb7d22ff73bdd0891466bd3cebce569bd2935656881e61e8fe9917"
+          },
+          "preserved_admin_state": {
+            "tables_present": {
+              "users": true,
+              "employees": true,
+              "departments": true
+            },
+            "users_count": 1,
+            "users_digest": "4b404f49f65ff248978c319b511e6b034e6e1eb1c46738214585a1eec8c2531a",
+            "employees_count": 1,
+            "employees_digest": "37b2cc3f23cd4bcd7f70075b966b697ea76afabc5946cf1883797aacb9f0dc32",
+            "departments_count": 1,
+            "departments_digest": "603439f8fc62ccc4dd214552f5304225c4c02d4be580a71e092050eaf77d7943",
+            "password_and_mfa_totp_verified": true
+          },
+          "unrelated_service_digest": "7de8a0cf192dc96800f1b81410dc196e0f92b87c92846a20d7ce4f5de42fa60d"
+        }
+      }
+    }
+  ],
+  "all_passed": true
+}
