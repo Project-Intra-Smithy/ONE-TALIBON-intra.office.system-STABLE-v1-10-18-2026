@@ -48,6 +48,6 @@ foreach (array_slice($guarded, 4) as $path) {
 foreach (['kirion_g1b_migrator', 'kirion_g1b_app', 'kirion_g1b_custody', 'n03_stage', 'n03_command', 'n03_reconcile', 'n03_reader'] as $role) {
     DB::unprepared('ALTER ROLE '.$role.' PASSWORD '.DB::getPdo()->quote(CredentialBoundary::scram(bin2hex(random_bytes(32)))));
 }
-app(PersistentSecurity::class)->finalize([]);
+app(PersistentSecurity::class)->finalize([], ['bootstrap_role' => 'postgres', 'legacy_owner_roles' => [], 'retired_runtime_roles' => []]);
 DB::unprepared(file_get_contents(database_path('deployment/registry.sql')));
 echo json_encode(app(SecurityCatalog::class)->snapshot('postgres'), JSON_THROW_ON_ERROR);
