@@ -1,0 +1,16 @@
+[Unit]
+Description=ONE TALIBON credential-free infrastructure health check
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/one-talibon-health
+TimeoutStartSec=60
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/one-talibon
+StandardOutput=journal
+StandardError=journal

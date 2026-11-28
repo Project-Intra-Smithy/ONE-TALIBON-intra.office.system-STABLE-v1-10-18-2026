@@ -1,0 +1,21 @@
+devtestportal.talibonbohol.com {
+    encode zstd gzip
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+    @outside not remote_ip OPERATOR_OR_EVALUATOR_IP 127.0.0.1 ::1 172.18.0.1
+    respond @outside "Private QA access only" 403
+    request_body {
+        max_size 25MB
+    }
+    reverse_proxy app:80 {
+        transport http {
+            dial_timeout 5s
+            response_header_timeout 120s
+        }
+    }
+}

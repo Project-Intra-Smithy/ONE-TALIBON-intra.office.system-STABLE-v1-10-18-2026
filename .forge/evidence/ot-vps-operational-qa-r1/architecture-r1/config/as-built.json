@@ -1,0 +1,223 @@
+{
+  "active_source_release": "bf097d746836ef25a5988bfb081d22bb80122660",
+  "services": {
+    "app": {
+      "image": "sha256:c3b1a3ea74f104ee7cb83d287fbf82773898fa0b65ed4946a92dd72ca3b9b062",
+      "user": "33:33",
+      "running": true,
+      "health": "healthy",
+      "read_only": true,
+      "memory": 2147483648,
+      "nano_cpus": 2000000000,
+      "pids_limit": 256,
+      "restart": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      },
+      "log": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "3",
+          "max-size": "10m"
+        }
+      },
+      "ports": {
+        "80/tcp": null
+      },
+      "networks": [
+        "devtestportal_internal",
+        "one-talibon_database"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "/opt/devtestportal/infra/postgres-ca.crt",
+          "target": "/run/one-talibon/postgres-ca.crt",
+          "rw": false
+        },
+        {
+          "type": "volume",
+          "source": "devtestportal_iam_storage",
+          "target": "/var/www/html/storage",
+          "rw": true
+        },
+        {
+          "type": "volume",
+          "source": "devtestportal_bootstrap_cache",
+          "target": "/var/www/html/bootstrap/cache",
+          "rw": true
+        }
+      ]
+    },
+    "db": {
+      "image": "sha256:5264710be20f409750ac6dc4e5706dcef929c87e241605463f0f9aefa932a8d9",
+      "user": "",
+      "running": true,
+      "health": "healthy",
+      "read_only": false,
+      "memory": 4294967296,
+      "nano_cpus": 2000000000,
+      "pids_limit": 256,
+      "restart": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      },
+      "log": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "3",
+          "max-size": "10m"
+        }
+      },
+      "ports": {
+        "5432/tcp": null
+      },
+      "networks": [
+        "one-talibon_database"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "/opt/devtestportal/infra/postgres-ca.crt",
+          "target": "/etc/one-talibon/ca.crt",
+          "rw": false
+        },
+        {
+          "type": "bind",
+          "source": "/opt/devtestportal/infra/pg_hba.conf",
+          "target": "/etc/one-talibon/pg_hba.conf",
+          "rw": false
+        },
+        {
+          "type": "bind",
+          "source": "/opt/devtestportal/infra/postgres-tls",
+          "target": "/etc/one-talibon/tls",
+          "rw": false
+        },
+        {
+          "type": "volume",
+          "source": "devtestportal_db_data",
+          "target": "/var/lib/postgresql/data",
+          "rw": true
+        }
+      ]
+    },
+    "caddy": {
+      "image": "sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d",
+      "user": "",
+      "running": true,
+      "health": null,
+      "read_only": true,
+      "memory": 268435456,
+      "nano_cpus": 1000000000,
+      "pids_limit": 128,
+      "restart": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      },
+      "log": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "3",
+          "max-size": "10m"
+        }
+      },
+      "ports": {
+        "2019/tcp": null,
+        "443/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "443"
+          },
+          {
+            "HostIp": "::",
+            "HostPort": "443"
+          }
+        ],
+        "443/udp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "443"
+          },
+          {
+            "HostIp": "::",
+            "HostPort": "443"
+          }
+        ],
+        "80/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "80"
+          },
+          {
+            "HostIp": "::",
+            "HostPort": "80"
+          }
+        ]
+      },
+      "networks": [
+        "devtestportal_internal"
+      ],
+      "mounts": [
+        {
+          "type": "volume",
+          "source": "devtestportal_caddy_config",
+          "target": "/config",
+          "rw": true
+        },
+        {
+          "type": "volume",
+          "source": "devtestportal_caddy_data",
+          "target": "/data",
+          "rw": true
+        },
+        {
+          "type": "bind",
+          "source": "/opt/devtestportal/infra/Caddyfile",
+          "target": "/etc/caddy/Caddyfile",
+          "rw": false
+        }
+      ]
+    }
+  },
+  "config_sha256": {
+    "health.timer": "a244634a00f862b3afe3fa0e3edfd071ce8f08cd9b38445cddc7ca6525719ceb",
+    "compose.json": "2b000e3362b608e833bccb60bc9aea29047d593d276ffe84a90424d0b9aaf15c",
+    "pg_hba.conf": "c9a81e826c156ae476aae1d346de84a2f9a3eccc4f8e4cc7da0911363100e526",
+    "health.service": "4a9a41c9ac231f54c810c44fdb63c7f79f6b10d0c1587c627e1617f6702485ea",
+    "health.py": "d6d19b3157405f30e03a6b44cd5689c1ef182b7fdc4f1452d918e30bef1722c6",
+    "ssh.conf": "2a8bd1bb6c110ae20536f157208cde096ffa3dd8c5d02bf0207099134f1970d5",
+    "Caddyfile.example": "65237c06f9d0fcb63b13a6cb1159920748ffdf6ab28248712e2e25e9d720f374"
+  },
+  "qa_allowlist_private": true,
+  "host": {
+    "os": "Ubuntu 26.04.1 LTS",
+    "kernel": "7.0.0-38-generic",
+    "cpu_count": 4,
+    "reboot_required": true
+  },
+  "health": {
+    "containers": {
+      "app": {
+        "health": "healthy",
+        "restarts": 0,
+        "running": true
+      },
+      "caddy": {
+        "health": "not_configured",
+        "restarts": 2,
+        "running": true
+      },
+      "db": {
+        "health": "healthy",
+        "restarts": 0,
+        "running": true
+      }
+    },
+    "disk_free_bytes": 187443720192,
+    "issues": [],
+    "memory_available_kib": 15209400,
+    "time": 1795869829,
+    "tls_login_http": "200"
+  }
+}
