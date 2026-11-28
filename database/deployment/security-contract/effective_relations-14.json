@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_stage",
+    "name": "public.document_links",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.document_links_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.documents",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.documents_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.dtr_daily_summaries",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.dtr_daily_summaries_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.dtr_periods",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.dtr_periods_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_development_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_development_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_health_access_grants",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_health_access_grants_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_health_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_health_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_movement_tasks",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_movement_tasks_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_movements",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employee_movements_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employees",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.employees_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.initial_admin_bootstraps",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_client_credentials",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_client_credentials_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_clients",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_clients_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_idempotency_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_idempotency_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_proof_writes",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.integration_proof_writes_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_credit_accounts",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_credit_accounts_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_credit_transactions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_credit_transactions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_requests",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_requests_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_types",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.leave_types_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_agenda_items",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_agenda_items_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_sessions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.legislative_sessions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.memo_recipients",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.memo_recipients_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.memoranda",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.memoranda_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.migrations",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.migrations_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.offboarding_cases",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.offboarding_cases_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.offboarding_tasks",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.offboarding_tasks_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.onboarding_cases",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.onboarding_cases_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.onboarding_tasks",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.onboarding_tasks_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.operational_items",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.operational_items_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ops009_close_audit_bindings",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ops009_origin_delivery_exception_actions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ops009_origin_delivery_exception_actions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ops009_origin_delivery_exceptions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ops009_origin_delivery_exceptions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.outbox_messages",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.outbox_messages_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.password_reset_tokens",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.payroll_entries",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.payroll_entries_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.payroll_periods",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.payroll_periods_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.performance_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.performance_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_events",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_events_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_generations",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_generations_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_scan_evidence",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_scan_evidence_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_document_bindings",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_document_bindings_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_document_origin_receipts",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_editions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_editions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_families",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_families_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachment_reconciliations",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachment_reconciliations_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachments",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachments_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_maps",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_maps_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_plan_map_links",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_ppa_identifiers",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_reference_counters",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.platform_notifications",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.platform_notifications_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.portal_presence_sessions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.portal_presence_sessions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ppa_records",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  }
+]

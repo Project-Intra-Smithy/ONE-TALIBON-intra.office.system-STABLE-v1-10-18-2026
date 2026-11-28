@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint asset_assignments_asset_id_foreign on table public.asset_assignments",
+    "reference": "column asset_id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_assignments_asset_id_foreign on table public.asset_assignments",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_asset_id_foreign on table public.asset_assignments",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_created_by_user_id_foreign on table public.asset_assignments",
+    "reference": "column created_by_user_id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_assignments_created_by_user_id_foreign on table public.asset_assignments",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_created_by_user_id_foreign on table public.asset_assignments",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_department_id_foreign on table public.asset_assignments",
+    "reference": "column department_id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_assignments_department_id_foreign on table public.asset_assignments",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_department_id_foreign on table public.asset_assignments",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_employee_id_foreign on table public.asset_assignments",
+    "reference": "column employee_id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_assignments_employee_id_foreign on table public.asset_assignments",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_employee_id_foreign on table public.asset_assignments",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_assignments_pkey on table public.asset_assignments",
+    "reference": "column id of table public.asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_disposals_asset_id_foreign on table public.asset_disposals",
+    "reference": "column asset_id of table public.asset_disposals",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_disposals_asset_id_foreign on table public.asset_disposals",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_disposals_asset_id_foreign on table public.asset_disposals",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_disposals_decided_by_user_id_foreign on table public.asset_disposals",
+    "reference": "column decided_by_user_id of table public.asset_disposals",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_disposals_decided_by_user_id_foreign on table public.asset_disposals",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_disposals_decided_by_user_id_foreign on table public.asset_disposals",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_disposals_pkey on table public.asset_disposals",
+    "reference": "column id of table public.asset_disposals",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_disposals_recommended_by_user_id_foreign on table public.asset_disposals",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_disposals_recommended_by_user_id_foreign on table public.asset_disposals",
+    "reference": "column recommended_by_user_id of table public.asset_disposals",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_disposals_recommended_by_user_id_foreign on table public.asset_disposals",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_actor_user_id_foreign on table public.asset_events",
+    "reference": "column actor_user_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_actor_user_id_foreign on table public.asset_events",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_actor_user_id_foreign on table public.asset_events",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_asset_id_foreign on table public.asset_events",
+    "reference": "column asset_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_asset_id_foreign on table public.asset_events",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_asset_id_foreign on table public.asset_events",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_from_department_id_foreign on table public.asset_events",
+    "reference": "column from_department_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_from_department_id_foreign on table public.asset_events",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_from_department_id_foreign on table public.asset_events",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_from_employee_id_foreign on table public.asset_events",
+    "reference": "column from_employee_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_from_employee_id_foreign on table public.asset_events",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_from_employee_id_foreign on table public.asset_events",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_pkey on table public.asset_events",
+    "reference": "column id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_to_department_id_foreign on table public.asset_events",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_to_department_id_foreign on table public.asset_events",
+    "reference": "column to_department_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_to_department_id_foreign on table public.asset_events",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_to_employee_id_foreign on table public.asset_events",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_events_to_employee_id_foreign on table public.asset_events",
+    "reference": "column to_employee_id of table public.asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_events_to_employee_id_foreign on table public.asset_events",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scan_unique on table public.asset_inventory_scans",
+    "reference": "column asset_id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scan_unique on table public.asset_inventory_scans",
+    "reference": "column asset_inventory_session_id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_id_foreign on table public.asset_inventory_scans",
+    "reference": "column asset_id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_id_foreign on table public.asset_inventory_scans",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_id_foreign on table public.asset_inventory_scans",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_inventory_session_id_foreign on table public.asset_inventory_scans",
+    "reference": "column asset_inventory_session_id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_inventory_session_id_foreign on table public.asset_inventory_scans",
+    "reference": "column id of table public.asset_inventory_sessions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scans_asset_inventory_session_id_foreign on table public.asset_inventory_scans",
+    "reference": "index public.asset_inventory_sessions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scans_pkey on table public.asset_inventory_scans",
+    "reference": "column id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scans_scanned_by_user_id_foreign on table public.asset_inventory_scans",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_scans_scanned_by_user_id_foreign on table public.asset_inventory_scans",
+    "reference": "column scanned_by_user_id of table public.asset_inventory_scans",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_scans_scanned_by_user_id_foreign on table public.asset_inventory_scans",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_closed_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column closed_by_user_id of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_closed_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_closed_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_department_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column department_id of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_department_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_department_id_foreign on table public.asset_inventory_sessions",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_pkey on table public.asset_inventory_sessions",
+    "reference": "column id of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_session_code_unique on table public.asset_inventory_sessions",
+    "reference": "column session_code of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_started_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_started_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "column started_by_user_id of table public.asset_inventory_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_inventory_sessions_started_by_user_id_foreign on table public.asset_inventory_sessions",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_maintenance_records_asset_id_foreign on table public.asset_maintenance_records",
+    "reference": "column asset_id of table public.asset_maintenance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_maintenance_records_asset_id_foreign on table public.asset_maintenance_records",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_maintenance_records_asset_id_foreign on table public.asset_maintenance_records",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_maintenance_records_created_by_user_id_foreign on table public.asset_maintenance_records",
+    "reference": "column created_by_user_id of table public.asset_maintenance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_maintenance_records_created_by_user_id_foreign on table public.asset_maintenance_records",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_maintenance_records_created_by_user_id_foreign on table public.asset_maintenance_records",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_maintenance_records_pkey on table public.asset_maintenance_records",
+    "reference": "column id of table public.asset_maintenance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_reconciliations_asset_id_foreign on table public.asset_reconciliations",
+    "reference": "column asset_id of table public.asset_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_reconciliations_asset_id_foreign on table public.asset_reconciliations",
+    "reference": "column id of table public.assets",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_reconciliations_asset_id_foreign on table public.asset_reconciliations",
+    "reference": "index public.assets_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_reconciliations_pkey on table public.asset_reconciliations",
+    "reference": "column id of table public.asset_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_reconciliations_reconciled_by_user_id_foreign on table public.asset_reconciliations",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint asset_reconciliations_reconciled_by_user_id_foreign on table public.asset_reconciliations",
+    "reference": "column reconciled_by_user_id of table public.asset_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint asset_reconciliations_reconciled_by_user_id_foreign on table public.asset_reconciliations",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint assets_accountable_employee_id_foreign on table public.assets",
+    "reference": "column accountable_employee_id of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint assets_accountable_employee_id_foreign on table public.assets",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint assets_accountable_employee_id_foreign on table public.assets",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint assets_current_department_id_foreign on table public.assets",
+    "reference": "column current_department_id of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint assets_current_department_id_foreign on table public.assets",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint assets_current_department_id_foreign on table public.assets",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint assets_pkey on table public.assets",
+    "reference": "column id of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint assets_property_number_unique on table public.assets",
+    "reference": "column property_number of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint assets_qr_value_unique on table public.assets",
+    "reference": "column qr_value of table public.assets",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint attendance_logs_employee_id_foreign on table public.attendance_logs",
+    "reference": "column employee_id of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint attendance_logs_employee_id_foreign on table public.attendance_logs",
+    "reference": "column id of table public.employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint attendance_logs_employee_id_foreign on table public.attendance_logs",
+    "reference": "index public.employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint attendance_logs_pkey on table public.attendance_logs",
+    "reference": "column id of table public.attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint audit_logs_actor_department_id_foreign on table public.audit_logs",
+    "reference": "column actor_department_id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint audit_logs_actor_department_id_foreign on table public.audit_logs",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_actor_department_id_foreign on table public.audit_logs",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_actor_user_id_foreign on table public.audit_logs",
+    "reference": "column actor_user_id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint audit_logs_actor_user_id_foreign on table public.audit_logs",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_actor_user_id_foreign on table public.audit_logs",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_integration_client_id_foreign on table public.audit_logs",
+    "reference": "column id of table public.integration_clients",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_integration_client_id_foreign on table public.audit_logs",
+    "reference": "column integration_client_id of table public.audit_logs",
+    "deptype": "a"
+  }
+]

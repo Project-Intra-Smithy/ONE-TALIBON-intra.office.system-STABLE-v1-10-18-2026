@@ -16,9 +16,9 @@ test('B2 retains all seven reference-data filter predicates and reset', () => {
   assert.match(filters, /Advanced filters/);
   assert.match(page, /setSelected\(null\)/);
 });
-test('B2 status badges are restricted to five PPA domain status values', () => {
+test('B2 status badges retain canonical domain values and neutral unknown fallback', () => {
   for (const status of ['Planned','For Procurement','Ongoing','Completed','On Hold']) assert.ok(register.includes(status));
-  assert.match(register, /Record<PPARecord\['status'\], string>/);
+  assert.match(register, /record\.status\]\?\?'neutral'/);
   assert.doesNotMatch(register, /percentComplete|completionPercent|progressBar|<progress/i);
 });
 test('B2 preserves mobile cards, desktop register and detail focus restoration', () => {
@@ -31,16 +31,18 @@ test('B2 preserves mobile cards, desktop register and detail focus restoration',
   assert.match(register, /aria-selected=\{selectedId === record\.id\}/);
   assert.match(register, /aria-expanded=\{selectedId === record\.id\}/);
   assert.match(register, /r8-ppas-card-meta/);
-  assert.match(detail, /panelRef\.current\?\.focus\(\)/);
-  assert.match(detail, /event\.key === 'Escape'/);
+  assert.match(detail, /<PlanDossierPresentation/);
+  assert.match(detail, /onClose=\{onClose\}/);
+  assert.match(readFileSync(new URL('../../resources/js/components/ui/Dialog.tsx', import.meta.url), 'utf8'), /showModal\(\)/);
   assert.match(page, /dataset\.ppaTrigger === id/);
   assert.match(page, /trigger\?\.focus\(\)/);
 });
-test('B2 preserves reference disclosures and adds no monitoring or CRUD surface', () => {
+test('B2 preserves reference disclosures and gates mutations through server-authorized permissions', () => {
   assert.match(page, /no completion percentage is recorded for PPAs/);
   assert.match(page, /do not represent verified live project progress/);
   assert.match(detail, /Not verified live implementation progress/);
-  assert.doesNotMatch(page + register + filters + detail, /Add Project|Create PPA|router\.post|percentComplete|progressBar/);
+  assert.match(page, /planningPermissions\?\.canManagePpas \|\| planningPermissions\?\.canProposeOfficePpa/);
+  assert.doesNotMatch(page + register + filters + detail, /localStorage\.|percentComplete|progressBar/);
   assert.match(page, /r8-ppas/);
   assert.match(css, /\.r8-ppas/);
   assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root)\s*\{/);

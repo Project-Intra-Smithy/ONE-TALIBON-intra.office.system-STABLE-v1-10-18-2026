@@ -1,34 +1,26 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminEmployeeRegistrationController;
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\Auth\AccountSecurityController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
+use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CorrespondenceLifecycleController;
 use App\Http\Controllers\CorrespondenceWorkspaceActionController;
 use App\Http\Controllers\CorrespondenceWorkspaceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentCenterController;
-use App\Http\Controllers\DtrController;
-use App\Http\Controllers\EmployeeHealthVaultController;
-use App\Http\Controllers\HealthAccessController;
-use App\Http\Controllers\HrisAdminController;
-use App\Http\Controllers\HrisController;
-use App\Http\Controllers\HrisDevelopmentController;
-use App\Http\Controllers\HrisLifecycleController;
-use App\Http\Controllers\HrisOffboardingController;
-use App\Http\Controllers\LeaveRequestController;
-use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\EmployeeDirectoryController;
 use App\Http\Controllers\EmployeeDirectoryProfileController;
 use App\Http\Controllers\EmployeePresenceController;
-use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\LegislativeRecordController;
 use App\Http\Controllers\LegislativeWorkspaceController;
 use App\Http\Controllers\MayorOfficeController;
@@ -38,6 +30,13 @@ use App\Http\Controllers\Messaging\ListMessagesController;
 use App\Http\Controllers\Messaging\StoreMessageController;
 use App\Http\Controllers\NotificationFeedController;
 use App\Http\Controllers\OperationsMonitoringController;
+use App\Http\Controllers\OriginDeliveryExceptionController;
+use App\Http\Controllers\Planning\DesignatedPlanningStaffController;
+use App\Http\Controllers\Planning\DevelopmentPlanController;
+use App\Http\Controllers\Planning\PlanningAttachmentController;
+use App\Http\Controllers\Planning\PlanningCustodyController;
+use App\Http\Controllers\Planning\PlanningMapController;
+use App\Http\Controllers\Planning\PpaController;
 use App\Http\Controllers\PlatformNotificationController;
 use App\Http\Controllers\PortalSearchController;
 use App\Http\Controllers\PropertyController;
@@ -45,9 +44,10 @@ use App\Http\Controllers\PropertyLifecycleController;
 use App\Http\Controllers\PublicPortalController;
 use App\Http\Controllers\RecordsController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\StaffActivationController;
+use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionLiveController;
-use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TravelOrderController;
 use App\Http\Middleware\DenyUnapprovedMessaging;
 use App\Http\Middleware\DenyUnverifiedCorrespondenceMutations;
@@ -57,7 +57,8 @@ use Inertia\Inertia;
 Route::get('/', [PublicPortalController::class, 'home'])->name('public.home');
 
 Route::middleware('guest')->group(function (): void {
-    Route::get('/activate-account', [PublicPortalController::class, 'activation'])->name('public.activate-account');
+    Route::get('/activate-account', [StaffActivationController::class, 'show'])->name('public.activate-account');
+    Route::post('/activate-account', [StaffActivationController::class, 'redeem'])->middleware('throttle:6,1')->name('public.activate-account.redeem');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
@@ -82,8 +83,19 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 });
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
+    Route::get('/security/account', AccountSecurityController::class)->name('account.security');
+    Route::put('/security/password', PasswordChangeController::class)->name('password.change');
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
+    Route::post('/admin/employees', [AdminEmployeeRegistrationController::class, 'store'])->name('admin.employees.store');
+    Route::post('/admin/accounts', [StaffActivationController::class, 'store'])->name('admin.accounts.store');
+    Route::post('/admin/invitations', [StaffActivationController::class, 'store'])->name('admin.invitations.store');
+    Route::post('/admin/invitations/{invitation}/revoke', [StaffActivationController::class, 'revoke'])->whereNumber('invitation')->name('admin.invitations.revoke');
+    Route::post('/admin/accounts/{user}/suspend', [StaffActivationController::class, 'suspend'])->whereNumber('user')->name('admin.accounts.suspend');
+    Route::post('/admin/accounts/{user}/reactivate', [StaffActivationController::class, 'reactivate'])->whereNumber('user')->name('admin.accounts.reactivate');
+    Route::post('/admin/accounts/{user}/recovery', [StaffActivationController::class, 'recover'])->whereNumber('user')->name('admin.accounts.recovery');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/my-department', [DepartmentController::class, 'myWorkspace'])->name('my-department.index');
+    Route::get('/my-tasks', fn () => Inertia::render('Tasks/Index'))->name('my-tasks.index');
     Route::get('/portal-search', PortalSearchController::class)->name('portal-search.index');
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
@@ -110,14 +122,43 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
         ->middleware([DenyUnapprovedMessaging::class, 'throttle:60,1'])
         ->name('messages.feed.store');
     Route::get('/local-special-bodies', fn () => Inertia::render('LocalBodies/Index'))->name('local-special-bodies.index');
-    Route::get('/development-plans', fn () => Inertia::render('Plans/Index'))->name('development-plans.index');
-    Route::get('/ppas', fn () => Inertia::render('PPAs/Index'))->name('ppas.index');
+    Route::get('/development-plans', [DevelopmentPlanController::class, 'index'])->name('development-plans.index');
+    Route::post('/development-plans', [DevelopmentPlanController::class, 'store'])->name('development-plans.store');
+    Route::put('/development-plans/{plan}', [DevelopmentPlanController::class, 'update'])->whereNumber('plan')->name('development-plans.update');
+    Route::post('/development-plans/{plan}/status', [DevelopmentPlanController::class, 'updateStatus'])->whereNumber('plan')->name('development-plans.status');
+    Route::delete('/development-plans/{plan}', [DevelopmentPlanController::class, 'destroy'])->whereNumber('plan')->name('development-plans.destroy');
+
+    Route::get('/ppas', [PpaController::class, 'index'])->name('ppas.index');
+    Route::get('/ppas/export/csv', [PpaController::class, 'exportCsv'])->name('ppas.export.csv');
+    Route::post('/ppas', [PpaController::class, 'store'])->name('ppas.store');
+    Route::put('/ppas/{ppa}', [PpaController::class, 'update'])->whereNumber('ppa')->name('ppas.update');
+    Route::post('/ppas/{ppa}/status', [PpaController::class, 'updateStatus'])->whereNumber('ppa')->name('ppas.status');
+    Route::delete('/ppas/{ppa}', [PpaController::class, 'destroy'])->whereNumber('ppa')->name('ppas.destroy');
+
+    Route::get('/planning-maps', [PlanningMapController::class, 'index'])->name('planning-maps.index');
+    Route::post('/planning-maps', [PlanningMapController::class, 'store'])->name('planning-maps.store');
+    Route::put('/planning-maps/{planningMap}', [PlanningMapController::class, 'update'])->whereNumber('planningMap')->name('planning-maps.update');
+    Route::post('/planning-maps/{planningMap}/status', [PlanningMapController::class, 'updateStatus'])->whereNumber('planningMap')->name('planning-maps.status');
+    Route::delete('/planning-maps/{planningMap}', [PlanningMapController::class, 'destroy'])->whereNumber('planningMap')->name('planning-maps.destroy');
+
+    Route::post('/planning/designated-staff', [DesignatedPlanningStaffController::class, 'store'])->name('planning.designated-staff.store');
+    Route::put('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'update'])->whereNumber('staff')->name('planning.designated-staff.update');
+    Route::delete('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'destroy'])->whereNumber('staff')->name('planning.designated-staff.destroy');
+
+    Route::get('/planning/attachment-custody', [PlanningCustodyController::class, 'index'])->name('planning.custody.index');
+    Route::post('/planning/attachment-custody/{attachment}/reconcile', [PlanningCustodyController::class, 'reconcile'])->whereUuid('attachment')->name('planning.custody.reconcile');
+    Route::post('/planning/attachments', [PlanningAttachmentController::class, 'store'])->name('planning.attachments.store');
+    Route::get('/planning/attachments/{attachment}/preview', [PlanningAttachmentController::class, 'preview'])->whereUuid('attachment')->name('planning.attachments.preview');
+    Route::get('/planning/attachments/{attachment}/download', [PlanningAttachmentController::class, 'download'])->whereUuid('attachment')->name('planning.attachments.download');
+    Route::delete('/planning/attachments/{attachment}', [PlanningAttachmentController::class, 'destroy'])->whereUuid('attachment')->name('planning.attachments.destroy');
+
     Route::get('/procurement', fn () => Inertia::render('MunicipalSystems/Index', ['referenceSurface' => 'procurement']))->name('procurement.reference');
     Route::get('/municipal-systems', fn () => Inertia::render('MunicipalSystems/Index'))->name('municipal-systems.index');
 
     Route::get('/correspondence', CorrespondenceWorkspaceController::class)->name('correspondence.index');
     Route::get('/records', RecordsController::class)->name('records.index');
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::get('/documents/{document}/preview', [DocumentController::class, 'preview'])->name('documents.preview');
     Route::get('/travel-orders', [TravelOrderController::class, 'index'])->name('travel-orders.index');
     Route::get('/travel-orders/create', [TravelOrderController::class, 'create'])->name('travel-orders.create');
     Route::post('/travel-orders', [TravelOrderController::class, 'store'])->name('travel-orders.store');
@@ -154,6 +195,13 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/notifications/feed', NotificationFeedController::class)->name('notifications.feed');
     Route::post('/notifications/{notification}/read', [PlatformNotificationController::class, 'markRead'])->name('notifications.read');
     Route::post('/notifications/{notification}/acknowledge', [PlatformNotificationController::class, 'acknowledge'])->name('notifications.acknowledge');
+
+    // Synthetic-approved origin-office delivery exception follow-up. Actual
+    // municipal owner/designations remain held pending HRMO/Records approval.
+    Route::get('/work-requests/origin-delivery-exceptions', [OriginDeliveryExceptionController::class, 'index'])
+        ->name('origin-delivery-exceptions.index');
+    Route::post('/work-requests/origin-delivery-exceptions/{exception}/actions', [OriginDeliveryExceptionController::class, 'act'])
+        ->middleware('throttle:30,1')->whereNumber('exception')->name('origin-delivery-exceptions.act');
 
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');

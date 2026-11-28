@@ -13,6 +13,7 @@ use App\Services\IntegrationCredentialService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Tests\TestCase;
@@ -38,6 +39,40 @@ class IntegrationFoundationTest extends TestCase
         $this->assertNotNull($response->headers->get('X-Correlation-ID'));
         $this->assertGuest();
         $this->assertFalse(Auth::check());
+    }
+
+    public function test_ingress_bounds_failed_authentication_before_audit_and_ignores_untrusted_forwarding(): void
+    {
+        config(['app.integration_ingress_per_minute' => 2]);
+        $this->withServerVariables(['REMOTE_ADDR' => '192.0.2.99']);
+        $key = 'integration:ingress:'.hash('sha256', '192.0.2.99');
+        RateLimiter::clear($key);
+        $before = AuditLog::query()->where('action', 'integration.authentication.failed')->count();
+
+        $this->withHeader('X-Forwarded-For', '192.0.2.1')->getJson('/api/v1/integration/self')->assertUnauthorized();
+        $this->withHeader('X-Forwarded-For', '192.0.2.2')->withToken('invalid')->getJson('/api/v1/integration/self')->assertUnauthorized();
+        $this->withHeader('X-Forwarded-For', '192.0.2.3')->withToken((string) Str::uuid().'.'.str_repeat('x', 43))
+            ->getJson('/api/v1/integration/self')->assertStatus(429)
+            ->assertHeader('Retry-After')
+            ->assertJsonPath('error.code', IntegrationErrorCode::RateLimited->value);
+
+        $this->assertSame($before + 2, AuditLog::query()->where('action', 'integration.authentication.failed')->count());
+        $this->travel(61)->seconds();
+        $this->getJson('/api/v1/integration/self')->assertUnauthorized();
+        $this->travelBack();
+        RateLimiter::clear($key);
+    }
+
+    public function test_explicit_trusted_proxy_controls_the_ingress_peer_and_scheme(): void
+    {
+        config(['app.trusted_proxies' => '192.0.2.0/24']);
+        $this->withServerVariables(['REMOTE_ADDR' => '192.0.2.50']);
+        $this->withHeader('X-Forwarded-For', '198.51.100.8')
+            ->withHeader('X-Forwarded-Proto', 'https')
+            ->getJson('/api/v1/integration/self')->assertUnauthorized();
+
+        $audit = AuditLog::query()->where('action', 'integration.authentication.failed')->latest('id')->firstOrFail();
+        $this->assertSame('198.51.100.8', $audit->ip_address);
     }
 
     public function test_wrong_secret_returns_generic_401(): void

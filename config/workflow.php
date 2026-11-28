@@ -31,6 +31,12 @@ return [
                 'allowed_from' => ['submitted', 'returned', 'information_requested'],
                 'destination' => 'current',
             ],
+            'close' => [
+                'status' => 'closed',
+                'allowed_from' => ['for_review'],
+                'destination' => 'current',
+                'completes' => true,
+            ],
             'forward' => [
                 'status' => 'submitted',
                 'destination' => 'target',

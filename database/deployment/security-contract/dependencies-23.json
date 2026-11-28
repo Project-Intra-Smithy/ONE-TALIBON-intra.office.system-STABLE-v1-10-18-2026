@@ -1,0 +1,502 @@
+[
+  {
+    "object": "trigger kirion_plan_stamp_origin_trigger on table public.documents",
+    "reference": "table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger kirion_plan_typed_binding_guard_trigger on table public.plan_document_bindings",
+    "reference": "function public.kirion_plan_typed_binding_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger kirion_plan_typed_binding_guard_trigger on table public.plan_document_bindings",
+    "reference": "table public.plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.bindings",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.bindings",
+    "reference": "table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.command_results",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.command_results",
+    "reference": "table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.ownership_links",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.ownership_links",
+    "reference": "table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.terminal_receipts",
+    "reference": "column outcome of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.terminal_receipts",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_command_complete on table legacy_custody.terminal_receipts",
+    "reference": "table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_g3_immutable on table legacy_custody.classification_events",
+    "reference": "function legacy_custody.g3_extensions_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_g3_immutable on table legacy_custody.classification_events",
+    "reference": "table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_g3_immutable on table legacy_custody.watermark_checkpoints",
+    "reference": "function legacy_custody.g3_extensions_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_g3_immutable on table legacy_custody.watermark_checkpoints",
+    "reference": "table legacy_custody.watermark_checkpoints",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.bindings",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.bindings",
+    "reference": "table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.command_results",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.command_results",
+    "reference": "table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.generations",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.generations",
+    "reference": "table legacy_custody.generations",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.namespaces",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.namespaces",
+    "reference": "table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_events",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_events",
+    "reference": "table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_gates",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_gates",
+    "reference": "table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_items",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operation_items",
+    "reference": "table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operations",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.operations",
+    "reference": "table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.ownership_links",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.ownership_links",
+    "reference": "table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.terminal_receipts",
+    "reference": "function legacy_custody.private_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_immutable on table legacy_custody.terminal_receipts",
+    "reference": "table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_k2_immutable on table legacy_custody.compensation_outcomes",
+    "reference": "function legacy_custody.k2_compensation_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_k2_immutable on table legacy_custody.compensation_outcomes",
+    "reference": "table legacy_custody.compensation_outcomes",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_k2_immutable on table legacy_custody.compensation_tombstones",
+    "reference": "function legacy_custody.k2_compensation_guard()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_k2_immutable on table legacy_custody.compensation_tombstones",
+    "reference": "table legacy_custody.compensation_tombstones",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.audit_logs",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.audit_logs",
+    "reference": "table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.documents",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_public_complete on table public.documents",
+    "reference": "table public.documents",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_public_link_complete on table public.document_links",
+    "reference": "function legacy_custody.command_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_public_link_complete on table public.document_links",
+    "reference": "table public.document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operation_gates",
+    "reference": "function legacy_custody.reservation_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operation_gates",
+    "reference": "table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operation_items",
+    "reference": "function legacy_custody.reservation_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operation_items",
+    "reference": "table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operations",
+    "reference": "function legacy_custody.reservation_complete()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger n03_reservation_complete on table legacy_custody.operations",
+    "reference": "table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "column action of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "column entity_type of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "function public.ops009_verify_close_audit()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_delivery_action_guard on table public.ops009_origin_delivery_exception_actions",
+    "reference": "function public.ops009_guard_delivery_action()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_delivery_action_guard on table public.ops009_origin_delivery_exception_actions",
+    "reference": "table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_delivery_exception_guard on table public.ops009_origin_delivery_exceptions",
+    "reference": "function public.ops009_guard_delivery_exception()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_delivery_exception_guard on table public.ops009_origin_delivery_exceptions",
+    "reference": "table public.ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_exception_action_append_only on table public.ops009_origin_delivery_exception_actions",
+    "reference": "function public.ops009_deny_exception_mutation()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_exception_action_append_only on table public.ops009_origin_delivery_exception_actions",
+    "reference": "table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_exception_append_only on table public.ops009_origin_delivery_exceptions",
+    "reference": "function public.ops009_deny_exception_mutation()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_exception_append_only on table public.ops009_origin_delivery_exceptions",
+    "reference": "table public.ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger ops009_origin_close_notice_guard on table public.platform_notifications",
+    "reference": "function public.ops009_guard_close_notice()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger ops009_origin_close_notice_guard on table public.platform_notifications",
+    "reference": "table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger planning_ppa_identifiers_immutable on table public.planning_ppa_identifiers",
+    "reference": "function public.planning_ppa_identifiers_immutable()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger planning_ppa_identifiers_immutable on table public.planning_ppa_identifiers",
+    "reference": "table public.planning_ppa_identifiers",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger planning_ppa_identifiers_no_truncate on table public.planning_ppa_identifiers",
+    "reference": "function public.planning_ppa_identifiers_immutable()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger planning_ppa_identifiers_no_truncate on table public.planning_ppa_identifiers",
+    "reference": "table public.planning_ppa_identifiers",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger planning_reconciliation_immutable on table public.planning_attachment_reconciliations",
+    "reference": "function public.planning_reconciliation_immutable()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger planning_reconciliation_immutable on table public.planning_attachment_reconciliations",
+    "reference": "table public.planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "trigger planning_reconciliation_no_truncate on table public.planning_attachment_reconciliations",
+    "reference": "function public.planning_reconciliation_immutable()",
+    "deptype": "n"
+  },
+  {
+    "object": "trigger planning_reconciliation_no_truncate on table public.planning_attachment_reconciliations",
+    "reference": "table public.planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "type deployment_control.installations",
+    "reference": "table deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "type deployment_control.installations[]",
+    "reference": "type deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.bindings",
+    "reference": "table legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.bindings[]",
+    "reference": "type legacy_custody.bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.classification_events",
+    "reference": "table legacy_custody.classification_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.classification_events[]",
+    "reference": "type legacy_custody.classification_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.command_results",
+    "reference": "table legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.command_results[]",
+    "reference": "type legacy_custody.command_results",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.compensation_outcomes",
+    "reference": "table legacy_custody.compensation_outcomes",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.compensation_outcomes[]",
+    "reference": "type legacy_custody.compensation_outcomes",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.compensation_tombstones",
+    "reference": "table legacy_custody.compensation_tombstones",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.compensation_tombstones[]",
+    "reference": "type legacy_custody.compensation_tombstones",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.generations",
+    "reference": "table legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.generations[]",
+    "reference": "type legacy_custody.generations",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.namespaces",
+    "reference": "table legacy_custody.namespaces",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.namespaces[]",
+    "reference": "type legacy_custody.namespaces",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_events",
+    "reference": "table legacy_custody.operation_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_events[]",
+    "reference": "type legacy_custody.operation_events",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_gates",
+    "reference": "table legacy_custody.operation_gates",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_gates[]",
+    "reference": "type legacy_custody.operation_gates",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_items",
+    "reference": "table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operation_items[]",
+    "reference": "type legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "type legacy_custody.operations",
+    "reference": "table legacy_custody.operations",
+    "deptype": "i"
+  }
+]

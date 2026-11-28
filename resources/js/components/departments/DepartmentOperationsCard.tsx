@@ -18,7 +18,7 @@ export default function DepartmentOperationsCard({ office }: { office: Office })
         <article className="flex h-full min-w-0 flex-col rounded-xl border border-slate-200 border-l-[3px] border-l-[var(--municipal-brand)] bg-white dark:border-y-slate-700 dark:border-r-slate-700 dark:bg-[#142236]">
             <div className="px-4 pb-3 pt-4 sm:px-5 sm:pt-5">
                 <div className="flex min-w-0 items-start gap-3">
-                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]">
+                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--municipal-brand-soft)] text-[var(--brand-ink)]">
                         <Building2 size={15} aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1">

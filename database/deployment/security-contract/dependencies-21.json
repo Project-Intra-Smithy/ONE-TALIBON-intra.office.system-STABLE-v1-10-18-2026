@@ -1,0 +1,502 @@
+[
+  {
+    "object": "sequence public.leave_requests_id_seq",
+    "reference": "column id of table public.leave_requests",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.leave_requests_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.leave_types_id_seq",
+    "reference": "column id of table public.leave_types",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.leave_types_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.legislative_agenda_items_id_seq",
+    "reference": "column id of table public.legislative_agenda_items",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.legislative_agenda_items_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.legislative_records_id_seq",
+    "reference": "column id of table public.legislative_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.legislative_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.legislative_sessions_id_seq",
+    "reference": "column id of table public.legislative_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.legislative_sessions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.memo_recipients_id_seq",
+    "reference": "column id of table public.memo_recipients",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.memo_recipients_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.memoranda_id_seq",
+    "reference": "column id of table public.memoranda",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.memoranda_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.migrations_id_seq",
+    "reference": "column id of table public.migrations",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.migrations_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.offboarding_cases_id_seq",
+    "reference": "column id of table public.offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.offboarding_cases_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.offboarding_tasks_id_seq",
+    "reference": "column id of table public.offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.offboarding_tasks_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.onboarding_cases_id_seq",
+    "reference": "column id of table public.onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.onboarding_cases_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.onboarding_tasks_id_seq",
+    "reference": "column id of table public.onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.onboarding_tasks_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.operational_items_id_seq",
+    "reference": "column id of table public.operational_items",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.operational_items_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.ops009_origin_delivery_exception_actions_id_seq",
+    "reference": "column id of table public.ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.ops009_origin_delivery_exception_actions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.ops009_origin_delivery_exceptions_id_seq",
+    "reference": "column id of table public.ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.ops009_origin_delivery_exceptions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.outbox_messages_id_seq",
+    "reference": "column id of table public.outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.outbox_messages_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.payroll_entries_id_seq",
+    "reference": "column id of table public.payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.payroll_entries_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.payroll_periods_id_seq",
+    "reference": "column id of table public.payroll_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.payroll_periods_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.performance_records_id_seq",
+    "reference": "column id of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.performance_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_custody_events_id_seq",
+    "reference": "column id of table public.plan_custody_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_custody_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_custody_generations_id_seq",
+    "reference": "column id of table public.plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_custody_generations_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_custody_scan_evidence_id_seq",
+    "reference": "column id of table public.plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_custody_scan_evidence_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_document_bindings_id_seq",
+    "reference": "column id of table public.plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_document_bindings_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_editions_id_seq",
+    "reference": "column id of table public.plan_editions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_editions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.plan_families_id_seq",
+    "reference": "column id of table public.plan_families",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.plan_families_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.planning_attachment_reconciliations_id_seq",
+    "reference": "column id of table public.planning_attachment_reconciliations",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.planning_attachment_reconciliations_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.planning_attachments_id_seq",
+    "reference": "column id of table public.planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.planning_attachments_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.planning_maps_id_seq",
+    "reference": "column id of table public.planning_maps",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.planning_maps_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.platform_notifications_id_seq",
+    "reference": "column id of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.platform_notifications_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.portal_presence_sessions_id_seq",
+    "reference": "column id of table public.portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.portal_presence_sessions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.ppa_records_id_seq",
+    "reference": "column id of table public.ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.ppa_records_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.prototype_messages_id_seq",
+    "reference": "column id of table public.prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.prototype_messages_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.staff_activation_invitations_id_seq",
+    "reference": "column id of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.staff_activation_invitations_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.task_events_id_seq",
+    "reference": "column id of table public.task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.task_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.tasks_id_seq",
+    "reference": "column id of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.tasks_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.transaction_events_id_seq",
+    "reference": "column id of table public.transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.transaction_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.transactions_id_seq",
+    "reference": "column id of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.transactions_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.travel_order_employee_id_seq",
+    "reference": "column id of table public.travel_order_employee",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.travel_order_employee_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.travel_order_events_id_seq",
+    "reference": "column id of table public.travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.travel_order_events_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.travel_orders_id_seq",
+    "reference": "column id of table public.travel_orders",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.travel_orders_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "sequence public.users_id_seq",
+    "reference": "column id of table public.users",
+    "deptype": "a"
+  },
+  {
+    "object": "sequence public.users_id_seq",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table deployment_control.installations",
+    "reference": "schema deployment_control",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.bindings",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.classification_events",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.command_results",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.compensation_outcomes",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.compensation_tombstones",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.generations",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.namespaces",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_events",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_gates",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operation_items",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.operations",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.ownership_links",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.terminal_receipts",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table legacy_custody.watermark_checkpoints",
+    "reference": "schema legacy_custody",
+    "deptype": "n"
+  },
+  {
+    "object": "table public.asset_assignments",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table public.asset_disposals",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "table public.asset_events",
+    "reference": "schema public",
+    "deptype": "n"
+  }
+]

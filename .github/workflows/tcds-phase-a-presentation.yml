@@ -1,0 +1,107 @@
+name: TCDS Phase A presentation evidence
+on:
+  push:
+    branches: [candidate/antigravity-tcds-full-presentation-r1]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  canonical-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PHASE_A_DISPOSABLE: '1'
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: phase_a_disposable
+      QUEUE_CONNECTION: sync
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: phase_a_disposable
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s --health-timeout=5s --health-retries=12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - run: composer install --no-interaction --prefer-dist --no-progress --no-scripts
+      - run: cp .env.example .env
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Real canonical application on disposable PostgreSQL
+        run: node tests/Browser/phase-a-canonical-runtime.mjs
+      - name: Source consumption and observed route evidence
+        if: always()
+        run: node scripts/qa/phase-a-source-crosswalk.mjs
+      - name: Preserve canonical evidence separately
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tcds-canonical-${{ github.sha }}
+          path: |
+            storage/app/qa/phase-a-canonical/
+            .forge/evidence/ot-tcds-phase-a/convergence/
+          include-hidden-files: true
+          retention-days: 90
+  presentation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run types:check && npm run types:preview
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:contracts && npm run test:ux
+      - run: npm run build && npm run build:preview
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          coverage: none
+      - run: npm run test:aj-home-auth
+      - name: Browser evidence
+        shell: bash
+        run: |
+          npx vite preview --config preview/vite.config.ts > /tmp/tcds-preview.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4174/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node tests/Browser/phase-a-preview.mjs
+          node tests/Browser/phase-a-interactions.mjs
+          node tests/Browser/phase-a-studios.mjs
+          node tests/Browser/phase-a-tasks.mjs
+          node tests/Browser/phase-a-blocked-writes.mjs
+          node tests/Browser/phase-a-catalog.mjs --matrix
+      - name: Preserve raw evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tcds-phase-a-${{ github.sha }}
+          path: .forge/evidence/ot-tcds-phase-a/
+          include-hidden-files: true
+          retention-days: 90

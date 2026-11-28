@@ -9,5 +9,51 @@ const content: Record<number, { eyebrow: string; title: string; description: str
 
 export default function Status({ status, requestId }: Props) {
     const copy = content[status] ?? content[500];
-    return <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 text-slate-950 dark:bg-slate-950 dark:text-slate-100"><section className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8" aria-labelledby="status-title"><p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{copy.eyebrow}</p><h1 id="status-title" className="mt-2 text-2xl font-bold">{copy.title}</h1><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{copy.description}</p><div className="mt-5 rounded-xl bg-slate-100 px-4 py-3 dark:bg-slate-800"><div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Request ID</div><code className="mt-1 block break-all text-xs text-slate-700 dark:text-slate-200">{requestId}</code></div><div className="mt-6 flex flex-wrap gap-3"><button type="button" onClick={() => window.location.reload()} className="min-h-11 rounded-xl bg-[#0b2852] px-4 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-700/30">Retry</button><button type="button" onClick={() => window.history.back()} className="min-h-11 rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:border-slate-700 dark:text-slate-100">Go back</button><a href="/dashboard" className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:border-slate-700 dark:text-slate-100">Return to dashboard</a></div></section></main>;
+    return (
+        <main className="flex min-h-dvh items-center justify-center bg-[var(--surface-canvas)] px-4 py-12 text-[var(--ink-primary)]">
+            <section
+                className="tcds-card w-full max-w-xl p-6 sm:p-8"
+                aria-labelledby="status-title"
+            >
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-ink)]">
+                    {copy.eyebrow}
+                </p>
+                <h1 id="status-title" className="mt-2 text-2xl font-bold text-[var(--ink-primary)]">
+                    {copy.title}
+                </h1>
+                <p className="mt-3 text-sm leading-6 text-[var(--ink-secondary)]">
+                    {copy.description}
+                </p>
+                {requestId && (
+                    <div className="mt-5 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-3">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-secondary)]">
+                            Request ID
+                        </div>
+                        <code className="mt-1 block break-all font-mono text-xs text-[var(--ink-primary)]">
+                            {requestId}
+                        </code>
+                    </div>
+                )}
+                <div className="mt-6 flex flex-wrap gap-2.5">
+                    <button
+                        type="button"
+                        onClick={() => window.location.reload()}
+                        className="municipal-primary-button"
+                    >
+                        Retry
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => window.history.back()}
+                        className="municipal-secondary-button"
+                    >
+                        Go back
+                    </button>
+                    <a href="/dashboard" className="municipal-secondary-button">
+                        Return to dashboard
+                    </a>
+                </div>
+            </section>
+        </main>
+    );
 }

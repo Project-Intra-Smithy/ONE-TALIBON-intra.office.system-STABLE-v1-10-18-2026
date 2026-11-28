@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_events.fence_no",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_events.kind",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_events.occurred_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_events.operation_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_gates.fence_no",
+    "rights": "{t,f,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_gates.lock_stub",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_gates.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_gates.state",
+    "rights": "{t,f,t,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.epoch",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.generation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.locator",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.mime_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.ordinal",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.sha256",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operation_items.size_bytes",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.actor_user_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.command_action",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.command_kind",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.correlation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.created_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.epoch",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.idempotency_hash",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.item_count",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.manifest_digest",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.namespace_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.office_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.operations.service_identity",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.binding_document_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.created_by_user_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.linkable_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.public_document_link_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.relationship",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.ownership_links.source_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.created_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.evidence_ref",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.fence_no",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.manifest_digest",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.operation_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.outcome",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.receipt_uuid",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.terminal_receipts.service_identity",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.actor_user_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.checkpoint_seq",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.epoch",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.event_kind",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.namespace_id",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.recorded_at",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.watermark_checkpoints.state_anchor_digest",
+    "rights": "{t,t,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.asset_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.assigned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.assignment_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.condition_at_issue",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.condition_at_return",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.reference_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.returned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_assignments.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.asset_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.authority_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.decided_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.decided_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.method",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.proceeds",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.recommended_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.recommended_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_disposals.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.asset_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.from_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.from_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.metadata",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.remarks",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.to_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_events.to_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.asset_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.asset_inventory_session_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.observed_condition",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.observed_location",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.remarks",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.scan_value",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.scanned_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.scanned_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.asset_inventory_scans.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

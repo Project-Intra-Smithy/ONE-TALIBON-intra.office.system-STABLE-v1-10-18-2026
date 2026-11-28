@@ -1,10 +1,10 @@
-import '../../../css/portal-visual-redesign.css';
 import { Link, useForm } from '@inertiajs/react';
 import { CheckCircle2, FileText, Landmark, MailCheck, Users } from 'lucide-react';
 import { useRef, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
+import { formatDateTimePH, humanizeSlug } from '../../lib/format';
 
 type Memo = {
     id: number;
@@ -44,10 +44,10 @@ const publicationContext = (value: string) => {
 };
 
 const audienceLabel = (value: string) => {
-    if (value === 'all') return 'All municipal employees';
-    if (value === 'departments') return 'Department audience';
-    if (value === 'employees') return 'Selected employees';
-    return value;
+    if (value === 'all' || value === 'all_employees') return 'All municipal employees';
+    if (value === 'departments' || value === 'selected_departments') return 'Department audience';
+    if (value === 'employees' || value === 'selected_employees') return 'Selected employees';
+    return humanizeSlug(value);
 };
 
 export default function Show({
@@ -95,26 +95,26 @@ export default function Show({
 
                 <section className="municipal-panel overflow-hidden">
                     <header className="flex flex-wrap items-center gap-1.5 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
-                        <span className="rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 py-1 text-[9px] font-bold uppercase text-[var(--municipal-text)]">{memo.classification}</span>
-                        <span className="rounded-full border border-[#cfe6d5] bg-[#eef8f1] px-2 py-1 text-[9px] font-bold uppercase text-[#17633f]">{audienceLabel(memo.audience_type)}</span>
+                        <span className="rounded-full border border-[var(--border-default)] bg-[var(--surface-card)] px-2.5 py-1 text-xs font-bold uppercase text-[var(--ink-primary)]">{humanizeSlug(memo.classification)}</span>
+                        <span className="rounded-full border border-[var(--status-ok-border)] bg-[var(--status-ok-bg)] px-2.5 py-1 text-xs font-bold text-[var(--status-ok-fg)]">{audienceLabel(memo.audience_type)}</span>
                         {memo.requires_acknowledgement ? (
-                            <span className="rounded-full border border-[#f0dfb4] bg-[#fff8e8] px-2 py-1 text-[9px] font-bold uppercase text-[#9a6a08]">Acknowledgement required</span>
+                            <span className="rounded-full border border-[var(--status-warn-border)] bg-[var(--status-warn-bg)] px-2.5 py-1 text-xs font-bold text-[var(--status-warn-fg)]">Acknowledgement required</span>
                         ) : (
-                            <span className="rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 py-1 text-[9px] font-bold uppercase text-[var(--municipal-muted)]">No acknowledgement required</span>
+                            <span className="rounded-full border border-[var(--border-default)] bg-[var(--surface-card)] px-2.5 py-1 text-xs font-bold text-[var(--ink-secondary)]">No acknowledgement required</span>
                         )}
-                        <span className="ml-auto text-[9px] text-[var(--municipal-muted)]">{publication.relative}</span>
+                        <span className="ml-auto text-xs text-[var(--ink-secondary)]">{publication.relative}</span>
                     </header>
 
                     <article className="px-4 py-4 sm:px-5">
-                        <div className="whitespace-pre-wrap text-[13px] leading-6 text-[var(--municipal-text)]">{memo.body}</div>
+                        <div className="whitespace-pre-wrap text-sm leading-6 text-[var(--ink-primary)]">{memo.body}</div>
                     </article>
 
                     {recipient && memo.requires_acknowledgement ? (
                         <div className="border-t border-[var(--municipal-border)] px-4 py-3 sm:px-5">
                             {recipient.acknowledged_at ? (
-                                <div className="inline-flex items-center gap-2 rounded-md border border-[#cfe6d5] bg-[#eef8f1] px-3 py-2 text-[11px] font-semibold text-[#17633f]">
+                                <div className="inline-flex items-center gap-2 rounded-md border border-[var(--status-ok-border)] bg-[var(--status-ok-bg)] px-3 py-2 text-xs font-semibold text-[var(--status-ok-fg)]">
                                     <CheckCircle2 size={15} aria-hidden="true" />
-                                    Acknowledged {new Date(recipient.acknowledged_at).toLocaleString('en-PH', { timeZone: 'Asia/Manila' })}
+                                    Acknowledged {formatDateTimePH(recipient.acknowledged_at)}
                                 </div>
                             ) : (
                                 <div className="flex flex-wrap items-center gap-2">
@@ -122,12 +122,12 @@ export default function Show({
                                         type="button"
                                         onClick={acknowledge}
                                         disabled={acknowledgement.processing}
-                                        className="min-h-10 rounded-md bg-[var(--municipal-brand-deep)] px-4 text-xs font-bold text-white disabled:opacity-60"
+                                        className="municipal-primary-button"
                                     >
                                         {acknowledgement.processing ? 'Acknowledging...' : 'Acknowledge Memorandum'}
                                     </button>
-                                    <span className="text-[10px] text-[var(--municipal-muted)]">Records your acknowledgement against this formal issuance.</span>
-                                    {acknowledgementError ? <p role="alert" className="w-full text-[10px] text-[#b23b45]">{acknowledgementError}</p> : null}
+                                    <span className="text-xs text-[var(--ink-secondary)]">Records your acknowledgement against this formal issuance.</span>
+                                    {acknowledgementError ? <p role="alert" className="w-full text-xs text-[var(--status-danger-fg)]">{acknowledgementError}</p> : null}
                                 </div>
                             )}
                         </div>
@@ -137,36 +137,36 @@ export default function Show({
                 {statistics ? (
                     <section aria-labelledby="delivery-statistics">
                         <div className="mb-1 flex items-center justify-between gap-3">
-                            <h2 id="delivery-statistics" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Delivery</h2>
-                            <span className="text-[9px] text-[var(--municipal-muted)]">Issuing-office telemetry</span>
+                            <h2 id="delivery-statistics" className="text-xs font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Delivery</h2>
+                            <span className="text-xs text-[var(--municipal-muted)]">Issuing-office telemetry</span>
                         </div>
                         <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-4">
                             <div className="rounded-lg border border-[#cfe0f6] bg-[#eef5ff] p-2.5 text-[#265fa8]">
                                 <MailCheck size={15} aria-hidden="true" />
                                 <div className="mt-1 text-lg font-bold">{statistics.delivered}</div>
-                                <div className="text-[9px] font-bold uppercase">Delivered</div>
+                                <div className="text-xs font-bold uppercase">Delivered</div>
                             </div>
                             <div className="rounded-lg border border-[#ddd2f3] bg-[#f5f0ff] p-2.5 text-[#7150a8]">
                                 <Users size={15} aria-hidden="true" />
                                 <div className="mt-1 text-lg font-bold">{statistics.viewed}</div>
-                                <div className="text-[9px] font-bold uppercase">Viewed</div>
+                                <div className="text-xs font-bold uppercase">Viewed</div>
                             </div>
                             <div className="rounded-lg border border-[#cfe6d5] bg-[#eef8f1] p-2.5 text-[#17633f]">
                                 <CheckCircle2 size={15} aria-hidden="true" />
                                 <div className="mt-1 text-lg font-bold">{statistics.acknowledged}</div>
-                                <div className="text-[9px] font-bold uppercase">Acknowledged</div>
+                                <div className="text-xs font-bold uppercase">Acknowledged</div>
                             </div>
                             <div className="rounded-lg border border-[#f0dfb4] bg-[#fff8e8] p-2.5 text-[#9a6a08]">
                                 <Landmark size={15} aria-hidden="true" />
                                 <div className="mt-1 text-lg font-bold">{statistics.pending}</div>
-                                <div className="text-[9px] font-bold uppercase">Pending</div>
+                                <div className="text-xs font-bold uppercase">Pending</div>
                             </div>
                         </div>
                     </section>
                 ) : null}
 
                 <div>
-                    <Link href="/memoranda" className="inline-flex min-h-9 items-center text-[10px] font-bold text-[var(--municipal-brand)]">← Back to Official Memoranda</Link>
+                    <Link href="/memoranda" className="inline-flex min-h-9 items-center text-xs font-bold text-[var(--brand-ink)]">← Back to Official Memoranda</Link>
                 </div>
             </PageFrame>
         </AppLayout>

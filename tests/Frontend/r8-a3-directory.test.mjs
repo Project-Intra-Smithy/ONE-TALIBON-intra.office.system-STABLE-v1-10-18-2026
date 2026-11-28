@@ -36,13 +36,15 @@ test('A3 retains guarded Records access and authority boundary', () => {
  assert.match(directory, /\{recordsHref \? \(/);
  assert.match(directory, /Records access unavailable — authority pending/);
  assert.match(directory, /subject to LGU validation/);
- assert.match(workspace, /AuthorityPendingSurface/);
+ assert.match(workspace, /<OfficeOverview/);
+ assert.match(workspace, /Recent authorized department activity/);
+ assert.match(workspace, /Department-specific approvals, signatures and routing changes remain unavailable/);
  assert.doesNotMatch(directory, /router\.post|router\.delete|fetch\(/);
 });
 
 test('A3 styling is page-scoped, responsive and accessibility-aware', () => {
- assert.match(directory, /import '\.\.\/\.\.\/\.\.\/css\/r8-directory\.css'/);
- assert.match(directory, /ot-r6-modules ot-r6-departments r8-directory/g);
+ assert.doesNotMatch(directory, /import '\.\.\/\.\.\/\.\.\/css\/r8-directory\.css'/);
+ assert.match(directory, /tcds-card/);
  assert.match(css, /\.r8-directory \.r8-directory-card/);
  assert.match(css, /@media \(max-width:767px\)/);
  assert.match(css, /@media \(max-width:390px\)/);

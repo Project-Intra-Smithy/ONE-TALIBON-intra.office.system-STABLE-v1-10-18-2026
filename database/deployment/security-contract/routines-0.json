@@ -1,0 +1,464 @@
+[
+  {
+    "name": "legacy_custody.command_complete()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.command_complete()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE op uuid; o legacy_custody.operations%ROWTYPE; b record; expected_count integer;\nBEGIN\n IF TG_TABLE_NAME='ownership_links' THEN SELECT operation_id INTO op FROM legacy_custody.bindings WHERE document_id=NEW.binding_document_id;\n ELSIF TG_TABLE_NAME='document_links' THEN SELECT custody_operation_id INTO op FROM public.documents WHERE id=NEW.document_id;\n ELSIF TG_TABLE_NAME IN ('documents','audit_logs') THEN op:=NEW.custody_operation_id;\n ELSE op:=NEW.operation_id;\n END IF;\n IF op IS NULL THEN RETURN NULL; END IF;\n SELECT * INTO o FROM legacy_custody.operations WHERE operation_id=op;\n IF row_security_active('public.documents'::regclass) OR row_security_active('public.document_links'::regclass) OR row_security_active('public.audit_logs'::regclass)\n OR NOT EXISTS(SELECT 1 FROM legacy_custody.terminal_receipts WHERE operation_id=op AND outcome='COMMITTED' AND fence_no=1)\n OR NOT EXISTS(SELECT 1 FROM legacy_custody.operation_gates WHERE operation_id=op AND state='OPEN' AND fence_no=1)\n OR NOT EXISTS(SELECT 1 FROM legacy_custody.command_results WHERE operation_id=op)\n OR (SELECT count(*) FROM legacy_custody.generations WHERE operation_id=op)<>o.item_count\n OR (SELECT count(*) FROM legacy_custody.bindings WHERE operation_id=op)<>o.item_count\n OR (SELECT count(*) FROM public.documents WHERE custody_operation_id=op)<>o.item_count\n OR (SELECT count(*) FROM public.audit_logs WHERE custody_operation_id=op)<>o.item_count THEN\n  RAISE EXCEPTION 'incomplete command receipt' USING ERRCODE='23514'; END IF;\n SELECT count(*) INTO expected_count FROM legacy_custody.expected_links(op);\n FOR b IN SELECT x.document_id,x.upload_audit_id,x.ordinal,x.generation_id,d.document_type,d.owner_department_id,d.uploaded_by_user_id,\n d.size_bytes,d.checksum_sha256,d.mime_type,g.size_bytes AS staged_size,g.sha256 AS staged_sha,g.mime_type AS staged_mime,\n a.actor_user_id,a.actor_department_id,a.correlation_id\n FROM legacy_custody.bindings x JOIN public.documents d ON d.id=x.document_id\n JOIN legacy_custody.generations g ON g.generation_id=x.generation_id\n JOIN public.audit_logs a ON a.id=x.upload_audit_id WHERE x.operation_id=op LOOP\n  IF b.owner_department_id IS DISTINCT FROM o.office_id OR b.uploaded_by_user_id IS DISTINCT FROM o.actor_user_id\n  OR b.actor_user_id IS DISTINCT FROM o.actor_user_id OR b.actor_department_id IS DISTINCT FROM o.office_id OR b.correlation_id IS DISTINCT FROM o.correlation_id\n  OR b.size_bytes IS DISTINCT FROM b.staged_size OR b.checksum_sha256::text IS DISTINCT FROM b.staged_sha OR b.mime_type IS DISTINCT FROM b.staged_mime\n  OR b.document_type IS DISTINCT FROM (CASE WHEN expected_count=2 THEN 'supporting_document' ELSE (SELECT relationship FROM legacy_custody.expected_links(op)) END)\n  OR EXISTS(SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id=b.document_id)\n  OR EXISTS(SELECT 1 FROM public.plan_document_bindings WHERE document_id=b.document_id)\n  OR (SELECT count(*) FROM public.document_links WHERE document_id=b.document_id)<>expected_count\n  OR (SELECT count(*) FROM legacy_custody.ownership_links WHERE binding_document_id=b.document_id)<>expected_count\n  OR EXISTS(SELECT 1 FROM legacy_custody.expected_links(op) e WHERE NOT EXISTS (\n    SELECT 1 FROM legacy_custody.ownership_links m WHERE m.binding_document_id=b.document_id AND m.linkable_type=e.linkable_type\n    AND m.source_id=e.source_id AND m.relationship=e.relationship AND m.created_by_user_id=o.actor_user_id)) THEN\n   RAISE EXCEPTION 'command artifact tuple mismatch' USING ERRCODE='23514';\n  END IF;\n END LOOP;\n RETURN NULL;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.expected_links(uuid)",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "s",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.expected_links(op uuid)\n RETURNS TABLE(linkable_type text, source_id bigint, relationship text)\n LANGUAGE sql\n STABLE\n SET search_path TO 'pg_catalog'\nAS $function$\n SELECT CASE r.source_kind WHEN 'transaction' THEN 'App\\Models\\WorkflowTransaction' WHEN 'correspondence' THEN 'App\\Models\\CorrespondenceRecord' ELSE 'App\\Models\\TravelOrder' END,\n r.source_id,'supporting_document'::text\n FROM legacy_custody.command_results r JOIN legacy_custody.operations o USING(operation_id)\n WHERE r.operation_id=op AND o.command_kind IN ('transaction_create','correspondence_register','travel_record')\n UNION ALL\n SELECT CASE r.source_kind WHEN 'transaction' THEN 'App\\Models\\TransactionEvent' WHEN 'correspondence' THEN 'App\\Models\\CorrespondenceEvent' ELSE 'App\\Models\\TravelOrderEvent' END,\n r.event_id,CASE WHEN o.command_kind IN ('transaction_create','correspondence_route') OR\n (o.command_kind='transaction_transition' AND o.command_action IN ('forward','send_to_mayor','return_origin','request_information'))\n THEN 'route_evidence' ELSE 'action_evidence' END\n FROM legacy_custody.command_results r JOIN legacy_custody.operations o USING(operation_id) WHERE r.operation_id=op\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.g3_extensions_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.g3_extensions_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE\n max_seq bigint;\nBEGIN\n IF TG_OP IN ('UPDATE', 'DELETE') THEN\n  RAISE EXCEPTION 'immutable g3 custody tuple' USING ERRCODE='23514';\n END IF;\n\n IF current_setting('transaction_isolation') IS DISTINCT FROM 'read committed' THEN\n  RAISE EXCEPTION 'unsupported custody isolation' USING ERRCODE='23514';\n END IF;\n\n IF TG_TABLE_NAME = 'watermark_checkpoints' THEN\n  IF current_user IS DISTINCT FROM 'n03_command' AND current_user IS DISTINCT FROM 'n03_reconcile' THEN\n   RAISE EXCEPTION 'watermark checkpoint role required' USING ERRCODE='42501';\n  END IF;\n\n  IF NEW.namespace_id IS NULL OR NEW.checkpoint_seq IS NULL OR NEW.epoch IS NULL THEN\n   RAISE EXCEPTION 'invalid watermark checkpoint tuple' USING ERRCODE='23514';\n  END IF;\n\n  SELECT COALESCE(MAX(checkpoint_seq), 0) INTO max_seq\n  FROM legacy_custody.watermark_checkpoints\n  WHERE namespace_id = NEW.namespace_id;\n\n  IF NEW.checkpoint_seq <= max_seq THEN\n   RAISE EXCEPTION 'non-monotonic watermark checkpoint_seq' USING ERRCODE='23514';\n  END IF;\n\n  RETURN NEW;\n ELSIF TG_TABLE_NAME = 'classification_events' THEN\n  IF current_user IS DISTINCT FROM 'n03_command' THEN\n   RAISE EXCEPTION 'command role required' USING ERRCODE='42501';\n  END IF;\n\n  IF NEW.document_id IS NULL\n   OR NEW.correspondence_record_id IS NULL\n   OR NEW.correspondence_event_id IS NULL\n   OR NEW.actor_user_id IS NULL\n   OR NEW.office_id IS NULL\n   OR NEW.correlation_id IS NULL\n   OR NEW.audit_log_id IS NULL THEN\n   RAISE EXCEPTION 'invalid classification event tuple' USING ERRCODE='23514';\n  END IF;\n\n  IF NOT EXISTS (\n   SELECT 1\n   FROM public.correspondence_events ce\n   WHERE ce.id = NEW.correspondence_event_id\n     AND ce.correspondence_record_id = NEW.correspondence_record_id\n     AND ce.event = 'classified'\n     AND ce.actor_user_id = NEW.actor_user_id\n     AND ce.office_department_id = NEW.office_id\n     AND ce.correlation_id = NEW.correlation_id\n     AND ce.n03_municipal_actor IS TRUE\n  )\n  OR NOT EXISTS (\n   SELECT 1\n   FROM public.audit_logs a\n   WHERE a.id = NEW.audit_log_id\n     AND a.entity_type = 'correspondence_record'\n     AND a.entity_id = NEW.correspondence_record_id\n     AND a.action = 'correspondence.classified'\n     AND a.outcome = 'allowed'\n     AND a.actor_user_id = NEW.actor_user_id\n     AND a.actor_department_id = NEW.office_id\n     AND a.correlation_id = NEW.correlation_id\n     AND a.integration_client_id IS NULL\n  ) THEN\n   RAISE EXCEPTION 'classification event provenance mismatch' USING ERRCODE='23514';\n  END IF;\n\n  RETURN NEW;\n END IF;\n\n RAISE EXCEPTION 'unexpected g3 custody table' USING ERRCODE='23514';\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.k2_compensation_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.k2_compensation_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE op uuid;\nBEGIN\n IF TG_OP IN ('UPDATE', 'DELETE') THEN\n  RAISE EXCEPTION 'immutable compensation tuple' USING ERRCODE='23514';\n END IF;\n\n IF current_user <> 'n03_reconcile' THEN\n  RAISE EXCEPTION 'reconcile role required' USING ERRCODE='42501';\n END IF;\n\n IF current_setting('transaction_isolation') <> 'read committed' THEN\n  RAISE EXCEPTION 'unsupported custody isolation' USING ERRCODE='23514';\n END IF;\n\n IF TG_TABLE_NAME = 'compensation_tombstones' THEN\n  PERFORM 1 FROM legacy_custody.operation_gates WHERE operation_id = NEW.operation_id FOR UPDATE;\n  IF NOT FOUND\n   OR NOT EXISTS (\n    SELECT 1 FROM legacy_custody.operation_gates\n    WHERE operation_id = NEW.operation_id AND state = 'CLOSED' AND fence_no = 2\n   )\n   OR NOT EXISTS (\n    SELECT 1 FROM legacy_custody.terminal_receipts\n    WHERE operation_id = NEW.operation_id AND outcome = 'ABORTED' AND fence_no = 2\n      AND evidence_ref = NEW.close_ack_id\n   )\n   OR EXISTS (\n    SELECT 1 FROM legacy_custody.terminal_receipts\n    WHERE operation_id = NEW.operation_id AND outcome = 'COMMITTED'\n   )\n   OR legacy_custody.zero_artifacts(NEW.operation_id) IS NOT TRUE\n  THEN\n   RAISE EXCEPTION 'compensation tombstone precondition failed' USING ERRCODE='23514';\n  END IF;\n ELSIF TG_TABLE_NAME = 'compensation_outcomes' THEN\n  SELECT operation_id INTO op\n  FROM legacy_custody.compensation_tombstones\n  WHERE tombstone_id = NEW.tombstone_id;\n\n  IF op IS NULL THEN\n   RAISE EXCEPTION 'missing compensation tombstone' USING ERRCODE='23514';\n  END IF;\n\n  PERFORM 1 FROM legacy_custody.operation_gates WHERE operation_id = op FOR UPDATE;\n  IF NOT FOUND\n   OR NOT EXISTS (\n    SELECT 1 FROM legacy_custody.operation_gates\n    WHERE operation_id = op AND state = 'CLOSED' AND fence_no = 2\n   )\n   OR NOT EXISTS (\n    SELECT 1 FROM legacy_custody.terminal_receipts\n    WHERE operation_id = op AND outcome = 'ABORTED' AND fence_no = 2\n   )\n   OR EXISTS (\n    SELECT 1 FROM legacy_custody.terminal_receipts\n    WHERE operation_id = op AND outcome = 'COMMITTED'\n   )\n   OR legacy_custody.zero_artifacts(op) IS NOT TRUE\n  THEN\n   RAISE EXCEPTION 'compensation outcome precondition failed' USING ERRCODE='23514';\n  END IF;\n ELSE\n  RAISE EXCEPTION 'unexpected compensation table' USING ERRCODE='23514';\n END IF;\n\n RETURN NEW;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.lock_pending(op uuid, expected bigint, wanted text)\n RETURNS void\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n IF current_setting('transaction_isolation') <> 'read committed' THEN\n  RAISE EXCEPTION 'unsupported custody isolation' USING ERRCODE='23514';\n END IF;\n PERFORM 1 FROM legacy_custody.operation_gates WHERE operation_id=op FOR UPDATE;\n IF NOT FOUND OR NOT EXISTS(SELECT 1 FROM legacy_custody.operation_gates WHERE operation_id=op AND fence_no=expected AND state=wanted)\n OR EXISTS(SELECT 1 FROM legacy_custody.terminal_receipts WHERE operation_id=op) THEN\n  RAISE EXCEPTION 'custody fence unavailable' USING ERRCODE='23514';\n END IF;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "EXECUTE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "EXECUTE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_stage",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.private_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.private_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE op uuid; o legacy_custody.operations%ROWTYPE; role_name text:=current_user; expected_action text; expected_family text;\nBEGIN\n IF TG_TABLE_NAME='namespaces' THEN\n  IF TG_OP='INSERT' AND role_name NOT IN ('n03_stage','n03_command','n03_reconcile','kirion_g1b_app','kirion_g1b_custody') THEN RETURN NEW; END IF;\n  RAISE EXCEPTION 'immutable namespace' USING ERRCODE='23514';\n END IF;\n IF TG_OP='DELETE' OR (TG_OP='UPDATE' AND TG_TABLE_NAME<>'operation_gates') THEN\n  RAISE EXCEPTION 'immutable custody tuple' USING ERRCODE='23514';\n END IF;\n IF TG_TABLE_NAME='operation_gates' AND TG_OP='UPDATE' THEN\n  IF role_name<>'n03_reconcile' OR OLD.state<>'OPEN' OR OLD.fence_no<>1 OR NEW.state<>'CLOSED' OR NEW.fence_no<>2\n  OR NEW.operation_id<>OLD.operation_id OR NEW.lock_stub<>OLD.lock_stub THEN RAISE EXCEPTION 'invalid gate transition' USING ERRCODE='23514'; END IF;\n  PERFORM legacy_custody.lock_pending(OLD.operation_id,1,'OPEN');\n  IF NOT legacy_custody.zero_artifacts(OLD.operation_id) THEN RAISE EXCEPTION 'nonzero command artifacts' USING ERRCODE='23514'; END IF;\n  RETURN NEW;\n END IF;\n IF current_setting('transaction_isolation')<>'read committed' THEN RAISE EXCEPTION 'unsupported custody isolation' USING ERRCODE='23514'; END IF;\n IF TG_TABLE_NAME='ownership_links' THEN\n  SELECT operation_id INTO op FROM legacy_custody.bindings WHERE document_id=NEW.binding_document_id;\n ELSE op:=NEW.operation_id;\n END IF;\n IF TG_TABLE_NAME IN ('operations','operation_items','operation_gates','generations') AND role_name<>'n03_stage' THEN\n  RAISE EXCEPTION 'stage role required' USING ERRCODE='42501';\n END IF;\n IF TG_TABLE_NAME IN ('command_results','bindings','ownership_links') AND role_name<>'n03_command' THEN\n  RAISE EXCEPTION 'command role required' USING ERRCODE='42501';\n END IF;\n IF TG_TABLE_NAME='operations' THEN RETURN NEW; END IF;\n SELECT * INTO o FROM legacy_custody.operations WHERE operation_id=op;\n IF NOT FOUND THEN RAISE EXCEPTION 'missing reservation' USING ERRCODE='23514'; END IF;\n IF TG_TABLE_NAME='operation_items' THEN\n  IF NEW.ordinal>o.item_count OR EXISTS(SELECT 1 FROM legacy_custody.operation_gates WHERE operation_id=op) THEN RAISE EXCEPTION 'reservation sealed' USING ERRCODE='23514'; END IF;\n ELSIF TG_TABLE_NAME='operation_gates' THEN\n  IF NEW.fence_no<>1 OR NEW.state<>'OPEN' OR (SELECT count(*) FROM legacy_custody.operation_items WHERE operation_id=op)<>o.item_count THEN\n   RAISE EXCEPTION 'reservation incomplete' USING ERRCODE='23514'; END IF;\n ELSIF TG_TABLE_NAME='generations' THEN\n  PERFORM legacy_custody.lock_pending(op,NEW.staged_fence,'OPEN');\n ELSIF TG_TABLE_NAME='command_results' THEN\n  PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'OPEN');\n  expected_family:=split_part(o.command_kind,'_',1);\n  expected_action:=CASE o.command_kind WHEN 'transaction_create' THEN 'submitted' WHEN 'transaction_transition' THEN o.command_action\n   WHEN 'correspondence_register' THEN 'registered' WHEN 'correspondence_classify' THEN 'classified'\n   WHEN 'correspondence_route' THEN 'routed' WHEN 'correspondence_act' THEN 'in_action'\n   WHEN 'travel_record' THEN 'recorded_approved' WHEN 'travel_status' THEN 'status_changed' END;\n  IF NEW.source_kind IS DISTINCT FROM expected_family OR NEW.event_action IS DISTINCT FROM expected_action THEN\n   RAISE EXCEPTION 'command source mismatch' USING ERRCODE='23514'; END IF;\n ELSIF TG_TABLE_NAME IN ('bindings','ownership_links') THEN\n  PERFORM legacy_custody.lock_pending(op,1,'OPEN');\n ELSIF TG_TABLE_NAME='terminal_receipts' THEN\n  IF NEW.manifest_digest IS DISTINCT FROM o.manifest_digest OR NEW.actor_user_id IS DISTINCT FROM o.actor_user_id\n   OR NEW.service_identity IS DISTINCT FROM o.service_identity THEN RAISE EXCEPTION 'receipt tuple mismatch' USING ERRCODE='23514'; END IF;\n  IF NEW.outcome='COMMITTED' AND role_name='n03_command' THEN\n   PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'OPEN');\n   IF (SELECT count(*) FROM legacy_custody.bindings WHERE operation_id=op)<>o.item_count THEN\n    RAISE EXCEPTION 'premature terminal' USING ERRCODE='23514'; END IF;\n  ELSIF NEW.outcome='ABORTED' AND role_name='n03_reconcile' THEN\n   PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'CLOSED');\n   IF NOT legacy_custody.zero_artifacts(op) THEN RAISE EXCEPTION 'nonzero abort artifacts' USING ERRCODE='23514'; END IF;\n  ELSE RAISE EXCEPTION 'receipt role mismatch' USING ERRCODE='42501'; END IF;\n ELSIF TG_TABLE_NAME='operation_events' THEN\n  IF role_name='n03_stage' AND NEW.kind IN ('RESERVED','STAGED') THEN PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'OPEN');\n  ELSIF role_name='n03_command' AND NEW.kind='COMMAND_READY' THEN PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'OPEN');\n  ELSIF role_name='n03_reconcile' AND NEW.kind='CLOSED_WITNESS' THEN PERFORM legacy_custody.lock_pending(op,NEW.fence_no,'CLOSED');\n  ELSE RAISE EXCEPTION 'event role mismatch' USING ERRCODE='42501'; END IF;\n END IF;\n RETURN NEW;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.public_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.public_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE d record; aid bigint; op uuid; old_marked boolean:=false; new_marked boolean:=false;\nBEGIN\n IF TG_TABLE_NAME='documents' THEN\n  IF TG_OP<>'INSERT' THEN old_marked:=OLD.custody_mode='REGISTRY_V1' OR OLD.custody_operation_id IS NOT NULL; END IF;\n  IF TG_OP<>'DELETE' THEN new_marked:=NEW.custody_mode='REGISTRY_V1' OR NEW.custody_operation_id IS NOT NULL OR NEW.custody_ordinal IS NOT NULL OR NEW.storage_disk='legacy_registry_v1'; END IF;\n  IF TG_OP='UPDATE' AND current_user='n03_command' THEN RAISE EXCEPTION 'document lock only' USING ERRCODE='23514'; END IF;\n  IF old_marked OR new_marked OR current_user='n03_command' THEN\n   IF TG_OP<>'INSERT' OR current_user<>'n03_command' OR NOT new_marked THEN RAISE EXCEPTION 'registry document immutable' USING ERRCODE='23514'; END IF;\n   PERFORM legacy_custody.lock_pending(NEW.custody_operation_id,1,'OPEN');\n   IF NOT EXISTS(SELECT 1 FROM legacy_custody.command_results WHERE operation_id=NEW.custody_operation_id) THEN RAISE EXCEPTION 'result required' USING ERRCODE='23514'; END IF;\n  END IF;\n ELSIF TG_TABLE_NAME='audit_logs' THEN\n  IF TG_OP<>'INSERT' THEN old_marked:=OLD.custody_operation_id IS NOT NULL; END IF;\n  IF TG_OP<>'DELETE' THEN new_marked:=NEW.custody_operation_id IS NOT NULL; END IF;\n  IF old_marked OR new_marked OR current_user='n03_command' THEN\n   IF TG_OP='INSERT' AND current_user='n03_command' AND NOT new_marked THEN\n    IF NEW.entity_type IS NULL\n    OR NEW.action IS NULL\n    OR NEW.entity_type='document'\n    OR NEW.action='document.uploaded'\n    OR NEW.outcome IS DISTINCT FROM 'allowed'\n    OR NEW.integration_client_id IS NOT NULL\n    OR NEW.entity_id IS NULL\n    OR NEW.actor_user_id IS NULL\n    OR NEW.actor_department_id IS NULL\n    OR NEW.correlation_id IS NULL\n    OR (\n     (NEW.entity_type, NEW.action) IN (\n      ('travel_order','travel_order.recorded'),\n      ('travel_order','travel_order.status_changed'),\n      ('transaction','transaction.created'),\n      ('transaction','transaction.transitioned'),\n      ('App\\Models\\WorkflowTransaction','transaction.created'),\n      ('correspondence_record','correspondence.registered'),\n      ('correspondence_record','correspondence.classified'),\n      ('correspondence_record','correspondence.routed'),\n      ('correspondence_record','correspondence.in_action')\n     )\n     OR (\n      NEW.entity_type='App\\Models\\WorkflowTransaction'\n      AND NEW.action IN (\n       'transaction.forward',\n       'transaction.send_to_mayor',\n       'transaction.return_origin',\n       'transaction.request_information',\n       'transaction.assign',\n       'transaction.mark_review',\n       'transaction.approve',\n       'transaction.disapprove',\n        'transaction.close'\n      )\n     )\n    ) IS NOT TRUE THEN\n     RAISE EXCEPTION 'marked audit immutable' USING ERRCODE='23514';\n    END IF;\n   ELSE\n    IF TG_OP<>'INSERT' OR current_user<>'n03_command' OR NOT new_marked THEN RAISE EXCEPTION 'marked audit immutable' USING ERRCODE='23514'; END IF;\n    PERFORM legacy_custody.lock_pending(NEW.custody_operation_id,1,'OPEN');\n   END IF;\n  END IF;\n ELSE\n  -- This trigger sorts before the inherited kirion_plan_generic_link_guard.\n  -- For a command insert acquire the operation gate BEFORE the document lock.\n  IF current_user='n03_command' THEN\n   IF TG_OP<>'INSERT' THEN RAISE EXCEPTION 'link immutable' USING ERRCODE='23514'; END IF;\n   SELECT custody_operation_id INTO op FROM public.documents WHERE id=NEW.document_id AND custody_mode='REGISTRY_V1';\n   IF op IS NULL THEN RAISE EXCEPTION 'registry link required' USING ERRCODE='23514'; END IF;\n   PERFORM legacy_custody.lock_pending(op,1,'OPEN');\n  END IF;\n  FOR aid IN SELECT DISTINCT id FROM (SELECT CASE WHEN TG_OP<>'INSERT' THEN OLD.document_id END AS id\n   UNION ALL SELECT CASE WHEN TG_OP<>'DELETE' THEN NEW.document_id END) ids WHERE id IS NOT NULL ORDER BY id LOOP\n   SELECT id,custody_mode,custody_operation_id INTO d FROM public.documents WHERE id=aid FOR UPDATE;\n   IF FOUND AND d.custody_mode='REGISTRY_V1' THEN\n    IF current_user<>'n03_command' OR TG_OP<>'INSERT' OR d.custody_operation_id IS DISTINCT FROM op THEN\n     RAISE EXCEPTION 'registry link immutable' USING ERRCODE='23514'; END IF;\n    IF NOT EXISTS(SELECT 1 FROM legacy_custody.expected_links(op) x WHERE x.linkable_type=NEW.linkable_type AND x.source_id=NEW.linkable_id AND x.relationship=NEW.relationship)\n    OR NEW.created_by_user_id IS DISTINCT FROM (SELECT actor_user_id FROM legacy_custody.operations WHERE operation_id=op) THEN\n     RAISE EXCEPTION 'link tuple mismatch' USING ERRCODE='23514'; END IF;\n   ELSIF current_user='n03_command' THEN RAISE EXCEPTION 'registry link required' USING ERRCODE='23514';\n   END IF;\n  END LOOP;\n END IF;\n IF TG_OP='DELETE' THEN RETURN OLD; END IF;\n RETURN NEW;\nEND\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.reservation_complete()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.reservation_complete()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE n integer;\nBEGIN\n SELECT item_count INTO n FROM legacy_custody.operations WHERE operation_id=NEW.operation_id;\n IF n IS NULL OR (SELECT count(*) FROM legacy_custody.operation_items WHERE operation_id=NEW.operation_id AND ordinal BETWEEN 1 AND n)<>n\n OR (SELECT count(*) FROM legacy_custody.operation_items WHERE operation_id=NEW.operation_id)<>n\n OR NOT EXISTS(SELECT 1 FROM legacy_custody.operation_gates WHERE operation_id=NEW.operation_id) THEN\n  RAISE EXCEPTION 'incomplete reservation' USING ERRCODE='23514'; END IF;\n RETURN NULL;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION legacy_custody.zero_artifacts(op uuid)\n RETURNS boolean\n LANGUAGE sql\n SET search_path TO 'pg_catalog'\nAS $function$\n SELECT NOT row_security_active('public.documents'::regclass)\n AND NOT row_security_active('public.document_links'::regclass)\n AND NOT row_security_active('public.audit_logs'::regclass)\n AND NOT EXISTS (SELECT 1 FROM legacy_custody.command_results WHERE operation_id=op)\n AND NOT EXISTS (SELECT 1 FROM legacy_custody.bindings WHERE operation_id=op)\n AND NOT EXISTS (SELECT 1 FROM public.documents WHERE custody_operation_id=op)\n AND NOT EXISTS (SELECT 1 FROM public.audit_logs WHERE custody_operation_id=op)\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_custody_append_only_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_append_only_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody evidence is append-only' USING ERRCODE = '23514';\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_custody_generation_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_generation_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody generation metadata is immutable' USING ERRCODE = '23514';\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_custody_scan_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_scan_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    generation record;\nBEGIN\n    SELECT sha256, size_bytes, custody_state INTO generation\n      FROM public.plan_custody_generations\n     WHERE id = NEW.plan_custody_generation_id;\n    IF NOT FOUND\n       OR generation.custody_state IS DISTINCT FROM 'QUARANTINED'\n       OR generation.sha256 IS DISTINCT FROM NEW.scanned_sha256\n       OR generation.size_bytes IS DISTINCT FROM NEW.scanned_size_bytes\n    THEN\n        RAISE EXCEPTION 'scanner evidence must pin the quarantined generation digest and size'\n            USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_document_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_document_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF TG_OP = 'DELETE' THEN\n        IF OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n        THEN\n            RAISE EXCEPTION 'sealed Plan document cannot be deleted' USING ERRCODE = '23514';\n        END IF;\n        RETURN OLD;\n    END IF;\n    IF TG_OP = 'UPDATE' AND (\n        OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n    ) THEN\n        IF to_jsonb(NEW) IS DISTINCT FROM to_jsonb(OLD) THEN\n            RAISE EXCEPTION 'sealed Plan document is immutable' USING ERRCODE = '23514';\n        END IF;\n        RETURN NEW;\n    END IF;\n    IF NEW.security_domain = 'EVER_PLAN' AND EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires zero generic document links' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_generic_link_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_generic_link_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    affected_id bigint;\n    candidate record;\nBEGIN\n    -- A generic Document must never attach to a Plan-family/edition morph,\n    -- even when it has not been sealed as EVER_PLAN. Review custom aliases at G1.\n    IF TG_OP IN ('INSERT', 'UPDATE') AND (\n        right(NEW.linkable_type, 11) = 'PlanEdition'\n        OR right(NEW.linkable_type, 10) = 'PlanFamily'\n        OR lower(NEW.linkable_type) IN ('plan_edition', 'plan_family', 'planedition', 'planfamily')\n    ) THEN\n        RAISE EXCEPTION 'Plan associations must use typed bindings only' USING ERRCODE = '23514';\n    END IF;\n\n    FOR affected_id IN\n        SELECT DISTINCT doc_id FROM (\n            SELECT CASE WHEN TG_OP IN ('UPDATE','DELETE') THEN OLD.document_id ELSE NULL END AS doc_id\n            UNION ALL\n            SELECT CASE WHEN TG_OP IN ('INSERT','UPDATE') THEN NEW.document_id ELSE NULL END\n        ) AS ids WHERE doc_id IS NOT NULL ORDER BY doc_id\n    LOOP\n        SELECT id, security_domain INTO candidate FROM public.documents\n            WHERE id = affected_id FOR UPDATE;\n        IF FOUND AND (candidate.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = affected_id))\n        THEN\n            RAISE EXCEPTION 'generic document link forbidden for sealed Plan' USING ERRCODE = '23514';\n        END IF;\n    END LOOP;\n    IF TG_OP = 'DELETE' THEN\n        RETURN OLD;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_origin_receipt_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_origin_receipt_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'Plan origin is append-only' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN' OR EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires a sealed isolated document' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_stamp_origin()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_stamp_origin()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF NEW.security_domain = 'EVER_PLAN' THEN\n        INSERT INTO public.plan_document_origin_receipts (document_id, origin)\n        VALUES (NEW.id, 'EVER_PLAN') ON CONFLICT (document_id) DO NOTHING;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_typed_binding_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_typed_binding_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'typed Plan association cannot be mutated by ordinary DML' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN'\n        OR NOT EXISTS (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = NEW.document_id)\n        OR EXISTS (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'typed binding requires exclusive sealed Plan provenance' USING ERRCODE = '23514';\n    END IF;\n    IF NEW.binding_state IS DISTINCT FROM 'QUARANTINED' THEN\n        RAISE EXCEPTION 'protected Plan publication remains disabled' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_deny_exception_mutation()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.ops009_deny_exception_mutation()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'OPS009 delivery exception ledger is append-only'\n        USING ERRCODE='23514';\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_guard_close_notice()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.ops009_guard_close_notice()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE matched integer;\nBEGIN\n    IF current_user<>'n03_command' OR session_user<>'n03_command' THEN\n        RETURN NEW; -- Ordinary existing notifier unchanged.\n    END IF;\n\n    SELECT count(*) INTO matched\n    FROM public.ops009_close_audit_bindings b\n    JOIN legacy_custody.command_results cr ON cr.operation_id=b.operation_id\n    JOIN legacy_custody.terminal_receipts tr ON tr.operation_id=b.operation_id\n    JOIN legacy_custody.operations o ON o.operation_id=b.operation_id\n    JOIN public.transaction_events ev ON ev.id=b.transaction_event_id\n    JOIN public.transactions tx ON tx.id=b.transaction_id\n    JOIN public.audit_logs audit ON audit.id=b.audit_id\n    JOIN public.departments dep ON dep.id=tx.origin_department_id\n    JOIN public.employees emp\n      ON emp.department_id=dep.id\n     AND emp.user_id=NEW.user_id\n     AND emp.user_id=tx.created_by_user_id\n    JOIN public.users usr ON usr.id=NEW.user_id\n    WHERE cr.source_kind='transaction' AND cr.event_action='close'\n      AND cr.source_id=tx.id AND cr.transaction_event_id=ev.id\n      AND cr.actor_user_id=o.actor_user_id\n      AND cr.office_id=o.office_id\n      AND cr.correlation_id=o.correlation_id\n      AND o.command_kind='transaction_transition' AND o.command_action='close'\n      AND tr.outcome='COMMITTED' AND tr.fence_no=1\n      AND ev.transaction_id=tx.id AND ev.action='close'\n      AND audit.entity_type='App\\Models\\WorkflowTransaction'\n      AND audit.entity_id=tx.id AND audit.action='transaction.close'\n      AND audit.actor_user_id=o.actor_user_id\n      AND audit.actor_department_id=o.office_id\n      AND audit.correlation_id=o.correlation_id\n      AND usr.is_active AND usr.account_status='active'\n      AND usr.suspended_at IS NULL\n      AND emp.employment_status='active'\n      AND emp.separation_date IS NULL\n      AND dep.is_active AND dep.is_routable\n      AND NEW.department_id=dep.id\n      AND NEW.event_key='transaction-event-'||ev.id::text\n      AND NEW.source_domain='transaction'\n      AND NEW.source_type='App\\Models\\WorkflowTransaction'\n      AND NEW.source_id=tx.id\n      AND NEW.priority='action_required'\n      AND NEW.title='Transaction completed'\n      AND NEW.message=tx.reference_no||' \u00b7 '||tx.title\n      AND NEW.action_url='/transactions/'||tx.id::text\n      AND NEW.requires_acknowledgement IS FALSE\n      AND NEW.read_at IS NULL AND NEW.acknowledged_at IS NULL\n      AND NEW.expires_at IS NULL;\n    IF matched<>1 THEN\n        RAISE EXCEPTION 'OPS009 origin notice lacks verified close receipt or eligible recipient' USING ERRCODE='23514';\n    END IF;\n    RETURN NEW;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_guard_delivery_action()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.ops009_guard_delivery_action()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE n integer;\nBEGIN\n    SELECT count(*) INTO n\n      FROM public.ops009_origin_delivery_exceptions gap\n      JOIN public.users head ON head.id=NEW.actor_user_id\n      JOIN public.employees emp ON emp.user_id=head.id\n      JOIN public.departments dep ON dep.id=emp.department_id\n     WHERE gap.id=NEW.exception_id\n       AND gap.origin_department_id=NEW.actor_department_id\n       AND emp.department_id=gap.origin_department_id\n       AND head.role='department_head' AND head.is_active\n       AND head.account_status='active' AND head.suspended_at IS NULL\n       AND emp.employment_status='active' AND emp.separation_date IS NULL\n       AND dep.is_active AND dep.is_routable\n       AND (\n           NEW.action='acknowledge'\n           OR EXISTS (\n               SELECT 1 FROM public.ops009_origin_delivery_exception_actions a\n                WHERE a.exception_id=gap.id AND a.action='acknowledge'\n           )\n       );\n    IF n<>1 THEN\n        RAISE EXCEPTION 'OPS009 exception action requires eligible origin Head and prior acknowledgment'\n            USING ERRCODE='23514';\n    END IF;\n    RETURN NEW;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_guard_delivery_exception()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.ops009_guard_delivery_exception()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE n integer;\nBEGIN\n    IF current_user <> 'n03_command'\n       OR session_user <> 'n03_command' THEN\n        RAISE EXCEPTION 'OPS009 delivery gap requires N03 command identity'\n            USING ERRCODE='23514';\n    END IF;\n\n    SELECT count(*) INTO n\n    FROM public.ops009_close_audit_bindings b\n    JOIN legacy_custody.operations o ON o.operation_id=b.operation_id\n    JOIN legacy_custody.command_results cr ON cr.operation_id=o.operation_id\n    JOIN legacy_custody.terminal_receipts tr ON tr.operation_id=o.operation_id\n    JOIN public.transactions tx ON tx.id=b.transaction_id\n    JOIN public.transaction_events ev ON ev.id=b.transaction_event_id\n    WHERE NEW.operation_id=o.operation_id\n      AND NEW.transaction_id=b.transaction_id\n      AND NEW.transaction_event_id=ev.id\n      AND NEW.origin_department_id=tx.origin_department_id\n      AND o.command_kind='transaction_transition'\n      AND o.command_action='close'\n      AND cr.source_kind='transaction'\n      AND cr.event_action='close'\n      AND cr.transaction_event_id=ev.id\n      AND tr.outcome='COMMITTED' AND tr.fence_no=1\n      AND ev.action='close' AND ev.transaction_id=tx.id\n      AND tx.status='closed'\n      AND NEW.reason='NO_ELIGIBLE_ORIGIN_RECIPIENT'\n      AND NEW.custodian_role='department_head'\n      AND NOT EXISTS (\n          SELECT 1 FROM public.platform_notifications pn\n           WHERE pn.event_key='transaction-event-'||ev.id::text\n      )\n      AND EXISTS (\n          SELECT 1\n            FROM public.users head\n            JOIN public.employees emp ON emp.user_id=head.id\n            JOIN public.departments dep ON dep.id=emp.department_id\n           WHERE emp.department_id=tx.origin_department_id\n             AND head.role='department_head'\n             AND head.is_active\n             AND head.account_status='active'\n             AND head.suspended_at IS NULL\n             AND emp.employment_status='active'\n             AND emp.separation_date IS NULL\n             AND dep.is_active AND dep.is_routable\n      );\n    IF n<>1 THEN\n        RAISE EXCEPTION 'OPS009 delivery gap has no verified event or eligible custodian'\n            USING ERRCODE='23514';\n    END IF;\n    RETURN NEW;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_verify_close_audit()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{search_path=pg_catalog}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.ops009_verify_close_audit()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE matches integer;\nBEGIN\n    IF current_user <> 'n03_command' OR session_user <> 'n03_command' THEN\n        RETURN NULL; -- Ordinary Eloquent audit remains unaffected.\n    END IF;\n    IF TG_OP <> 'INSERT'\n       OR NEW.custody_operation_id IS NOT NULL\n       OR NEW.outcome IS DISTINCT FROM 'allowed'\n       OR NEW.integration_client_id IS NOT NULL THEN\n        RAISE EXCEPTION 'OPS009 close audit provenance rejected noncanonical row' USING ERRCODE='23514';\n    END IF;\n\n    SELECT count(*) INTO matches\n    FROM public.ops009_close_audit_bindings b\n    JOIN legacy_custody.operations o ON o.operation_id=b.operation_id\n    JOIN legacy_custody.operation_gates g ON g.operation_id=o.operation_id\n    JOIN legacy_custody.command_results cr ON cr.operation_id=o.operation_id\n    JOIN legacy_custody.terminal_receipts tr ON tr.operation_id=o.operation_id\n    JOIN public.transaction_events ev ON ev.id=b.transaction_event_id\n    JOIN public.transactions tx ON tx.id=b.transaction_id\n    JOIN public.users u ON u.id=o.actor_user_id\n    JOIN public.employees emp ON emp.user_id=o.actor_user_id\n    JOIN public.departments dep ON dep.id=o.office_id\n    WHERE b.audit_id=NEW.id\n      AND b.transaction_id=NEW.entity_id\n      AND NEW.entity_type='App\\Models\\WorkflowTransaction'\n      AND NEW.action='transaction.close'\n      AND NEW.actor_user_id=o.actor_user_id\n      AND NEW.actor_department_id=o.office_id\n      AND NEW.correlation_id=o.correlation_id\n      AND o.command_kind='transaction_transition'\n      AND o.command_action='close'\n      AND g.state='OPEN' AND g.fence_no=1\n      AND cr.fence_no=1\n      AND cr.source_kind='transaction'\n      AND cr.source_id=b.transaction_id\n      AND cr.transaction_event_id=b.transaction_event_id\n      AND cr.event_action='close'\n      AND cr.actor_user_id=o.actor_user_id\n      AND cr.office_id=o.office_id\n      AND cr.correlation_id=o.correlation_id\n      AND tr.outcome='COMMITTED'\n      AND tr.fence_no=1\n      AND tr.actor_user_id=o.actor_user_id\n      AND tr.manifest_digest=o.manifest_digest\n      AND tr.service_identity=o.service_identity\n      AND tr.evidence_ref='n03-g2b:transaction:'||b.transaction_id::text||':'||b.transaction_event_id::text\n      AND ev.transaction_id=b.transaction_id\n      AND ev.actor_user_id=o.actor_user_id\n      AND ev.action='close'\n      AND ev.from_department_id=o.office_id\n      AND ev.to_department_id=o.office_id\n      AND ev.new_status=tx.status\n      AND tx.status='closed'\n      AND tx.completed_at IS NOT NULL\n      AND tx.current_department_id=o.office_id\n      AND u.role='department_head' AND u.is_active AND u.account_status='active'\n      AND emp.department_id=o.office_id AND emp.employment_status='active'\n      AND dep.is_active AND dep.is_routable;\n    IF matches <> 1 THEN\n        RAISE EXCEPTION 'OPS009 close audit event-operation-receipt provenance invalid' USING ERRCODE='23514';\n    END IF;\n    RETURN NULL;\nEND $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_ppa_identifiers_immutable()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.planning_ppa_identifiers_immutable()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$ BEGIN IF TG_OP = 'TRUNCATE' AND NOT EXISTS (SELECT 1 FROM planning_ppa_identifiers) THEN RETURN NULL; END IF; RAISE EXCEPTION 'Issued Planning identifiers remain reserved'; END $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.planning_reconciliation_immutable()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.planning_reconciliation_immutable()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$ BEGIN IF TG_OP = 'TRUNCATE' AND NOT EXISTS (SELECT 1 FROM planning_attachment_reconciliations) THEN RETURN NULL; END IF; RAISE EXCEPTION 'Planning reconciliation evidence is immutable'; END $function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint audit_logs_integration_client_id_foreign on table public.audit_logs",
+    "reference": "index public.integration_clients_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint audit_logs_pkey on table public.audit_logs",
+    "reference": "column id of table public.audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column custody_operation_id of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column custody_ordinal of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column document_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column document_public_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column id of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column ordinal of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "column public_id of table public.documents",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
+    "reference": "index public.n03_document_binding_tuple",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_fence_no_check on table legacy_custody.bindings",
+    "reference": "column fence_no of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_fence_no_check on table legacy_custody.bindings",
+    "reference": "column fence_no of table legacy_custody.bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_generation_id_key on table legacy_custody.bindings",
+    "reference": "column generation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_fkey on table legacy_custody.bindings",
+    "reference": "index legacy_custody.command_results_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column generation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column generation_id of table legacy_custody.generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column ordinal of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "column ordinal of table legacy_custody.generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_generation_id_fkey on table legacy_custody.bindings",
+    "reference": "index legacy_custody.generations_operation_id_ordinal_generation_id_key",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_key on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_operation_id_ordinal_key on table legacy_custody.bindings",
+    "reference": "column ordinal of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_pkey on table legacy_custody.bindings",
+    "reference": "column document_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_key on table legacy_custody.bindings",
+    "reference": "column upload_audit_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column custody_operation_id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column document_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column entity_id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column operation_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "column upload_audit_id of table legacy_custody.bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
+    "reference": "index public.n03_audit_tuple",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "column created_by_user_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "column department_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_event_key_unique on table public.calendar_events",
+    "reference": "column event_key of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint calendar_events_pkey on table public.calendar_events",
+    "reference": "column id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "column user_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_actor_user_id_fkey on table legacy_custody.classification_events",
+    "reference": "column actor_user_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_actor_user_id_fkey on table legacy_custody.classification_events",
+    "reference": "column id of table public.users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_actor_user_id_fkey on table legacy_custody.classification_events",
+    "reference": "index public.users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_audit_log_id_fkey on table legacy_custody.classification_events",
+    "reference": "column audit_log_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_audit_log_id_fkey on table legacy_custody.classification_events",
+    "reference": "column id of table public.audit_logs",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_audit_log_id_fkey on table legacy_custody.classification_events",
+    "reference": "index public.audit_logs_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_audit_log_id_key on table legacy_custody.classification_events",
+    "reference": "column audit_log_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_correspondence_event_id_fkey on table legacy_custody.classification_events",
+    "reference": "column correspondence_event_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_correspondence_event_id_fkey on table legacy_custody.classification_events",
+    "reference": "column id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_correspondence_event_id_fkey on table legacy_custody.classification_events",
+    "reference": "index public.correspondence_events_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_correspondence_record_id_fkey on table legacy_custody.classification_events",
+    "reference": "column correspondence_record_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_correspondence_record_id_fkey on table legacy_custody.classification_events",
+    "reference": "column id of table public.correspondence_records",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_correspondence_record_id_fkey on table legacy_custody.classification_events",
+    "reference": "index public.correspondence_records_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_document_id_fkey on table legacy_custody.classification_events",
+    "reference": "column document_id of table legacy_custody.bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_document_id_fkey on table legacy_custody.classification_events",
+    "reference": "column document_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_document_id_fkey on table legacy_custody.classification_events",
+    "reference": "index legacy_custody.bindings_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_new_classification_check on table legacy_custody.classification_events",
+    "reference": "column new_classification of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_new_classification_check on table legacy_custody.classification_events",
+    "reference": "column new_classification of table legacy_custody.classification_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_office_id_fkey on table legacy_custody.classification_events",
+    "reference": "column id of table public.departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_office_id_fkey on table legacy_custody.classification_events",
+    "reference": "column office_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_office_id_fkey on table legacy_custody.classification_events",
+    "reference": "index public.departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint classification_events_pkey on table legacy_custody.classification_events",
+    "reference": "column classification_event_id of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_prior_classification_check on table legacy_custody.classification_events",
+    "reference": "column prior_classification of table legacy_custody.classification_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint classification_events_prior_classification_check on table legacy_custody.classification_events",
+    "reference": "column prior_classification of table legacy_custody.classification_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column actor_user_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column actor_user_id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correlation_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correlation_id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correspondence_event_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correspondence_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correspondence_record_id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column event of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column event_action of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column municipal_actor of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column n03_municipal_actor of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column office_department_id of table public.correspondence_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column office_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "index public.n03_correspondence_event_tuple",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_id_fkey on table legacy_custody.command_results",
+    "reference": "column correspondence_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_id_fkey on table legacy_custody.command_results",
+    "reference": "column id of table public.correspondence_records",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_correspondence_id_fkey on table legacy_custody.command_results",
+    "reference": "index public.correspondence_records_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_fence_no_check on table legacy_custody.command_results",
+    "reference": "column fence_no of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_fence_no_check on table legacy_custody.command_results",
+    "reference": "column fence_no of table legacy_custody.command_results",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column actor_user_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column actor_user_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column correlation_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column correlation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column office_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column office_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column operation_id of table legacy_custody.command_results",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_operation_id_actor_user_id_office_id_corre_fkey on table legacy_custody.command_results",
+    "reference": "index legacy_custody.operations_operation_id_actor_user_id_office_id_correlation_key",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint command_results_pkey on table legacy_custody.command_results",
+    "reference": "column operation_id of table legacy_custody.command_results",
+    "deptype": "a"
+  }
+]

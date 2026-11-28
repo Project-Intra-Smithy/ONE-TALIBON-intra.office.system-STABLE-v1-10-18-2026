@@ -36,16 +36,16 @@ const visible = (grant) => [...nav.buildPortalNavigation('employee', permissions
 
 test('catalog preserves canonical identity, group, and readiness relationships with the approved maps deep link', () => {
     const catalog = [...nav.plannedPortalDestinations];
-    assert.equal(catalog.length, 25);
-    assert.equal(new Set(catalog.map((item) => item.key)).size, 25);
+    assert.equal(catalog.length, 26);
+    assert.equal(new Set(catalog.map((item) => item.key)).size, 26);
     assert.equal(nav.wiredPortalDestinations.length, 16);
-    assert.equal(nav.integrationPendingPortalDestinations.length, 9);
+    assert.equal(nav.integrationPendingPortalDestinations.length, 10);
     assert.deepEqual([...new Set(catalog.map((item) => item.group))].sort(),
         ['home','work','files','communication','schedule','people','organization','planning','administration','systems'].sort());
     assert.equal(catalog.some((item) => item.group === 'navigation'), false);
     assert.equal(catalog.some((item) => ['dashboard', 'transactions', 'audit'].includes(item.key)), false);
     assert.deepEqual([...nav.integrationPendingPortalDestinations].map((item) => item.key).sort(),
-        ['procurementTracking','announcements','meetings','legislative','localSpecialBodies','projectMonitoring','users','adminDepartments','municipalSystems'].sort());
+        ['procurementTracking','announcements','meetings','legislative','localSpecialBodies','projectMonitoring','users','adminDepartments','municipalSystems','messages'].sort());
 });
 
 test('canonical paths and permission associations are not synthetic', () => {
@@ -53,6 +53,9 @@ test('canonical paths and permission associations are not synthetic', () => {
     assert.equal(d.home.href, '/dashboard');
     assert.equal(d.home.permission, 'dashboard');
     assert.equal(d.myWork.href, '/transactions');
+    assert.equal(d.myDepartment.href, '/my-department');
+    assert.equal(d.myTasks.href, '/my-tasks');
+    assert.equal(d.myTasks.permission, 'dashboard');
     assert.equal(d.myWork.permission, 'transactions');
     assert.equal(d.documentCenter.href, '/documents');
     assert.equal(d.documentCenter.permission, 'records');
@@ -63,7 +66,8 @@ test('canonical paths and permission associations are not synthetic', () => {
     assert.equal(d.users.permission, 'systemAdministration');
     assert.equal(d.municipalSystems.readiness, 'integration_pending');
     assert.equal(d.messages.permission, undefined);
-    assert.equal(d.availablePlanningMaps.href, '/development-plans#available-planning-maps');
+    assert.equal(d.messages.readiness, 'integration_pending');
+    assert.equal(d.availablePlanningMaps.href, '/planning-maps');
     assert.equal(d.availablePlanningMaps.readiness, 'wired');
     assert.equal(d.availablePlanningMaps.permission, d.developmentPlans.permission);
 });
@@ -72,7 +76,7 @@ test('permission denial, optional third builder argument and absent routes remai
     assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory','portalSearch','developmentPlans','availablePlanningMaps','ppas'].sort());
     const allowed = visible(true);
     assert.deepEqual(allowed.map((item) => item.key).sort(),
-        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','portalSearch','documentCenter','developmentPlans','availablePlanningMaps','ppas','systemAdministration'].sort());
+        ['home','myTasks','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','portalSearch','documentCenter','developmentPlans','availablePlanningMaps','ppas','systemAdministration'].sort());
     assert.ok(allowed.every((item) => item.readiness === 'wired' && staged.isStagedInertiaPath(item.href)));
     assert.ok(!allowed.some((item) => item.href === '/messages'));
     assert.equal(JSON.stringify(nav.buildPortalNavigation('employee', permissions(true))),
@@ -103,17 +107,45 @@ test('already corrected dashboard and density presentation contracts remain inta
     assert.match(frame, /'compact'/);
 });
 
-test('PR44 My Department remains head-only and canonical Personal Tasks navigation stays present', () => {
+test('dedicated My Department stays head-only and My Tasks is a genuine staged page', () => {
     for (const role of ['employee', 'department_head', 'executive_oversight', 'system_administration', null]) {
         const items = [...nav.buildPortalNavigation(role, permissions(true))].flatMap(group => group.items);
         const department = items.filter(item => item.key === 'myDepartment');
+        const tasks = items.filter(item => item.key === 'myTasks');
         assert.equal(department.length, role === 'department_head' ? 1 : 0);
-        if (department.length) assert.equal(department[0].href, '/dashboard#department-overview');
+        assert.equal(tasks.length, 1);
+        if (department.length) assert.equal(department[0].href, '/my-department');
+        assert.equal(tasks[0].href, '/my-tasks');
     }
-    assert.equal(nav.isPortalPathActive('/dashboard#department-overview', '/dashboard#department-overview'), true);
-    assert.equal(nav.isPortalPathActive('/dashboard#department-overview', '/dashboard'), false);
-    assert.equal(nav.isPortalPathActive('/dashboard', '/dashboard#department-overview'), false);
+    assert.equal(nav.isPortalPathActive('/my-department', '/my-department'), true);
+    assert.equal(nav.isPortalPathActive('/my-department', '/dashboard'), false);
+    assert.equal(nav.isPortalPathActive('/dashboard', '/my-department'), false);
+    assert.equal(nav.isPortalPathActive('/my-tasks?state=open', '/my-tasks'), true);
+    assert.equal(nav.isPortalPathActive('/transactions', '/my-tasks'), false);
+    assert.equal(staged.isStagedInertiaPath('/my-department'), true);
+    assert.equal(staged.isStagedInertiaPath('/my-tasks'), true);
+    assert.equal(staged.isStagedInertiaPath('/tasks'), false);
     const sidebar = readFileSync(fileURLToPath(new URL('../../resources/js/components/shell/PortalSidebar.tsx', import.meta.url)), 'utf8');
-    assert.match(sidebar, /href="\/dashboard#personal-tasks"/);
-    assert.match(sidebar, /const tasksActive =/);
+    assert.ok(!sidebar.includes('href="/dashboard#personal-tasks"'));
+    assert.doesNotMatch(sidebar, /const tasksActive =/);
+    const layout = readFileSync(fileURLToPath(new URL('../../resources/js/layouts/AppLayout.tsx', import.meta.url)), 'utf8');
+    assert.ok(layout.includes("['home', 'myTasks', 'myWork', 'correspondence']"));
+    assert.ok(!layout.includes('/dashboard#personal-tasks'));
+    assert.ok(layout.includes("key === 'myTasks'") && layout.includes("t('navTasks')"));
+
+});
+
+test('Dashboard only previews Tasks and does not enable deferred Chat Room', () => {
+    const dashboard = readFileSync(fileURLToPath(new URL('../../resources/js/pages/Dashboard.tsx', import.meta.url)), 'utf8');
+    const preview = readFileSync(fileURLToPath(new URL('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx', import.meta.url)), 'utf8');
+    const transactions = readFileSync(fileURLToPath(new URL('../../resources/js/pages/Transactions/Index.tsx', import.meta.url)), 'utf8');
+    const upper = readFileSync(fileURLToPath(new URL('../../resources/js/components/dashboard/r7/R7UpperRegion.tsx', import.meta.url)), 'utf8');
+    assert.ok(dashboard.includes('href="/my-department"'));
+    assert.ok(preview.includes('href="/my-tasks"'));
+    assert.doesNotMatch(preview, /<PersonalTaskWorkspace/);
+    assert.doesNotMatch(transactions, /<PersonalTaskWorkspace/);
+    for (const name of ['Recent Advisories', 'Announcements', 'Chat Room', 'Planned']) {
+        assert.ok(upper.includes(name));
+    }
+    assert.ok(!upper.includes('href="/messages"'));
 });

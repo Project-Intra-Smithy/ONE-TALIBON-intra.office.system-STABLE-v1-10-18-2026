@@ -1,0 +1,107 @@
+[
+  {
+    "rolname": "n03_stage",
+    "name": "public.ppa_records_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.prototype_messages",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.prototype_messages_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.staff_activation_invitations",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.staff_activation_invitations_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.task_events",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.task_events_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.tasks",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.tasks_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transaction_events",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transaction_events_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transactions",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transactions_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_employee",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_employee_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_events",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_events_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_orders",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_orders_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.users",
+    "rights": "{f,f,f,f,f,f,f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.users_id_seq",
+    "rights": "{f,f,f,f,f,f}"
+  }
+]

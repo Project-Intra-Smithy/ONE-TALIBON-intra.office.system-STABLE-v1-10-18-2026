@@ -1,0 +1,502 @@
+[
+  {
+    "object": "index public.payroll_entries_status_index",
+    "reference": "column status of table public.payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.payroll_periods_pkey",
+    "reference": "constraint payroll_periods_pkey on table public.payroll_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.payroll_periods_status_index",
+    "reference": "column status of table public.payroll_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.performance_records_employee_id_period_end_index",
+    "reference": "column employee_id of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.performance_records_employee_id_period_end_index",
+    "reference": "column period_end of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.performance_records_period_end_index",
+    "reference": "column period_end of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.performance_records_period_start_index",
+    "reference": "column period_start of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.performance_records_pkey",
+    "reference": "constraint performance_records_pkey on table public.performance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.performance_records_status_index",
+    "reference": "column status of table public.performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.plan_bindings_edition_role_revision_unique",
+    "reference": "constraint plan_bindings_edition_role_revision_unique on table public.plan_document_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_events_event_id_unique",
+    "reference": "constraint plan_custody_events_event_id_unique on table public.plan_custody_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_events_pkey",
+    "reference": "constraint plan_custody_events_pkey on table public.plan_custody_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_generations_generation_id_unique",
+    "reference": "constraint plan_custody_generations_generation_id_unique on table public.plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_generations_idempotency_key_hash_unique",
+    "reference": "constraint plan_custody_generations_idempotency_key_hash_unique on table public.plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_generations_pkey",
+    "reference": "constraint plan_custody_generations_pkey on table public.plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_generations_storage_locator_unique",
+    "reference": "constraint plan_custody_generations_storage_locator_unique on table public.plan_custody_generations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_scan_evidence_evidence_id_unique",
+    "reference": "constraint plan_custody_scan_evidence_evidence_id_unique on table public.plan_custody_scan_evidence",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_scan_evidence_pkey",
+    "reference": "constraint plan_custody_scan_evidence_pkey on table public.plan_custody_scan_evidence",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_custody_scan_generation_evidence_unique",
+    "reference": "constraint plan_custody_scan_generation_evidence_unique on table public.plan_custody_scan_evidence",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_document_bindings_document_id_unique",
+    "reference": "constraint plan_document_bindings_document_id_unique on table public.plan_document_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_document_bindings_pkey",
+    "reference": "constraint plan_document_bindings_pkey on table public.plan_document_bindings",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_document_origin_receipts_pkey",
+    "reference": "constraint plan_document_origin_receipts_pkey on table public.plan_document_origin_receipts",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_editions_family_label_unique",
+    "reference": "constraint plan_editions_family_label_unique on table public.plan_editions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_editions_pkey",
+    "reference": "constraint plan_editions_pkey on table public.plan_editions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_editions_public_id_unique",
+    "reference": "constraint plan_editions_public_id_unique on table public.plan_editions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_families_pkey",
+    "reference": "constraint plan_families_pkey on table public.plan_families",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.plan_families_public_id_unique",
+    "reference": "constraint plan_families_public_id_unique on table public.plan_families",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_attachment_reconciliations_attachment_id_unique",
+    "reference": "constraint planning_attachment_reconciliations_attachment_id_unique on table public.planning_attachment_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_attachment_reconciliations_pkey",
+    "reference": "constraint planning_attachment_reconciliations_pkey on table public.planning_attachment_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_attachments_parent_record_id_index",
+    "reference": "column parent_record_id of table public.planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.planning_attachments_parent_type_parent_code_archived_at_index",
+    "reference": "column archived_at of table public.planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.planning_attachments_parent_type_parent_code_archived_at_index",
+    "reference": "column parent_code of table public.planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.planning_attachments_parent_type_parent_code_archived_at_index",
+    "reference": "column parent_type of table public.planning_attachments",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.planning_attachments_pkey",
+    "reference": "constraint planning_attachments_pkey on table public.planning_attachments",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_attachments_public_id_unique",
+    "reference": "constraint planning_attachments_public_id_unique on table public.planning_attachments",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_maps_map_code_unique",
+    "reference": "constraint planning_maps_map_code_unique on table public.planning_maps",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_maps_pkey",
+    "reference": "constraint planning_maps_pkey on table public.planning_maps",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_plan_map_links_pkey",
+    "reference": "constraint planning_plan_map_links_pkey on table public.planning_plan_map_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_ppa_identifiers_pkey",
+    "reference": "constraint planning_ppa_identifiers_pkey on table public.planning_ppa_identifiers",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_reference_counters_pkey",
+    "reference": "constraint planning_reference_counters_pkey on table public.planning_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.planning_staff_one_active_user",
+    "reference": "column revoked_at of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.planning_staff_one_active_user",
+    "reference": "column user_id of table public.designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_acknowledged_at_index",
+    "reference": "column acknowledged_at of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_expires_at_index",
+    "reference": "column expires_at of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_pkey",
+    "reference": "constraint platform_notifications_pkey on table public.platform_notifications",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.platform_notifications_priority_index",
+    "reference": "column priority of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_read_at_index",
+    "reference": "column read_at of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_source_domain_index",
+    "reference": "column source_domain of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_source_domain_source_id_index",
+    "reference": "column source_domain of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_source_domain_source_id_index",
+    "reference": "column source_id of table public.platform_notifications",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.platform_notifications_user_id_event_key_unique",
+    "reference": "constraint platform_notifications_user_id_event_key_unique on table public.platform_notifications",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.portal_presence_sessions_pkey",
+    "reference": "constraint portal_presence_sessions_pkey on table public.portal_presence_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.portal_presence_sessions_user_id_last_seen_at_index",
+    "reference": "column last_seen_at of table public.portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.portal_presence_sessions_user_id_last_seen_at_index",
+    "reference": "column user_id of table public.portal_presence_sessions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.portal_presence_sessions_user_id_session_hash_unique",
+    "reference": "constraint portal_presence_sessions_user_id_session_hash_unique on table public.portal_presence_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.ppa_records_pkey",
+    "reference": "constraint ppa_records_pkey on table public.ppa_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.ppa_records_ppa_code_unique",
+    "reference": "constraint ppa_records_ppa_code_unique on table public.ppa_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.prototype_messages_channel_id_index",
+    "reference": "column channel of table public.prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.prototype_messages_channel_id_index",
+    "reference": "column id of table public.prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.prototype_messages_pkey",
+    "reference": "constraint prototype_messages_pkey on table public.prototype_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.prototype_messages_public_id_unique",
+    "reference": "constraint prototype_messages_public_id_unique on table public.prototype_messages",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.staff_activation_invitations_code_digest_unique",
+    "reference": "constraint staff_activation_invitations_code_digest_unique on table public.staff_activation_invitations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.staff_activation_invitations_employee_id_created_at_index",
+    "reference": "column created_at of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_invitations_employee_id_created_at_index",
+    "reference": "column employee_id of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_invitations_pkey",
+    "reference": "constraint staff_activation_invitations_pkey on table public.staff_activation_invitations",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.staff_activation_invitations_user_id_consumed_at_revoked_at_ind",
+    "reference": "column consumed_at of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_invitations_user_id_consumed_at_revoked_at_ind",
+    "reference": "column revoked_at of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_invitations_user_id_consumed_at_revoked_at_ind",
+    "reference": "column user_id of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_one_outstanding_per_user",
+    "reference": "column consumed_at of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_one_outstanding_per_user",
+    "reference": "column revoked_at of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.staff_activation_one_outstanding_per_user",
+    "reference": "column user_id of table public.staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.task_events_pkey",
+    "reference": "constraint task_events_pkey on table public.task_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.task_events_task_id_id_index",
+    "reference": "column id of table public.task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.task_events_task_id_id_index",
+    "reference": "column task_id of table public.task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_assigned_to_user_id_state_index",
+    "reference": "column assigned_to_user_id of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_assigned_to_user_id_state_index",
+    "reference": "column state of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_completed_at_index",
+    "reference": "column completed_at of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_due_at_index",
+    "reference": "column due_at of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_kind_creator_state_index",
+    "reference": "column created_by_user_id of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_kind_creator_state_index",
+    "reference": "column state of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_kind_creator_state_index",
+    "reference": "column task_kind of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_pkey",
+    "reference": "constraint tasks_pkey on table public.tasks",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.tasks_source_domain_source_id_index",
+    "reference": "column source_domain of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_source_domain_source_id_index",
+    "reference": "column source_id of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_state_index",
+    "reference": "column state of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.tasks_task_kind_index",
+    "reference": "column task_kind of table public.tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transaction_events_action_index",
+    "reference": "column action of table public.transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transaction_events_created_at_index",
+    "reference": "column created_at of table public.transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transaction_events_new_status_index",
+    "reference": "column new_status of table public.transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transaction_events_pkey",
+    "reference": "constraint transaction_events_pkey on table public.transaction_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.transactions_action_required_index",
+    "reference": "column action_required of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_assignee_status_due_idx",
+    "reference": "column assigned_employee_id of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_assignee_status_due_idx",
+    "reference": "column due_at of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_assignee_status_due_idx",
+    "reference": "column status of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_completed_at_index",
+    "reference": "column completed_at of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_current_department_id_status_index",
+    "reference": "column current_department_id of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_current_department_id_status_index",
+    "reference": "column status of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_due_at_index",
+    "reference": "column due_at of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_office_status_due_idx",
+    "reference": "column current_department_id of table public.transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.transactions_office_status_due_idx",
+    "reference": "column due_at of table public.transactions",
+    "deptype": "a"
+  }
+]

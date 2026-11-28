@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.responsible_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.target_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.operational_items.utilized_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_close_audit_bindings.audit_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_close_audit_bindings.operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_close_audit_bindings.transaction_event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_close_audit_bindings.transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.actor_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.exception_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exception_actions.note",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.custodian_role",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.origin_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.transaction_event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.ops009_origin_delivery_exceptions.transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.aggregate_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.aggregate_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.attempt_count",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.available_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.claimed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.claimed_by",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.last_error",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.occurred_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.payload",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.outbox_messages.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.password_reset_tokens.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.password_reset_tokens.email",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.password_reset_tokens.token",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.allowances",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.approved_leave_units",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.basic_pay",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.dtr_complete_days",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.dtr_days_with_logs",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.dtr_partial_days",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.dtr_snapshot_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.gross_pay",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.gsis",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.net_pay",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.other_deductions",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.pagibig",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.payroll_period_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.philhealth",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.total_deductions",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_entries.withholding_tax",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.approved_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.calculation_mode",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.dtr_period_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.label",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.period_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.period_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.processed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.released_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.source_notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.payroll_periods.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.evaluator_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.period_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.period_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.rating",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.rating_scale",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.reviewed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.performance_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.actor_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.details",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.occurred_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.office_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.plan_custody_generation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_events.service_identity",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_migrator",
+    "name": "public.plan_custody_generations.actor_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

@@ -3,16 +3,39 @@ export type PPAPriority = 'High' | 'Medium' | 'Routine';
 
 export type PPARecord = {
     id: string;
+    dbId?: number;
+    linkedDevelopmentPlan?: {code:string;title:string}|null; linkedPlanningMap?: {code:string;title:string}|null;
+    amounts?: Record<string,string|null>; developmentPlanId?: number|null; planningMapId?: number|null;
+    scheduleStart?: string; scheduleEnd?: string; expectedOutputs?: string; coveredBarangays?: string[];
+    canEdit?: boolean;
+    canDelete?: boolean;
+    canUploadAttachments?: boolean;
     title: string;
     sector: string;
     responsibleOffice: string;
+    implementingDepartmentId?: number | null;
     year: number;
     relatedDevelopmentPlan: string;
     fundingSource: string;
     status: PPAStatus;
+    rawStatus?: string;
     relatedProjectCount: number;
     priority: PPAPriority;
     implementationContext: string;
+    location?: string;
+    barangay?: string;
+    appropriationAmount?: number;
+    psAmount?: number;
+    mooeAmount?: number;
+    coAmount?: number;
+    climateAdaptationAmount?: number;
+    climateMitigationAmount?: number;
+    gadAttributed?: boolean;
+    drrmTagged?: boolean;
+    aipReferenceCode?: string | null;
+    targetQuarter?: string | null;
+    mapCode?: string | null;
+    provenanceStatus?: string;
 };
 
 export type PPAFilters = {

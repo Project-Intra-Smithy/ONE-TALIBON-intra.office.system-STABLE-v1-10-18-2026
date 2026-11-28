@@ -1,0 +1,232 @@
+[
+  {
+    "name": "legacy_custody.bindings.n03_command_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_command_complete AFTER INSERT ON legacy_custody.bindings DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "legacy_custody.bindings.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.bindings FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.classification_events.n03_g3_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_g3_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.classification_events FOR EACH ROW EXECUTE FUNCTION legacy_custody.g3_extensions_guard()"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_command_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_command_complete AFTER INSERT ON legacy_custody.command_results DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.command_results FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.n03_k2_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_k2_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.compensation_outcomes FOR EACH ROW EXECUTE FUNCTION legacy_custody.k2_compensation_guard()"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.n03_k2_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_k2_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.compensation_tombstones FOR EACH ROW EXECUTE FUNCTION legacy_custody.k2_compensation_guard()"
+  },
+  {
+    "name": "legacy_custody.generations.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.generations FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.namespaces.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.namespaces FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.operation_events.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.operation_events FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.operation_gates.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.operation_gates FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.operation_gates.n03_reservation_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_reservation_complete AFTER INSERT ON legacy_custody.operation_gates DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.reservation_complete()"
+  },
+  {
+    "name": "legacy_custody.operation_items.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.operation_items FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.operation_items.n03_reservation_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_reservation_complete AFTER INSERT ON legacy_custody.operation_items DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.reservation_complete()"
+  },
+  {
+    "name": "legacy_custody.operations.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.operations FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.operations.n03_reservation_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_reservation_complete AFTER INSERT ON legacy_custody.operations DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.reservation_complete()"
+  },
+  {
+    "name": "legacy_custody.ownership_links.n03_command_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_command_complete AFTER INSERT ON legacy_custody.ownership_links DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "legacy_custody.ownership_links.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.ownership_links FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.n03_command_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_command_complete AFTER INSERT ON legacy_custody.terminal_receipts DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (new.outcome = 'COMMITTED'::text) EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.n03_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.terminal_receipts FOR EACH ROW EXECUTE FUNCTION legacy_custody.private_guard()"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.n03_g3_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER n03_g3_immutable BEFORE INSERT OR DELETE OR UPDATE ON legacy_custody.watermark_checkpoints FOR EACH ROW EXECUTE FUNCTION legacy_custody.g3_extensions_guard()"
+  },
+  {
+    "name": "public.audit_logs.a_n03_public_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER a_n03_public_guard BEFORE INSERT OR DELETE OR UPDATE ON public.audit_logs FOR EACH ROW EXECUTE FUNCTION legacy_custody.public_guard()"
+  },
+  {
+    "name": "public.audit_logs.n03_public_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_public_complete AFTER INSERT ON public.audit_logs DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (new.custody_operation_id IS NOT NULL) EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "public.audit_logs.ops009_close_audit_integrity",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER ops009_close_audit_integrity AFTER INSERT ON public.audit_logs DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (new.custody_operation_id IS NULL AND new.entity_type::text = 'App\\Models\\WorkflowTransaction'::text AND new.action::text = 'transaction.close'::text) EXECUTE FUNCTION public.ops009_verify_close_audit()"
+  },
+  {
+    "name": "public.document_links.a_n03_public_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER a_n03_public_guard BEFORE INSERT OR DELETE OR UPDATE ON public.document_links FOR EACH ROW EXECUTE FUNCTION legacy_custody.public_guard()"
+  },
+  {
+    "name": "public.document_links.kirion_plan_generic_link_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_generic_link_guard_trigger BEFORE INSERT OR DELETE OR UPDATE ON public.document_links FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_generic_link_guard()"
+  },
+  {
+    "name": "public.document_links.n03_public_link_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_public_link_complete AFTER INSERT ON public.document_links DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (CURRENT_USER = 'n03_command'::name) EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "public.documents.a_n03_public_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER a_n03_public_guard BEFORE INSERT OR DELETE OR UPDATE ON public.documents FOR EACH ROW EXECUTE FUNCTION legacy_custody.public_guard()"
+  },
+  {
+    "name": "public.documents.kirion_plan_document_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_document_guard_trigger BEFORE INSERT OR DELETE OR UPDATE ON public.documents FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_document_guard()"
+  },
+  {
+    "name": "public.documents.kirion_plan_stamp_origin_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_stamp_origin_trigger AFTER INSERT OR UPDATE OF security_domain ON public.documents FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_stamp_origin()"
+  },
+  {
+    "name": "public.documents.n03_public_complete",
+    "tgenabled": "O",
+    "definition": "CREATE CONSTRAINT TRIGGER n03_public_complete AFTER INSERT ON public.documents DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (new.custody_operation_id IS NOT NULL) EXECUTE FUNCTION legacy_custody.command_complete()"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_delivery_action_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER ops009_delivery_action_guard BEFORE INSERT ON public.ops009_origin_delivery_exception_actions FOR EACH ROW EXECUTE FUNCTION public.ops009_guard_delivery_action()"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_exception_action_append_only",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER ops009_exception_action_append_only BEFORE DELETE OR UPDATE ON public.ops009_origin_delivery_exception_actions FOR EACH ROW EXECUTE FUNCTION public.ops009_deny_exception_mutation()"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_delivery_exception_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER ops009_delivery_exception_guard BEFORE INSERT ON public.ops009_origin_delivery_exceptions FOR EACH ROW EXECUTE FUNCTION public.ops009_guard_delivery_exception()"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_exception_append_only",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER ops009_exception_append_only BEFORE DELETE OR UPDATE ON public.ops009_origin_delivery_exceptions FOR EACH ROW EXECUTE FUNCTION public.ops009_deny_exception_mutation()"
+  },
+  {
+    "name": "public.plan_custody_events.kirion_plan_custody_event_append_only_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_custody_event_append_only_trigger BEFORE DELETE OR UPDATE ON public.plan_custody_events FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_custody_append_only_guard()"
+  },
+  {
+    "name": "public.plan_custody_generations.kirion_plan_custody_generation_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_custody_generation_guard_trigger BEFORE DELETE OR UPDATE ON public.plan_custody_generations FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_custody_generation_guard()"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.kirion_plan_custody_scan_append_only_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_custody_scan_append_only_trigger BEFORE DELETE OR UPDATE ON public.plan_custody_scan_evidence FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_custody_append_only_guard()"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.kirion_plan_custody_scan_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_custody_scan_guard_trigger BEFORE INSERT ON public.plan_custody_scan_evidence FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_custody_scan_guard()"
+  },
+  {
+    "name": "public.plan_document_bindings.kirion_plan_typed_binding_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_typed_binding_guard_trigger BEFORE INSERT OR DELETE OR UPDATE ON public.plan_document_bindings FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_typed_binding_guard()"
+  },
+  {
+    "name": "public.plan_document_origin_receipts.kirion_plan_receipt_guard_trigger",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER kirion_plan_receipt_guard_trigger BEFORE INSERT OR DELETE OR UPDATE ON public.plan_document_origin_receipts FOR EACH ROW EXECUTE FUNCTION public.kirion_plan_origin_receipt_guard()"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_reconciliation_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER planning_reconciliation_immutable BEFORE DELETE OR UPDATE ON public.planning_attachment_reconciliations FOR EACH ROW EXECUTE FUNCTION public.planning_reconciliation_immutable()"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_reconciliation_no_truncate",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER planning_reconciliation_no_truncate BEFORE TRUNCATE ON public.planning_attachment_reconciliations FOR EACH STATEMENT EXECUTE FUNCTION public.planning_reconciliation_immutable()"
+  },
+  {
+    "name": "public.planning_ppa_identifiers.planning_ppa_identifiers_immutable",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER planning_ppa_identifiers_immutable BEFORE DELETE OR UPDATE ON public.planning_ppa_identifiers FOR EACH ROW EXECUTE FUNCTION public.planning_ppa_identifiers_immutable()"
+  },
+  {
+    "name": "public.planning_ppa_identifiers.planning_ppa_identifiers_no_truncate",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER planning_ppa_identifiers_no_truncate BEFORE TRUNCATE ON public.planning_ppa_identifiers FOR EACH STATEMENT EXECUTE FUNCTION public.planning_ppa_identifiers_immutable()"
+  },
+  {
+    "name": "public.platform_notifications.ops009_origin_close_notice_guard",
+    "tgenabled": "O",
+    "definition": "CREATE TRIGGER ops009_origin_close_notice_guard BEFORE INSERT ON public.platform_notifications FOR EACH ROW EXECUTE FUNCTION public.ops009_guard_close_notice()"
+  }
+]

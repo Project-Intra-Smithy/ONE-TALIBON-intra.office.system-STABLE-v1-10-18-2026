@@ -1,68 +1,142 @@
 import { Link, router } from '@inertiajs/react';
 import { Grid3X3, Search, X } from 'lucide-react';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { type FormEvent, useId } from 'react';
+import { useLocale } from '../../lib/i18n';
+import { getUserInitials } from '../../lib/userIdentity';
 import type { PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 
-export function RecordsSearch() {
-    function search(event: FormEvent<HTMLFormElement>) {
+export function RecordsSearch({ onOpenCommandPalette }: { onOpenCommandPalette?: () => void }) {
+    const inputId = useId();
+    const { t } = useLocale();
+
+    function handleSearch(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        router.get('/records', { search: String(data.get('search') || '') });
+        router.get('/records', { search: String(data.get('search') || '').trim() });
     }
+
     return (
-        <form onSubmit={search} role="search" className="portal-records-search">
-            <label className="relative block">
-                <span className="sr-only">Search records</span>
-                <Search size={16} className="pointer-events-none absolute left-3.5 top-3.5 text-slate-500" aria-hidden="true" />
-                <input type="search" name="search" placeholder="Search records…" className="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400" />
-            </label>
-            <button type="submit" className="portal-search-submit">Search</button>
-        </form>
+        <search>
+            <form onSubmit={handleSearch} className="flex items-center gap-1.5" aria-label="Search municipal records">
+                <div className="relative flex-1">
+                    <label htmlFor={inputId} className="sr-only">
+                        Search municipal records
+                    </label>
+                    <Search
+                        size={16}
+                        aria-hidden="true"
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--ink-secondary)]"
+                    />
+                    <input
+                        id={inputId}
+                        type="search"
+                        name="search"
+                        autoCorrect="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        placeholder={t('searchRecordsPlaceholder')}
+                        className={`h-10 w-full rounded-lg border border-[var(--border-control)] bg-[var(--surface-input)] pl-9 text-sm text-[var(--ink-primary)] placeholder:text-[var(--ink-tertiary)] focus:bg-[var(--surface-card)] ${
+                            onOpenCommandPalette ? 'pr-16' : 'pr-3'
+                        }`}
+                    />
+                    {onOpenCommandPalette && (
+                        <button
+                            type="button"
+                            onClick={onOpenCommandPalette}
+                            aria-label="Open Quick Jump command palette (Ctrl+K)"
+                            title="Quick Jump (Ctrl+K)"
+                            className="absolute right-1.5 top-1/2 hidden min-h-8 -translate-y-1/2 items-center rounded border border-[var(--border-default)] bg-[var(--surface-card)] px-1.5 py-0.5 font-mono text-xs font-semibold text-[var(--ink-secondary)] transition-colors hover:border-[var(--brand-ink)] hover:text-[var(--ink-primary)] lg:inline-flex"
+                        >
+                            Ctrl K
+                        </button>
+                    )}
+                </div>
+                <button
+                    type="submit"
+                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] px-2.5 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:bg-[var(--surface-hover)] xl:px-3 xl:text-sm"
+                >
+                    {t('searchButton')}
+                </button>
+            </form>
+        </search>
     );
 }
 
 export function PortalLauncher({ groups }: { groups: PortalNavigationGroup[] }) {
-    const [open, setOpen] = useState(false);
-    const root = useRef<HTMLDivElement>(null);
-    const trigger = useRef<HTMLButtonElement>(null);
-    useEffect(() => {
-        if (!open) return;
-        const outside = (event: PointerEvent) => {
-            if (!root.current?.contains(event.target as Node)) setOpen(false);
-        };
-        const escape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') { setOpen(false); trigger.current?.focus(); }
-        };
-        document.addEventListener('pointerdown', outside);
-        document.addEventListener('keydown', escape);
-        return () => {
-            document.removeEventListener('pointerdown', outside);
-            document.removeEventListener('keydown', escape);
-        };
-    }, [open]);
+    const popoverId = useId();
+    const items = groups.flatMap((group) => group.items);
+
     return (
-        <div ref={root} className="relative">
-            <button ref={trigger} type="button" aria-label="Open portal applications" aria-expanded={open} aria-controls="portal-applications" onClick={() => setOpen(!open)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#0b2852] hover:bg-blue-50 dark:text-blue-200 dark:hover:bg-slate-800"><Grid3X3 size={19} /></button>
-            {open && <nav id="portal-applications" aria-label="Portal applications" className="municipal-panel fixed left-3 right-3 top-20 z-40 max-h-[calc(100dvh-6rem)] overflow-y-auto p-4 shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-80">
-                <div className="mb-3 flex items-center justify-between"><span className="municipal-panel-title">Portal applications</span><button type="button" onClick={() => { setOpen(false); trigger.current?.focus(); }} className="flex h-11 w-11 items-center justify-center rounded-lg" aria-label="Close portal applications"><X size={16} /></button></div>
-                <div className="grid grid-cols-2 gap-2">{groups.flatMap((group) => group.items).map(({ href, label, icon: Icon }) => (
-                    <Link key={href} href={href} onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg bg-slate-50 p-3 text-sm font-semibold hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700"><Icon size={17} className="shrink-0 text-blue-600 dark:text-blue-300" />{label}</Link>
-                ))}</div>
-            </nav>}
-        </div>
+        <>
+            <button
+                type="button"
+                popoverTarget={popoverId}
+                style={{ anchorName: '--tcds-launcher-anchor' } as React.CSSProperties}
+                aria-label="Open portal applications"
+                className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--ink-secondary)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--ink-primary)]"
+            >
+                <Grid3X3 size={19} aria-hidden="true" />
+            </button>
+            <nav
+                id={popoverId}
+                popover="auto"
+                data-placement="bottom-end"
+                style={{ positionAnchor: '--tcds-launcher-anchor' } as React.CSSProperties}
+                aria-label="Portal applications"
+                className="tcds-popover w-80 p-3.5"
+            >
+                <div className="mb-3 flex items-center justify-between gap-2 border-b border-[var(--border-default)] pb-2">
+                    <span className="text-sm font-bold text-[var(--ink-primary)]">Portal applications</span>
+                    <button
+                        type="button"
+                        popoverTarget={popoverId}
+                        popoverTargetAction="hide"
+                        className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)]"
+                        aria-label="Close portal applications"
+                    >
+                        <X size={16} aria-hidden="true" />
+                    </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    {items.map(({ href, label, icon: Icon }) => (
+                        <Link
+                            key={href}
+                            href={href}
+                            className="flex min-h-11 items-center gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] px-3 py-2 text-sm font-semibold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
+                        >
+                            <Icon size={16} aria-hidden="true" className="shrink-0 text-[var(--brand-ink)]" />
+                            <span className="truncate">{label}</span>
+                        </Link>
+                    ))}
+                </div>
+            </nav>
+        </>
     );
 }
 
 export function PortalIdentity({ user }: { user: AuthUser | null }) {
     if (!user) return null;
-    const initials = user.name.trim().split(/\s+/).filter(Boolean).map((part) => part[0]).slice(0, 2).join('');
-    return <div aria-label={user.name} className="portal-identity flex min-w-0 items-center gap-2.5 border-l border-slate-200 pl-3 dark:border-slate-700">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-white bg-blue-100 text-sm font-bold text-blue-900  dark:border-slate-700" aria-hidden="true">{initials}</span>
-        <div className="hidden min-w-0 max-w-44 xl:block">
-            <div className="truncate text-xs font-bold">{user.name}</div>
-            <div className="truncate text-xs text-slate-500 dark:text-slate-400">{user.employee?.department?.short_name || user.employee?.department?.name}</div>
-            <div className="truncate text-xs text-slate-500 dark:text-slate-400">{user.employee?.position}</div>
+    const initials = getUserInitials(user.name);
+    const dept = user.employee?.department?.short_name || user.employee?.department?.name;
+
+    return (
+        <div
+            role="group"
+            title={`${user.name}${dept ? ` · ${dept}` : ''}`}
+            aria-label={`${user.name}${dept ? `, ${dept}` : ''}`}
+            className="flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3"
+        >
+            <span
+                aria-hidden="true"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--brand-soft-border)] bg-[var(--brand-soft)] text-xs font-bold text-[var(--brand-ink)]"
+            >
+                {initials}
+            </span>
+            <div className="hidden min-w-0 max-w-40 xl:block">
+                <div className="truncate text-sm font-semibold leading-tight text-[var(--ink-primary)]">{user.name}</div>
+                {dept && <div className="truncate text-xs text-[var(--ink-secondary)]">{dept}</div>}
+            </div>
         </div>
-    </div>;
+    );
 }

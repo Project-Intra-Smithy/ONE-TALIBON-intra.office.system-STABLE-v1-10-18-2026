@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operations.operation_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.operations.service_identity",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.binding_document_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.created_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.linkable_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.public_document_link_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.relationship",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.ownership_links.source_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.actor_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.evidence_ref",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.fence_no",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.manifest_digest",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.operation_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.outcome",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.receipt_uuid",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.terminal_receipts.service_identity",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.actor_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.checkpoint_seq",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.epoch",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.event_kind",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.namespace_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.recorded_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "legacy_custody.watermark_checkpoints.state_anchor_digest",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.asset_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.assigned_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.assignment_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.condition_at_issue",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.condition_at_return",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.created_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.employee_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.reference_no",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.returned_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_assignments.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.asset_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.authority_reference",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.decided_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.decided_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.method",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.proceeds",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.reason",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.recommended_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.recommended_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_disposals.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.actor_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.asset_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.event_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.from_department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.from_employee_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.metadata",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.remarks",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.to_department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_events.to_employee_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.asset_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.asset_inventory_session_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.observed_condition",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.observed_location",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.remarks",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.scan_value",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.scanned_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.scanned_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_scans.verification_status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.closed_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.closed_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.inventory_date",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.notes",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.session_code",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.started_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_inventory_sessions.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.actual_cost",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.asset_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.completed_on",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.condition_after",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.condition_before",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.created_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.estimated_cost",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.issue_description",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.maintenance_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.service_provider",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.started_on",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.asset_maintenance_records.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  }
+]

@@ -1,20 +1,23 @@
-/* Supplied homepagePreview.html layout, scoped to Public/Home. */
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap');
-
-  /* Layout: full-bleed photo hero with the nav laid over it, then quiet, ruled sections on one 1200px column. */
+/* Scoped to Public/Home — uses self-hosted Public Sans Variable and TCDS tokens. */
   .public-portal.public-refined {
-    --bg: #f8f9f8;
-    --surface: #ffffff;
-    --ink: #14201a;
-    --muted: #55635b;
-    --line: #dde3df;
-    --green: #1b5a3f;
-    --green-deep: #123c2a;
+    --bg: var(--surface-canvas, #f7f8f6);
+    --surface: var(--surface-card, #ffffff);
+    --ink: var(--ink-primary, #14211c);
+    --muted: var(--ink-secondary, #4a5d55);
+    --line: var(--border-default, #dce3df);
+    --green: var(--brand-primary, #0e4d36);
+    --green-deep: var(--brand-deep, #0b3d2b);
     --on-green: #ffffff;
-    --font: "Public Sans", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    --font: var(--font-sans, "Public Sans Variable", system-ui, sans-serif);
     --col: 1200px;
     --gutter: 24px;
-    color-scheme: light;
+  }
+
+  .public-portal.public-refined .footer-links a,
+  .public-portal.public-refined .nav-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .public-refined *, .public-refined *::before, .public-refined *::after { box-sizing: border-box; }
@@ -153,7 +156,7 @@
   .public-refined .footer { background: var(--surface); border-top: 1px solid var(--line); }
   .public-refined .footer-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; padding-block: 56px 40px; align-items: start; }
   .public-refined .footer .brand img { width: 36px; height: 36px; }
-  .public-refined .footer .brand-name { color: var(--green); font-size: 18px; }
+  .public-refined .footer .brand-name { color: var(--ink); font-size: 18px; }
   .public-refined .footer .brand-sub { color: var(--muted); opacity: 1; }
   .public-refined .address { margin-top: 20px; font-size: 14px; color: var(--muted); line-height: 1.7; }
   .public-refined .footer-links { display: flex; flex-wrap: wrap; gap: 8px 32px; font-size: 14px; color: var(--muted); }

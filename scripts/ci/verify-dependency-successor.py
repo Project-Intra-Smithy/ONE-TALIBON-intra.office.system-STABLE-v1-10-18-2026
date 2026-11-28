@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Bound the dependency lane while preserving every frozen product/test blob."""
+import copy
+import hashlib
+import json
+import subprocess
+import sys
+
+BASE = "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a"
+# Canonical JSON digest of the reviewed five-package successor lock, including autoload metadata.
+APPROVED_LOCK_DIGEST = "41fad68cd4d3e326faee97ceed7fb8576b74ada4b905ad4697a955064652041f"
+PATCHES = {
+    "laravel/framework": ("v13.40.0", "v13.44.1"),
+    "symfony/http-foundation": ("v8.1.11", "v8.1.12"),
+    "symfony/http-kernel": ("v8.1.11", "v8.1.12"),
+    "symfony/mailer": ("v8.1.5", "v8.1.12"),
+    "symfony/routing": ("v8.1.11", "v8.1.12"),
+}
+# Independently resolved official release tags (Symfony annotated tags dereferenced).
+PATCH_REFERENCES = {
+    "laravel/framework": "8a8c4a84852869e13190d89f9da873cd9a70f14c",
+    "symfony/http-foundation": "8061f6d6b6ec8fc5075b5f39c8ddca83110da9c6",
+    "symfony/http-kernel": "cd6146b67375122b050c25cfb1a49b6fe6fc4adb",
+    "symfony/mailer": "535515ab0bdc7efbfb7161fe23c6bf7434e26b93",
+    "symfony/routing": "55df7515cdd7769113e46dbeba7942c1ccab8590",
+}
+ALLOWED = {
+    "composer.lock",
+    ".forge/memory/WORK-PACKAGE-REGISTER.md",
+    ".github/workflows/dependency-security-pg16.yml",
+    "scripts/ci/verify-dependency-successor.py",
+    "scripts/ci/dependency-security-regressions.php",
+}
+
+
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def check_lock(before, after):
+    old_top = {k: v for k, v in before.items() if k not in ("packages", "packages-dev", "plugin-api-version")}
+    new_top = {k: v for k, v in after.items() if k not in ("packages", "packages-dev", "plugin-api-version")}
+    require(old_top == new_top, "Unrelated lock configuration changed")
+    require(before["plugin-api-version"] == "2.11.0", "Unexpected frozen Composer format")
+    require(after["plugin-api-version"] in ("2.11.0", "2.9.0"), "Unexpected Composer format")
+    changed = set()
+    for section in ("packages", "packages-dev"):
+        old = {p["name"]: p for p in before[section]}
+        new = {p["name"]: p for p in after[section]}
+        require(len(old) == len(before[section]) and len(new) == len(after[section]), "Duplicate package name")
+        require(old.keys() == new.keys(), "Package added or removed")
+        for name, package in new.items():
+            if name in PATCHES:
+                require(section == "packages", "Security package moved to development scope")
+                require((old[name]["version"], package["version"]) == PATCHES[name], f"Unexpected patch version: {name}")
+                require(package["source"]["url"] == old[name]["source"]["url"], f"Source origin changed: {name}")
+                require(package["source"]["reference"] == PATCH_REFERENCES[name], f"Official release commit mismatch: {name}")
+                require(package["dist"]["reference"] == package["source"]["reference"], f"Distribution/source mismatch: {name}")
+                require(package["dist"]["url"] == old[name]["dist"]["url"].replace(old[name]["source"]["reference"], package["source"]["reference"]), f"Distribution origin changed: {name}")
+                changed.add(name)
+            else:
+                # Composer 2.10 drops registry-only publication timestamps.
+                normalize = lambda p: {k: v for k, v in p.items() if k != "published-time"}
+                require(normalize(old[name]) == normalize(package), f"Unrelated package changed: {name}")
+    require(changed == PATCHES.keys(), "Security patch inventory incomplete")
+    canonical = json.dumps(after, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    require(hashlib.sha256(canonical).hexdigest() == APPROVED_LOCK_DIGEST, "Unapproved lock contents or package metadata")
+
+
+def self_test(before, after):
+    check_lock(before, after)
+    def stale_source(lock):
+        package = next(p for p in lock["packages"] if p["name"] == "laravel/framework")
+        predecessor = next(p for p in before["packages"] if p["name"] == package["name"])
+        package["source"] = copy.deepcopy(predecessor["source"])
+        package["dist"] = copy.deepcopy(predecessor["dist"])
+
+    mutations = [
+        lambda d: d["packages"][0].update(version="999.0.0"),
+        lambda d: d["packages-dev"].pop(),
+        lambda d: d.update(**{"content-hash": "changed"}),
+        lambda d: next(p for p in d["packages"] if p["name"] == "laravel/framework").update(version="v13.40.0"),
+        lambda d: next(p for p in d["packages"] if p["name"] == "symfony/mailer")["dist"].update(url="https://untrusted.invalid/archive.zip"),
+        stale_source,
+        lambda d: next(p for p in d["packages"] if p["name"] == "laravel/framework")["autoload"].update(files=["unapproved.php"]),
+        lambda d: d["packages"].append(copy.deepcopy(d["packages"][0])),
+    ]
+    for mutate in mutations:
+        altered = copy.deepcopy(after)
+        mutate(altered)
+        try:
+            check_lock(before, altered)
+        except ValueError:
+            continue
+        raise ValueError("Hostile lock mutation accepted")
+    print(f"Dependency lock negatives: {len(mutations)}/{len(mutations)} rejected (including all three NOX-DEP-001 cases)")
+
+
+def check_workflow():
+    frozen = subprocess.check_output(["git", "show", f"{BASE}:.github/workflows/tcds-phase-a-backend.yml"], text=True, encoding="utf-8")
+    expected = frozen.replace("name: TCDS Phase A preserved backend — Protected PG16", "name: Dependency security successor — Protected PG16")
+    expected = expected.replace("branches: [candidate/antigravity-tcds-full-presentation-r1]", "branches: [candidate/ot-dependency-security-remediation-r1]")
+    old_guard = '          git diff --exit-code "$baseline" HEAD -- app routes database config bootstrap composer.json composer.lock \'tests/**/*.php\' bin scripts/ci/verify-m5-source-integrity.sh scripts/ci/verify-m5-workflow-structure.py scripts/ci/test-m5-source-integrity-negatives.sh .github/workflows/ot-m3-unified-full-matrix.yml'
+    require(expected.count(old_guard) == 1, "Frozen workflow guard drift")
+    expected = expected.replace(old_guard, "          python3 scripts/ci/verify-dependency-successor.py\n          python3 scripts/ci/verify-dependency-successor.py --self-test")
+    install = "      - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader"
+    require(expected.count(install) == 1, "Frozen install step drift")
+    expected = expected.replace(install, install + "\n      - name: Validate dependency security and behavior\n        run: |\n          composer validate --strict --no-check-publish\n          composer audit --locked\n          composer audit --locked --no-dev\n          php scripts/ci/dependency-security-regressions.php")
+    with open(".github/workflows/dependency-security-pg16.yml", encoding="utf-8") as source:
+        require(source.read() == expected, "Protected PG16 partitions or aggregate changed")
+
+
+before = json.loads(subprocess.check_output(["git", "show", f"{BASE}:composer.lock"]))
+with open("composer.lock", encoding="utf-8") as source:
+    after = json.load(source)
+check_lock(before, after)
+if "--self-test" in sys.argv:
+    self_test(before, after)
+else:
+    subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], check=True)
+    changes = set(subprocess.check_output(["git", "diff", "--name-only", BASE, "--"], text=True).splitlines())
+    require(changes <= ALLOWED, f"Outside dependency scope: {sorted(changes - ALLOWED)}")
+    check_workflow()
+    print("Frozen presentation, backend, protected tests and original workflows unchanged; five security package updates only")

@@ -1,0 +1,751 @@
+[
+  {
+    "donor": "public/brand/municipal.logo.png",
+    "donorBlob": "627e83b91d5e2a66c30d21ced6386875d35cc1b9",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/images/municipality/talibon-homepage-hero.jpg",
+    "donorBlob": "be129e34b130086f63bca3940c82c999ffee6c7e",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/images/municipality/talibon-public-hero.jpg",
+    "donorBlob": "3ae9bd7757b4606b34adc6459628949291fe0296",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/images/talibon/municipality-of-talibon.jpg",
+    "donorBlob": "6445253cd733fa6b3e50c632c501b32c8cbc08c4",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MAO.jpg",
+    "donorBlob": "d58fec443a9e24d913aa3401c63a0af7a11d6d08",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MAccO.png",
+    "donorBlob": "f2b5e452cfc41997945ea2624c19378f80d18f88",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MEDIPO.png",
+    "donorBlob": "138ab89d5570969733a4575b29bb965e464ff2b5",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MMAO.png",
+    "donorBlob": "82ac83c1e573968e3afba61d47472bbe3dfce45f",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MO-TTMO.png",
+    "donorBlob": "3086b28b1001262f7328ba7fd5541d3c6648b3b8",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MPDO.png",
+    "donorBlob": "a2cc9f6babbaa7b7644676c55fc8933c1695ad98",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MPESO.jpg",
+    "donorBlob": "5ad2ab3d6f490d8ab917396a552f61b8d3aa6bbc",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MSWDO.jpg",
+    "donorBlob": "ab3fd574dc52b89e0fd98eb07766e0b70dbd8473",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/logos/MTO.png",
+    "donorBlob": "2f12576baf83d00cbebba3e7c7c9498582e0e7c8",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/maps/talibon-barangay-base.jpg",
+    "donorBlob": "7f0b4118a00eac5cb8c4aa5d0e5051a272c054ca",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/maps/talibon-clup-zoning.jpg",
+    "donorBlob": "a2d3943585ba66b36ca98aba6cb199096af9f6f0",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/maps/talibon-hazard-drrm.jpg",
+    "donorBlob": "5c95e0977504166410ab18ee46368696f409beca",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/maps/talibon-islands.jpg",
+    "donorBlob": "05bb2246f8cd6f4189895d07ff7ddd0570d37e61",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "public/maps/talibon-ppdo-base.jpg",
+    "donorBlob": "3345f13588250de62b0007fe281c37f266d9e55f",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/app.css",
+    "donorBlob": "0d8ce5d6d79acdc62da9be6131b24c61309f60f9",
+    "originalConsumers": [
+      "resources/js/app.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/base.css",
+    "donorBlob": "a94186faba6cf3317b3447838eaa82f1d8943173",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/print.css",
+    "donorBlob": "d756bc020f691f58b90a92204d28506efde4f9c7",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/tokens.css",
+    "donorBlob": "a3602ec7c5ab9c846b4569cd677e1a1ff578097e",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/app.tsx",
+    "donorBlob": "39500e596ce8f85f2a145592c38dc05ec4954328",
+    "originalConsumers": [
+      "resources/js/app.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/ActivityRail.tsx",
+    "donorBlob": "2d71a771c522b89d5d158e928630db222f32c3a2",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/DashboardHeader.tsx",
+    "donorBlob": "a711ace8d89f40a1eba03fcc33a02f864969c329",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/MetricGroup.tsx",
+    "donorBlob": "2099216cae06ce35847a003d14f1d4d873e4c3ac",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/MunicipalContext.tsx",
+    "donorBlob": "d08527b0a3f2fae62b00d4f98bdccf68e15bdf99",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/dashboardShortcuts.ts",
+    "donorBlob": "fe9bc0c19f43fc5facd094fe5ebb9b63c50757b3",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/R7LowerRegion.tsx",
+    "donorBlob": "add3529098a2b15b67507cad02f30c9cb1ee8071",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/R7UpperRegion.tsx",
+    "donorBlob": "6801b0888efab0aff6a4e78c77f31c67c9750e47",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7DocumentsPanel.tsx",
+    "donorBlob": "7f6d8e04b6e5d0ba77bf135ad50986a382a0165b",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7EventsPanel.tsx",
+    "donorBlob": "f098d6c0b2ff34f810cd101c72b69e9d88aa4372",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7QuickLinksPanel.tsx",
+    "donorBlob": "bb67af9d4b20fbf1d0f61a11eda6719412197c54",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx",
+    "donorBlob": "3907b6af4f68aa064cfedd166dbdd05523041a1d",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/rolePresentation.ts",
+    "donorBlob": "3d5d81c57fa9e866d98da4374d642f249653bf5a",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/types.ts",
+    "donorBlob": "455db4cac6f9f90e5f1240158f46e47f23efa1e5",
+    "originalConsumers": [
+      "resources/js/pages/Dashboard.tsx",
+      "resources/js/pages/Departments/Workspace.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": [
+      "resources/js/components/dashboard/types.ts"
+    ]
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentCollectionNav.tsx",
+    "donorBlob": "fe36854d2f0ef60567dd44b9b78099e03390a2a4",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentMetadataPanel.tsx",
+    "donorBlob": "1fc0e462f0d437b8b1a07d247d658b6535d1be9b",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentRegister.tsx",
+    "donorBlob": "ee8b6e06c04ee6f43099dd7fd22bfd7477949e48",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/legislative/types.ts",
+    "donorBlob": "458f2c58d63dc1e136a985ef27eee4eb959adde8",
+    "originalConsumers": [
+      "resources/js/pages/Legislation/Index.tsx",
+      "resources/js/pages/Legislation/Workspace.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/maps/DesignatedStaffDrawer.tsx",
+    "donorBlob": "ca247cd08b3971380e507ae37a6649b865935913",
+    "originalConsumers": [
+      "resources/js/pages/PlanningMaps/Index.tsx",
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PlanningMaps/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/PPAs/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/planning/PlanningStaffList.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/PlanningMapFormDrawer.tsx",
+    "donorBlob": "1f543ff72b33716f1d7d18046e4b870f1725720f",
+    "originalConsumers": [
+      "resources/js/pages/PlanningMaps/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PlanningMaps/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/maps/MapStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/PlanningMapPlateModal.tsx",
+    "donorBlob": "38a309509369685150d168bfac8a1dd633998804",
+    "originalConsumers": [
+      "resources/js/pages/PlanningMaps/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PlanningMaps/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/maps/MapPlateDialog.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/TalibonInteractiveMap.tsx",
+    "donorBlob": "43a506105cddd4f9460b91c0c1b8c78b728bf4e9",
+    "originalConsumers": [
+      "resources/js/pages/MunicipalSystems/Index.tsx",
+      "resources/js/pages/PlanningMaps/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PlanningMaps/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/maps/InteractiveReferenceMap.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/planning/DocumentPreviewModal.tsx",
+    "donorBlob": "027f331c97cb88672c0ae2ac54c94a280083547f",
+    "originalConsumers": [
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/PPAs/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/planning/DocumentPreviewPresentation.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/plans/PlanDossierModal.tsx",
+    "donorBlob": "c66f143dcc38c90c82ecb1fad32a3ac9d569b376",
+    "originalConsumers": [
+      "resources/js/pages/Plans/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/plans/PlanLinkedPpas.tsx",
+      "resources/js/components/plans/PlanProfile.tsx",
+      "resources/js/components/plans/PlanChaptersMaps.tsx",
+      "resources/js/components/plans/PlanDossierPresentation.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/plans/PlanFormDrawer.tsx",
+    "donorBlob": "5ed70d21d7b2963f771fbf4070b559774fe84d1f",
+    "originalConsumers": [
+      "resources/js/pages/Plans/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/plans/PlanStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/portal/PortalSearchField.tsx",
+    "donorBlob": "e28704bbfc31bd3da93c979aafddfd6335f3df06",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/portal/StatusBadge.tsx",
+    "donorBlob": "dbd2e59bf7c001dcb0224e39a4295c521e7e55b0",
+    "originalConsumers": [
+      "resources/js/pages/Documents/Index.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/ppas/PPAFormDrawer.tsx",
+    "donorBlob": "d651a59b8e97e7fd5c9b1e25aaa6013c36581ef2",
+    "originalConsumers": [
+      "resources/js/pages/PPAs/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PPAs/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": [
+      "resources/js/components/ppas/PPAStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/public/types.ts",
+    "donorBlob": "ff1cec3bb73eced71a4cce6ff0acf9d330016e11",
+    "originalConsumers": [
+      "resources/js/pages/Public/Home.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/system/AppErrorBoundary.tsx",
+    "donorBlob": "ad6cc068ff82b4bdd4b0f3d44c10739ef8413e8a",
+    "originalConsumers": [
+      "resources/js/app.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/ui/README.md",
+    "donorBlob": "5212fd82b7e453b94613acb76abae891a51184e0",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/WorkItemList.tsx",
+    "donorBlob": "e835fa141dd11f340567e55844df82ea1a4c7be6",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/WorkScopeTabs.tsx",
+    "donorBlob": "5299a7f7672814eff15d46d53d7beae45bced070",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/types.ts",
+    "donorBlob": "9851a6a848978a6e9a1f8ef1cabd8bc498a81290",
+    "originalConsumers": [
+      "resources/js/pages/Transactions/Index.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/meetings.json",
+    "donorBlob": "c2c9bc66e7befe97196ae4e89ce27c935a1d07dd",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/planningGovernance.ts",
+    "donorBlob": "d720ed7507fb17eabfdd1112d51fa087643229ce",
+    "originalConsumers": [
+      "resources/js/pages/PlanningMaps/Index.tsx",
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/PPAs/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/planningMaps.ts",
+    "donorBlob": "1ea7e71d5642b6a106e69300369f5cc6e8fd6ed7",
+    "originalConsumers": [
+      "resources/js/pages/Admin/Index.tsx",
+      "resources/js/pages/Announcements/Index.tsx",
+      "resources/js/pages/Audit/Index.tsx",
+      "resources/js/pages/Calendar/Index.tsx",
+      "resources/js/pages/Correspondence/Index.tsx",
+      "resources/js/pages/Correspondence/Show.tsx",
+      "resources/js/pages/Dashboard.tsx",
+      "resources/js/pages/Departments/Index.tsx",
+      "resources/js/pages/Departments/Workspace.tsx",
+      "resources/js/pages/Documents/Index.tsx",
+      "resources/js/pages/Employees/DirectoryProfile.tsx",
+      "resources/js/pages/Employees/Index.tsx",
+      "resources/js/pages/Employees/Show.tsx",
+      "resources/js/pages/Errors/403.tsx",
+      "resources/js/pages/Hris/Admin.tsx",
+      "resources/js/pages/Hris/Attendance.tsx",
+      "resources/js/pages/Hris/Dashboard.tsx",
+      "resources/js/pages/Hris/Development.tsx",
+      "resources/js/pages/Hris/Dtr.tsx",
+      "resources/js/pages/Hris/HealthAccess.tsx",
+      "resources/js/pages/Hris/HealthVault.tsx",
+      "resources/js/pages/Hris/Lifecycle/Index.tsx",
+      "resources/js/pages/Hris/Lifecycle/Show.tsx",
+      "resources/js/pages/Hris/Offboarding/Index.tsx",
+      "resources/js/pages/Hris/Offboarding/Show.tsx",
+      "resources/js/pages/Hris/Payroll.tsx",
+      "resources/js/pages/Legislation/Create.tsx",
+      "resources/js/pages/Legislation/Index.tsx",
+      "resources/js/pages/Legislation/Show.tsx",
+      "resources/js/pages/Legislation/Workspace.tsx",
+      "resources/js/pages/LocalBodies/Index.tsx",
+      "resources/js/pages/MayorOffice.tsx",
+      "resources/js/pages/Meetings/Index.tsx",
+      "resources/js/pages/Memoranda/Create.tsx",
+      "resources/js/pages/Memoranda/Index.tsx",
+      "resources/js/pages/Memoranda/Show.tsx",
+      "resources/js/pages/Messages/Index.tsx",
+      "resources/js/pages/MunicipalSystems/Index.tsx",
+      "resources/js/pages/Operations/Index.tsx",
+      "resources/js/pages/PlanningMaps/Index.tsx",
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx",
+      "resources/js/pages/ProjectMonitoring/Index.tsx",
+      "resources/js/pages/Property/Index.tsx",
+      "resources/js/pages/Property/Lifecycle.tsx",
+      "resources/js/pages/Records/Index.tsx",
+      "resources/js/pages/Reports/Index.tsx",
+      "resources/js/pages/Search/Index.tsx",
+      "resources/js/pages/Tasks/Index.tsx",
+      "resources/js/pages/Transactions/Create.tsx",
+      "resources/js/pages/Transactions/Index.tsx",
+      "resources/js/pages/Transactions/Show.tsx",
+      "resources/js/pages/TravelOrders/Create.tsx",
+      "resources/js/pages/TravelOrders/Index.tsx",
+      "resources/js/pages/TravelOrders/Show.tsx"
+    ],
+    "canonicalExists": false,
+    "previewConsumers": [
+      {
+        "page": "preview/resources/js/pages/PlanningMaps/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/Plans/Index.tsx"
+      },
+      {
+        "page": "preview/resources/js/pages/PPAs/Index.tsx"
+      }
+    ],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/ppas.types.ts",
+    "donorBlob": "8ea0faba122407d13aab2512984fd2efa231349c",
+    "originalConsumers": [
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx",
+      "resources/js/pages/Search/Index.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/navigation/navigationTypes.ts",
+    "donorBlob": "520c8982642bd986c9cbad8068cea2e305d941a2",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/types.ts",
+    "donorBlob": "70331b61bd041a13ef948695e80674dfc1da1a6b",
+    "originalConsumers": [
+      "resources/js/pages/Admin/Index.tsx",
+      "resources/js/pages/Announcements/Index.tsx",
+      "resources/js/pages/Audit/Index.tsx",
+      "resources/js/pages/Calendar/Index.tsx",
+      "resources/js/pages/Correspondence/Index.tsx",
+      "resources/js/pages/Correspondence/Show.tsx",
+      "resources/js/pages/Dashboard.tsx",
+      "resources/js/pages/Departments/Index.tsx",
+      "resources/js/pages/Departments/Workspace.tsx",
+      "resources/js/pages/Documents/Index.tsx",
+      "resources/js/pages/Employees/DirectoryProfile.tsx",
+      "resources/js/pages/Employees/Index.tsx",
+      "resources/js/pages/Employees/Show.tsx",
+      "resources/js/pages/Errors/403.tsx",
+      "resources/js/pages/Hris/Admin.tsx",
+      "resources/js/pages/Hris/Attendance.tsx",
+      "resources/js/pages/Hris/Dashboard.tsx",
+      "resources/js/pages/Hris/Development.tsx",
+      "resources/js/pages/Hris/Dtr.tsx",
+      "resources/js/pages/Hris/HealthAccess.tsx",
+      "resources/js/pages/Hris/HealthVault.tsx",
+      "resources/js/pages/Hris/Lifecycle/Index.tsx",
+      "resources/js/pages/Hris/Lifecycle/Show.tsx",
+      "resources/js/pages/Hris/Offboarding/Index.tsx",
+      "resources/js/pages/Hris/Offboarding/Show.tsx",
+      "resources/js/pages/Hris/Payroll.tsx",
+      "resources/js/pages/Legislation/Create.tsx",
+      "resources/js/pages/Legislation/Index.tsx",
+      "resources/js/pages/Legislation/Show.tsx",
+      "resources/js/pages/Legislation/Workspace.tsx",
+      "resources/js/pages/LocalBodies/Index.tsx",
+      "resources/js/pages/MayorOffice.tsx",
+      "resources/js/pages/Meetings/Index.tsx",
+      "resources/js/pages/Memoranda/Create.tsx",
+      "resources/js/pages/Memoranda/Index.tsx",
+      "resources/js/pages/Memoranda/Show.tsx",
+      "resources/js/pages/Messages/Index.tsx",
+      "resources/js/pages/MunicipalSystems/Index.tsx",
+      "resources/js/pages/Operations/Index.tsx",
+      "resources/js/pages/PlanningMaps/Index.tsx",
+      "resources/js/pages/Plans/Index.tsx",
+      "resources/js/pages/PPAs/Index.tsx",
+      "resources/js/pages/ProjectMonitoring/Index.tsx",
+      "resources/js/pages/Property/Index.tsx",
+      "resources/js/pages/Property/Lifecycle.tsx",
+      "resources/js/pages/Records/Index.tsx",
+      "resources/js/pages/Reports/Index.tsx",
+      "resources/js/pages/Search/Index.tsx",
+      "resources/js/pages/Tasks/Index.tsx",
+      "resources/js/pages/Transactions/Create.tsx",
+      "resources/js/pages/Transactions/Index.tsx",
+      "resources/js/pages/Transactions/Show.tsx",
+      "resources/js/pages/TravelOrders/Create.tsx",
+      "resources/js/pages/TravelOrders/Index.tsx",
+      "resources/js/pages/TravelOrders/Show.tsx"
+    ],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/vite-env.d.ts",
+    "donorBlob": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/views/app.blade.php",
+    "donorBlob": "21a463c9e3429640f27ff23eb5e31028da329d45",
+    "originalConsumers": [],
+    "canonicalExists": true,
+    "previewConsumers": [],
+    "directCanonicalImports": []
+  }
+]

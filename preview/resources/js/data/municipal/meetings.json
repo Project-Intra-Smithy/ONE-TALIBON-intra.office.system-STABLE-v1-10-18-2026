@@ -1,0 +1,508 @@
+[
+  {
+    "id": "MTG-26-001",
+    "title": "Department Heads Coordination Meeting",
+    "organizingOffice": "Municipal Mayor’s Office",
+    "date": "2026-09-17",
+    "time": "09:00",
+    "venue": "Mayor’s Conference Room",
+    "participants": [
+      "Department heads",
+      "Municipal Administrator"
+    ],
+    "agenda": [
+      "Priority inter-office concerns",
+      "Deadlines and required actions"
+    ],
+    "relatedDocuments": [
+      "Department heads action register"
+    ],
+    "status": "Completed"
+  },
+  {
+    "id": "MTG-26-002",
+    "title": "Department Heads Coordination Meeting",
+    "organizingOffice": "Municipal Mayor’s Office",
+    "date": "2026-09-24",
+    "time": "09:00",
+    "venue": "Mayor’s Conference Room",
+    "participants": [
+      "Department heads",
+      "Municipal Administrator"
+    ],
+    "agenda": [
+      "Priority inter-office concerns",
+      "Deadlines and required actions"
+    ],
+    "relatedDocuments": [
+      "Department heads action register"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-003",
+    "title": "Development Planning Technical Working Session",
+    "organizingOffice": "Municipal Planning and Development Office",
+    "date": "2026-09-19",
+    "time": "13:30",
+    "venue": "MPDO Conference Room",
+    "participants": [
+      "Planning staff",
+      "Sector focal offices"
+    ],
+    "agenda": [
+      "Plan implementation updates",
+      "Investment programming inputs"
+    ],
+    "relatedDocuments": [
+      "Comprehensive Development Plan",
+      "Annual Investment Program"
+    ],
+    "status": "Completed"
+  },
+  {
+    "id": "MTG-26-004",
+    "title": "Development Planning Technical Working Session",
+    "organizingOffice": "Municipal Planning and Development Office",
+    "date": "2026-09-26",
+    "time": "13:30",
+    "venue": "MPDO Conference Room",
+    "participants": [
+      "Planning staff",
+      "Sector focal offices"
+    ],
+    "agenda": [
+      "Plan implementation updates",
+      "Investment programming inputs"
+    ],
+    "relatedDocuments": [
+      "Comprehensive Development Plan",
+      "Annual Investment Program"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-005",
+    "title": "Project Monitoring Coordination Meeting",
+    "organizingOffice": "Municipal Planning and Development Office",
+    "date": "2026-09-21",
+    "time": "15:00",
+    "venue": "MPDO Conference Room",
+    "participants": [
+      "MPDO",
+      "Engineering",
+      "Implementing offices"
+    ],
+    "agenda": [
+      "Physical progress review",
+      "Financial progress and milestone concerns"
+    ],
+    "relatedDocuments": [
+      "Project monitoring register"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-006",
+    "title": "Project Monitoring Coordination Meeting",
+    "organizingOffice": "Municipal Planning and Development Office",
+    "date": "2026-09-28",
+    "time": "15:00",
+    "venue": "MPDO Conference Room",
+    "participants": [
+      "MPDO",
+      "Engineering",
+      "Implementing offices"
+    ],
+    "agenda": [
+      "Physical progress review",
+      "Financial progress and milestone concerns"
+    ],
+    "relatedDocuments": [
+      "Project monitoring register"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-007",
+    "title": "Infrastructure Coordination Meeting",
+    "organizingOffice": "Municipal Engineering Office",
+    "date": "2026-09-23",
+    "time": "09:00",
+    "venue": "Engineering Conference Room",
+    "participants": [
+      "Engineering staff",
+      "Planning",
+      "Concerned offices"
+    ],
+    "agenda": [
+      "Current work program",
+      "Site and utility coordination"
+    ],
+    "relatedDocuments": [
+      "Program of works",
+      "Inspection records"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-008",
+    "title": "Infrastructure Coordination Meeting",
+    "organizingOffice": "Municipal Engineering Office",
+    "date": "2026-09-30",
+    "time": "09:00",
+    "venue": "Engineering Conference Room",
+    "participants": [
+      "Engineering staff",
+      "Planning",
+      "Concerned offices"
+    ],
+    "agenda": [
+      "Current work program",
+      "Site and utility coordination"
+    ],
+    "relatedDocuments": [
+      "Program of works",
+      "Inspection records"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-009",
+    "title": "Local Health Program Review",
+    "organizingOffice": "Municipal Health Office",
+    "date": "2026-09-25",
+    "time": "13:30",
+    "venue": "Rural Health Unit Conference Room",
+    "participants": [
+      "Health program leads",
+      "Planning representative"
+    ],
+    "agenda": [
+      "Program implementation",
+      "Facility readiness and scheduled activities"
+    ],
+    "relatedDocuments": [
+      "Local Health Investment Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-010",
+    "title": "Local Health Program Review",
+    "organizingOffice": "Municipal Health Office",
+    "date": "2026-10-12",
+    "time": "13:30",
+    "venue": "Rural Health Unit Conference Room",
+    "participants": [
+      "Health program leads",
+      "Planning representative"
+    ],
+    "agenda": [
+      "Program implementation",
+      "Facility readiness and scheduled activities"
+    ],
+    "relatedDocuments": [
+      "Local Health Investment Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-011",
+    "title": "Social Protection Program Coordination",
+    "organizingOffice": "Municipal Social Welfare and Development Office",
+    "date": "2026-09-27",
+    "time": "15:00",
+    "venue": "MSWDO Conference Room",
+    "participants": [
+      "Program focal persons",
+      "Partner offices"
+    ],
+    "agenda": [
+      "Sector assistance activities",
+      "Referral and coordination items"
+    ],
+    "relatedDocuments": [
+      "Social Protection Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-012",
+    "title": "Social Protection Program Coordination",
+    "organizingOffice": "Municipal Social Welfare and Development Office",
+    "date": "2026-10-14",
+    "time": "15:00",
+    "venue": "MSWDO Conference Room",
+    "participants": [
+      "Program focal persons",
+      "Partner offices"
+    ],
+    "agenda": [
+      "Sector assistance activities",
+      "Referral and coordination items"
+    ],
+    "relatedDocuments": [
+      "Social Protection Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-013",
+    "title": "DRRM Preparedness Review",
+    "organizingOffice": "Municipal Disaster Risk Reduction and Management Office",
+    "date": "2026-09-29",
+    "time": "09:00",
+    "venue": "Emergency Operations Center",
+    "participants": [
+      "MDRRMO",
+      "Response offices",
+      "Barangay focal persons"
+    ],
+    "agenda": [
+      "Preparedness status",
+      "Equipment and response coordination"
+    ],
+    "relatedDocuments": [
+      "Local DRRM Plan",
+      "Preparedness checklist"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-014",
+    "title": "DRRM Preparedness Review",
+    "organizingOffice": "Municipal Disaster Risk Reduction and Management Office",
+    "date": "2026-10-16",
+    "time": "09:00",
+    "venue": "Emergency Operations Center",
+    "participants": [
+      "MDRRMO",
+      "Response offices",
+      "Barangay focal persons"
+    ],
+    "agenda": [
+      "Preparedness status",
+      "Equipment and response coordination"
+    ],
+    "relatedDocuments": [
+      "Local DRRM Plan",
+      "Preparedness checklist"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-015",
+    "title": "Solid Waste Management Coordination",
+    "organizingOffice": "Municipal Environment and Natural Resources Office",
+    "date": "2026-10-11",
+    "time": "13:30",
+    "venue": "MENRO Conference Room",
+    "participants": [
+      "MENRO",
+      "Engineering",
+      "Health",
+      "Barangay representatives"
+    ],
+    "agenda": [
+      "Waste diversion status",
+      "Facility and collection concerns"
+    ],
+    "relatedDocuments": [
+      "Ecological Solid Waste Management Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-016",
+    "title": "Solid Waste Management Coordination",
+    "organizingOffice": "Municipal Environment and Natural Resources Office",
+    "date": "2026-10-18",
+    "time": "13:30",
+    "venue": "MENRO Conference Room",
+    "participants": [
+      "MENRO",
+      "Engineering",
+      "Health",
+      "Barangay representatives"
+    ],
+    "agenda": [
+      "Waste diversion status",
+      "Facility and collection concerns"
+    ],
+    "relatedDocuments": [
+      "Ecological Solid Waste Management Plan"
+    ],
+    "status": "Rescheduled"
+  },
+  {
+    "id": "MTG-26-017",
+    "title": "Agriculture and Fisheries Program Review",
+    "organizingOffice": "Municipal Agriculture Office",
+    "date": "2026-10-13",
+    "time": "15:00",
+    "venue": "Agriculture Office Conference Room",
+    "participants": [
+      "Agriculture staff",
+      "Fisheries focal persons",
+      "Planning representative"
+    ],
+    "agenda": [
+      "Field program status",
+      "Producer and fisherfolk support activities"
+    ],
+    "relatedDocuments": [
+      "Agriculture and Fisheries Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-018",
+    "title": "Agriculture and Fisheries Program Review",
+    "organizingOffice": "Municipal Agriculture Office",
+    "date": "2026-10-20",
+    "time": "15:00",
+    "venue": "Agriculture Office Conference Room",
+    "participants": [
+      "Agriculture staff",
+      "Fisheries focal persons",
+      "Planning representative"
+    ],
+    "agenda": [
+      "Field program status",
+      "Producer and fisherfolk support activities"
+    ],
+    "relatedDocuments": [
+      "Agriculture and Fisheries Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-019",
+    "title": "Tourism Program Coordination",
+    "organizingOffice": "Municipal Tourism Office",
+    "date": "2026-10-15",
+    "time": "09:00",
+    "venue": "Tourism Office Meeting Room",
+    "participants": [
+      "Tourism office",
+      "Planning",
+      "Economic enterprise representatives"
+    ],
+    "agenda": [
+      "Tourism calendar",
+      "Site readiness and municipal events"
+    ],
+    "relatedDocuments": [
+      "Local Tourism Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-020",
+    "title": "Tourism Program Coordination",
+    "organizingOffice": "Municipal Tourism Office",
+    "date": "2026-10-22",
+    "time": "09:00",
+    "venue": "Tourism Office Meeting Room",
+    "participants": [
+      "Tourism office",
+      "Planning",
+      "Economic enterprise representatives"
+    ],
+    "agenda": [
+      "Tourism calendar",
+      "Site readiness and municipal events"
+    ],
+    "relatedDocuments": [
+      "Local Tourism Development Plan"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-021",
+    "title": "Revenue and Budget Coordination",
+    "organizingOffice": "Municipal Treasurer’s Office",
+    "date": "2026-10-17",
+    "time": "13:30",
+    "venue": "Treasury Conference Room",
+    "participants": [
+      "Treasury",
+      "Budget",
+      "Accounting",
+      "Planning"
+    ],
+    "agenda": [
+      "Revenue performance",
+      "Budget execution and reporting"
+    ],
+    "relatedDocuments": [
+      "Revenue report",
+      "Budget utilization report"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-022",
+    "title": "Revenue and Budget Coordination",
+    "organizingOffice": "Municipal Treasurer’s Office",
+    "date": "2026-09-18",
+    "time": "13:30",
+    "venue": "Treasury Conference Room",
+    "participants": [
+      "Treasury",
+      "Budget",
+      "Accounting",
+      "Planning"
+    ],
+    "agenda": [
+      "Revenue performance",
+      "Budget execution and reporting"
+    ],
+    "relatedDocuments": [
+      "Revenue report",
+      "Budget utilization report"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-023",
+    "title": "Records and Correspondence Coordination",
+    "organizingOffice": "Municipal Administrator’s Office",
+    "date": "2026-10-19",
+    "time": "15:00",
+    "venue": "Administrator’s Conference Room",
+    "participants": [
+      "Records staff",
+      "Department administrative focal persons"
+    ],
+    "agenda": [
+      "Pending routed records",
+      "Retention and filing concerns"
+    ],
+    "relatedDocuments": [
+      "Records management register"
+    ],
+    "status": "Scheduled"
+  },
+  {
+    "id": "MTG-26-024",
+    "title": "Records and Correspondence Coordination",
+    "organizingOffice": "Municipal Administrator’s Office",
+    "date": "2026-09-20",
+    "time": "15:00",
+    "venue": "Administrator’s Conference Room",
+    "participants": [
+      "Records staff",
+      "Department administrative focal persons"
+    ],
+    "agenda": [
+      "Pending routed records",
+      "Retention and filing concerns"
+    ],
+    "relatedDocuments": [
+      "Records management register"
+    ],
+    "status": "Scheduled"
+  }
+]
