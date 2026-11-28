@@ -1,0 +1,51 @@
+{
+  "r3_sha": "71da9dc4d12e4fc77de9d5f4eb98efed151fb46f",
+  "cases": [
+    {
+      "case": "baseline_with_unrelated_unused_tablespace",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "PASS"
+    },
+    {
+      "case": "system_view_security_options",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "REFUSED:Persistent security contract drift: system_relation_security"
+    },
+    {
+      "case": "system_view_security_options_restored",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "PASS"
+    },
+    {
+      "case": "system_view_definition",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "REFUSED:Persistent security contract drift: system_relation_security"
+    },
+    {
+      "case": "system_view_definition_restored",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "PASS"
+    },
+    {
+      "case": "system_rewrite_rule",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "REFUSED:Persistent security contract drift: system_rewrite_security"
+    },
+    {
+      "case": "system_rewrite_rule_restored",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "PASS"
+    },
+    {
+      "case": "default_database_tablespace_implicit",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "REFUSED:Unsupported ONE TALIBON PG16 object family: user_tablespaces"
+    },
+    {
+      "case": "default_database_tablespace_implicit_restored",
+      "r3_71da9dc4": "PASS",
+      "r4_fixed": "PASS"
+    }
+  ],
+  "implicit_reltablespace_nonzero": 50
+}

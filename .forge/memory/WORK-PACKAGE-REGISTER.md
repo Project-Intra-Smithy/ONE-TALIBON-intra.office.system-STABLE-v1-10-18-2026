@@ -1303,3 +1303,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — R4 bounded N79-01-only continuation
 - [START7228476910](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7228476910); separate `candidate/ot-persistent-deployment-r4` from frozen PR81 `71da9dc4`, closing only two N79-01 residuals (system view/rewrite security and `pg_database.dattablespace`) under 7228448263 while preserving accepted N79-02..04. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Antigravity bounded fix, discriminating tests, complete qualification and Nox N79-01 reacceptance; VPS, frozen PR78/79/80/81 and `main` preserved, canonical-main exception retained.
+
+## OT-VPS-OPERATIONAL-QA-R1 — R4 qualified return pending Nox N79-01 reacceptance
+- Frozen PR82 `d55228cba9fca025a5b8bcf9494df5da879b7995`: hosted 15/15 PASS, Linux 514/514 PASS (PG16.16), Windows 504/504 PASS (PG16.15), R3 468/458 & R2 303/303 contained both platforms, 914/12,836 backend, presentation/canonical PASS. [Redacted evidence](../evidence/ot-vps-operational-qa-r1/d55228cb/README.md); [mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Kirion-Nox bounded N79-01 reacceptance + N79-02..04 preservation confirmation, then Maintainer/Engineer disposition; VPS, frozen PR78/79/80/81 and `main` unchanged.
