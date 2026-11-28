@@ -192,7 +192,7 @@ final class PersistentInstaller
                 }
                 $this->phase = 'complete security postflight';
                 if (! $installed) {
-                    $security->finalize($legacy);
+                    $security->finalize($legacy, $target);
                 }
                 if ($before !== $this->identityDigest()) {
                     throw new RuntimeException('Existing identity/account/office preservation failed; rolling back.');
@@ -210,7 +210,7 @@ final class PersistentInstaller
                     ]);
                 }
                 app(SecurityCatalog::class)->verify($target['bootstrap_role'], $security->restrictiveDefaults($target, true));
-                $security->verifyRetired($legacy);
+                $security->verifyRetired($legacy, $target);
 
                 return ['status' => 'INSTALLED', 'installation' => json_decode(DB::selectOne('SELECT row_to_json(i)::text AS receipt FROM deployment_control.installations i')->receipt, true, 32, JSON_THROW_ON_ERROR), 'migration_count' => count($ran), 'existing_identity_preserved' => true,
                     'app_key_preserved' => hash_equals($target['app_key_sha256'], hash('sha256', (string) config('app.key')))];

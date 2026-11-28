@@ -303,6 +303,8 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         late=install(invalid,1)
         if 'complete security postflight' not in late.stdout:
             raise RuntimeError('Late rollback witness refused before postflight: '+late.stdout[-800:]+late.stderr[-800:])
+        if 'drift: relations' not in late.stdout:
+            raise RuntimeError('Late rollback witness wrong postflight diagnostic: '+late.stdout[-800:]+late.stderr[-800:])
         check(mode+'_late_failure_rolls_back',late.returncode==1 and 'complete security postflight' in late.stdout and 'drift: relations' in late.stdout)
         check(mode+'_rollback_roles', sql("SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'").stdout.strip() == '0')
         check(mode+'_rollback_custody', sql("SELECT to_regnamespace('legacy_custody') IS NULL").stdout.strip() == 't')

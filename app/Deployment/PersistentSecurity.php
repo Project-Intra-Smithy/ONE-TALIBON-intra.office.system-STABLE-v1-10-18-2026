@@ -98,7 +98,7 @@ final class PersistentSecurity
         }
         if ($installed) {
             app(SecurityCatalog::class)->verify($target['bootstrap_role'], $this->restrictiveDefaults($target, true));
-            $this->verifyRetired($legacy);
+            $this->verifyRetired($legacy, $target);
 
             return $legacy;
         }
@@ -162,7 +162,7 @@ final class PersistentSecurity
             REVOKE ALL ON SCHEMA public FROM '.$roles);
     }
 
-    public function finalize(array $legacy): void
+    public function finalize(array $legacy, array $target): void
     {
         DB::unprepared(file_get_contents(database_path('deployment/finalize.sql')));
         // Database and public-schema implicit ownership must not remain with a legacy role.
@@ -185,18 +185,31 @@ final class PersistentSecurity
                 REVOKE ALL ON ALL ROUTINES IN SCHEMA public,legacy_custody FROM '.$role.';
                 REVOKE ALL ON SCHEMA public,legacy_custody FROM '.$role);
         }
-        $this->verifyRetired($legacy);
+        $this->verifyRetired($legacy, $target);
     }
 
-    public function verifyRetired(array $legacy): void
+    public function verifyRetired(array $legacy, array $target): void
     {
+        $retainedDefaults = [];
+        foreach ($this->restrictiveDefaultIdentities($target) as $identity) {
+            if ($identity['name'] === $target['bootstrap_role']) {
+                continue;
+            }
+            $row = DB::selectOne("SELECT oid::text AS oid FROM pg_default_acl WHERE defaclrole=?::oid AND defaclnamespace=0 AND defaclobjtype='f'
+                AND defaclacl=ARRAY[makeaclitem(?::oid,?::oid,'EXECUTE',false)]", [$identity['oid'], $identity['oid'], $identity['oid']]);
+            if (! $row) {
+                throw new RuntimeException('Retained restrictive routine default profile changed.');
+            }
+            $retainedDefaults[] = $row->oid;
+        }
         foreach ($legacy as $role) {
             // PG16 NOINHERIT is not a SET ROLE boundary. Check every assumable identity explicitly.
             $reachable = DB::select("SELECT rolname,rolsuper FROM pg_roles WHERE oid=(SELECT oid FROM pg_roles WHERE rolname=?) OR pg_has_role(?,oid,'SET')", [$role, $role]);
             foreach ($reachable as $identity) {
                 if ($identity->rolsuper || DB::selectOne("SELECT has_database_privilege(?,current_database(),'CONNECT,CREATE,TEMPORARY')
                     OR EXISTS(SELECT 1 FROM pg_namespace WHERE nspname IN ('public','legacy_custody','deployment_control') AND has_schema_privilege(?,oid,'USAGE,CREATE'))
-                    OR EXISTS(SELECT 1 FROM pg_shdepend WHERE dbid=(SELECT oid FROM pg_database WHERE datname=current_database()) AND refobjid=(SELECT oid FROM pg_roles WHERE rolname=?) AND deptype='o') AS authority", [$identity->rolname, $identity->rolname, $identity->rolname])->authority) {
+                    OR EXISTS(SELECT 1 FROM pg_shdepend WHERE dbid=(SELECT oid FROM pg_database WHERE datname=current_database()) AND refobjid=(SELECT oid FROM pg_roles WHERE rolname=?) AND deptype='o'
+                        AND NOT (classid='pg_default_acl'::regclass AND objid=ANY(?::oid[]))) AS authority", [$identity->rolname, $identity->rolname, $identity->rolname, '{'.implode(',', $retainedDefaults).'}'])->authority) {
                     throw new RuntimeException('Legacy effective or assumable target authority remains.');
                 }
                 foreach (DB::select("SELECT c.oid,c.relkind FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('public','legacy_custody','deployment_control') AND c.relkind IN ('r','p','v','m','f','S')") as $object) {
