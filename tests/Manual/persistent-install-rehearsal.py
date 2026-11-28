@@ -130,8 +130,14 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             return run([args.pg_bin/'psql', '-X', '-v', 'ON_ERROR_STOP=1', '-At'], connection_env or env, input=query, allowed=allowed, private_result=private_result)
 
         sql('CREATE DATABASE '+db)
+        admin_env = dict(env, PGDATABASE='postgres')
         env['PGDATABASE'] = db
         report['server_version_num'] = sql("SELECT current_setting('server_version_num')").stdout.strip()
+        if mode != 'contract':
+            ts_unused, ts_target = root/'ts_unused', root/'ts_target'
+            ts_unused.mkdir(); ts_target.mkdir()
+            sql("CREATE TABLESPACE qa_unused_ts LOCATION '"+ts_unused.as_posix()+"'", admin_env)
+            sql("CREATE TABLESPACE qa_target_ts LOCATION '"+ts_target.as_posix()+"'", admin_env)
         if mode == 'contract':
             fixture_env = dict(env, APP_ENV='testing', N03_DISPOSABLE_LEASE='EXCLUSIVE_PG16_SYNTHETIC_ONLY')
             result = run([php,'tests/Manual/build-security-contract.php'],fixture_env)
@@ -244,12 +250,16 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             check(mode+'_migration_maintenance_lock_rollback',sql("SELECT (SELECT count(*) FROM migrations)="+str(len(ledger))+" AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
         finally:
             locker.communicate('ROLLBACK;\n\\q\n',timeout=30)
+        orig_view_def = sql("SELECT pg_get_viewdef('information_schema.applicable_roles', true)").stdout.strip()
         system_cases=[
             ('system_language_acl','REVOKE USAGE ON LANGUAGE plpgsql FROM PUBLIC','GRANT USAGE ON LANGUAGE plpgsql TO PUBLIC'),
             ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO PUBLIC','REVOKE CREATE ON SCHEMA pg_catalog FROM PUBLIC'),
             ('system_column_acl','REVOKE SELECT(oid) ON pg_catalog.pg_subscription FROM PUBLIC','GRANT SELECT(oid) ON pg_catalog.pg_subscription TO PUBLIC'),
             ('system_type_acl','REVOKE USAGE ON TYPE pg_catalog.pg_lsn FROM PUBLIC','GRANT USAGE ON TYPE pg_catalog.pg_lsn TO PUBLIC'),
             ('system_routine_acl','REVOKE EXECUTE ON FUNCTION pg_catalog.abs(integer) FROM PUBLIC','GRANT EXECUTE ON FUNCTION pg_catalog.abs(integer) TO PUBLIC'),
+            ('system_view_security_options','ALTER VIEW information_schema.tables SET (security_invoker=true, security_barrier=true)','ALTER VIEW information_schema.tables RESET (security_invoker, security_barrier)'),
+            ('system_view_definition',"CREATE OR REPLACE VIEW information_schema.applicable_roles AS SELECT NULL::information_schema.sql_identifier AS grantee, NULL::information_schema.sql_identifier AS role_name, NULL::information_schema.yes_or_no AS is_grantable WHERE false",'CREATE OR REPLACE VIEW information_schema.applicable_roles AS '+orig_view_def),
+            ('system_rewrite_rule','CREATE RULE qa_sys_rule AS ON INSERT TO information_schema.tables DO INSTEAD NOTHING','DROP RULE qa_sys_rule ON information_schema.tables'),
         ]
         if report['server_version_num']=='160016':
             system_cases.append(('minor_routine_acl','REVOKE EXECUTE ON FUNCTION pg_catalog.binary_upgrade_set_next_attribute_versions(pg_lsn[]) FROM PUBLIC','GRANT EXECUTE ON FUNCTION pg_catalog.binary_upgrade_set_next_attribute_versions(pg_lsn[]) TO PUBLIC'))
@@ -258,6 +268,11 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             check(mode+'_initial_'+name,install(target,1).returncode==1)
             check(mode+'_initial_'+name+'_rollback',sql("SELECT (SELECT count(*) FROM migrations)="+str(len(ledger))+" AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
             sql(undo)
+        sql('ALTER DATABASE '+db+' SET TABLESPACE qa_target_ts', admin_env)
+        check(mode+'_initial_default_tablespace_implicit_relations', sql("SELECT count(*) FROM pg_class c JOIN pg_tablespace t ON t.oid=c.reltablespace WHERE t.spcname NOT IN ('pg_default','pg_global')").stdout.strip()=='0')
+        check(mode+'_initial_default_database_tablespace', install(target,1).returncode==1)
+        check(mode+'_initial_default_database_tablespace_rollback', sql("SELECT (SELECT count(*) FROM migrations)="+str(len(ledger))+" AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
+        sql('ALTER DATABASE '+db+' SET TABLESPACE pg_default', admin_env)
         sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
         late=install(invalid,1)
         if 'complete security postflight' not in late.stdout:
@@ -378,6 +393,14 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             check(mode+'_drift_rollback_'+name,metadata_fingerprint()==drift_before)
             sql(undo)
             check(mode+'_fixture_cleanup_'+name,run([php],env,input=catalog_probe).stdout==canonical_fingerprint)
+        sql('ALTER DATABASE '+db+' SET TABLESPACE qa_target_ts', admin_env)
+        check(mode+'_registered_default_tablespace_implicit_relations', sql("SELECT count(*) FROM pg_class c JOIN pg_tablespace t ON t.oid=c.reltablespace WHERE t.spcname NOT IN ('pg_default','pg_global')").stdout.strip()=='0')
+        drift_before=metadata_fingerprint()
+        check(mode+'_rejects_default_database_tablespace',install(target,1).returncode==1)
+        check(mode+'_drift_rollback_default_database_tablespace',metadata_fingerprint()==drift_before)
+        sql('ALTER DATABASE '+db+' SET TABLESPACE pg_default', admin_env)
+        check(mode+'_fixture_cleanup_default_database_tablespace',run([php],env,input=catalog_probe).stdout==canonical_fingerprint)
+        check(mode+'_unrelated_tablespace_preserved',sql("SELECT count(*) FROM pg_tablespace WHERE spcname='qa_unused_ts'").stdout.strip()=='1')
         if mode=='upgrade':
             for field in ['legacy_owner_roles','retired_runtime_roles']:
                 reduced=dict(target,**{field:[]})

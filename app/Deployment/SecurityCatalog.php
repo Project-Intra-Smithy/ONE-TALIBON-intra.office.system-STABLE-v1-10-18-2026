@@ -68,8 +68,9 @@ final class SecurityCatalog
             'system_column_acl' => 'SELECT n.nspname||\'.\'||c.relname||\'.\'||a.attname AS name,'.$acl('a.attacl')." AS acl FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema') AND a.attnum>0 AND NOT a.attisdropped AND a.attacl IS NOT NULL",
             'system_type_security' => 'SELECT n.nspname||\'.\'||t.typname AS name,pg_get_userbyid(t.typowner) AS owner,'.$acl("coalesce(t.typacl,acldefault('T',t.typowner))")." AS acl FROM pg_type t JOIN pg_namespace n ON n.oid=t.typnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
             'system_routine_security' => 'SELECT p.oid::regprocedure::text AS name,pg_get_userbyid(p.proowner) AS owner,p.prosrc,p.probin,p.prosecdef,p.proleakproof,p.proconfig,'.$acl("coalesce(p.proacl,acldefault('f',p.proowner))")." AS acl FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
-            'system_relation_security' => 'SELECT n.nspname||\'.\'||c.relname AS name,pg_get_userbyid(c.relowner) AS owner,c.relrowsecurity,c.relforcerowsecurity,'.$acl("coalesce(c.relacl,acldefault(CASE WHEN c.relkind='S' THEN 'S'::\"char\" ELSE 'r'::\"char\" END,c.relowner))")." AS acl FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
-            'database' => 'SELECT pg_get_userbyid(d.datdba) AS owner, '.$acl("coalesce(d.datacl,acldefault('d',d.datdba))").' AS acl FROM pg_database d WHERE datname=current_database()',
+            'system_relation_security' => 'SELECT n.nspname||\'.\'||c.relname AS name,pg_get_userbyid(c.relowner) AS owner,c.relrowsecurity,c.relforcerowsecurity,c.reloptions,'.$acl("coalesce(c.relacl,acldefault(CASE WHEN c.relkind='S' THEN 'S'::\"char\" ELSE 'r'::\"char\" END,c.relowner))")." AS acl,CASE WHEN c.relkind IN ('v','m') THEN pg_get_viewdef(c.oid,true) END AS definition FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
+            'system_rewrite_security' => "SELECT n.nspname||'.'||c.relname||'.'||r.rulename AS name,r.ev_type,r.ev_enabled,r.is_instead,pg_get_ruledef(r.oid,true) AS definition FROM pg_rewrite r JOIN pg_class c ON c.oid=r.ev_class JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema')",
+            'database' => 'SELECT pg_get_userbyid(d.datdba) AS owner,(SELECT spcname FROM pg_tablespace WHERE oid=d.dattablespace) AS tablespace,'.$acl("coalesce(d.datacl,acldefault('d',d.datdba))").' AS acl FROM pg_database d WHERE datname=current_database()',
             'schemas' => 'SELECT n.nspname AS name,pg_get_userbyid(n.nspowner) AS owner,'.$acl("coalesce(n.nspacl,acldefault('n',n.nspowner))").' AS acl FROM pg_namespace n WHERE '.self::SCHEMAS.' ORDER BY name',
             'relations' => 'SELECT n.nspname||\'.\'||c.relname AS name,c.relkind,c.relpersistence,pg_get_userbyid(c.relowner) AS owner,c.relrowsecurity,c.relforcerowsecurity,c.reloptions,'.$acl("coalesce(c.relacl,acldefault(CASE WHEN c.relkind='S' THEN 'S'::\"char\" ELSE 'r'::\"char\" END,c.relowner))")." AS acl,
                 CASE WHEN c.relkind IN ('v','m') THEN pg_get_viewdef(c.oid,true) WHEN c.relkind IN ('i','I') THEN pg_get_indexdef(c.oid) END AS definition
@@ -94,19 +95,25 @@ final class SecurityCatalog
                 OR (d.classid='pg_attrdef'::regclass AND d.objid IN (SELECT a.oid FROM pg_attrdef a JOIN pg_class c ON c.oid=a.adrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS.'))',
         ];
         $out = [];
-        foreach ($queries as $name => $query) {
-            $out[$name] = array_map(static function ($row): array {
-                $row = (array) $row;
-                foreach (['acl'] as $field) {
-                    if (isset($row[$field])) {
-                        $row[$field] = json_decode($row[$field], true, 64, JSON_THROW_ON_ERROR);
-                        // OID allocation differs across fresh/legacy clusters; normalize sort by names.
-                        usort($row[$field], static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+        $priorSearchPath = (string) DB::selectOne('SHOW search_path')->search_path;
+        DB::selectOne("SELECT set_config('search_path','pg_catalog',false)");
+        try {
+            foreach ($queries as $name => $query) {
+                $out[$name] = array_map(static function ($row): array {
+                    $row = (array) $row;
+                    foreach (['acl'] as $field) {
+                        if (isset($row[$field])) {
+                            $row[$field] = json_decode($row[$field], true, 64, JSON_THROW_ON_ERROR);
+                            // OID allocation differs across fresh/legacy clusters; normalize sort by names.
+                            usort($row[$field], static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+                        }
                     }
-                }
 
-                return $row;
-            }, DB::select($query));
+                    return $row;
+                }, DB::select($query));
+            }
+        } finally {
+            DB::selectOne("SELECT set_config('search_path',?,false)", [$priorSearchPath]);
         }
         $roleSql = implode(',', array_map(static fn ($r) => "'".$r."'", self::ROLES));
         $out['roles'] = DB::select("SELECT rolname,rolsuper,rolinherit,rolcreaterole,rolcreatedb,rolcanlogin,rolreplication,rolbypassrls,rolconnlimit,rolvaliduntil::text,

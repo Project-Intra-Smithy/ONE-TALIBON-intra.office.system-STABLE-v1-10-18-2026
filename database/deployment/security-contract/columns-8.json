@@ -45,7 +45,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employees_id_seq'::regclass)",
+    "default_expression": "nextval('public.employees_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -372,7 +372,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('integration_client_credentials_id_seq'::regclass)",
+    "default_expression": "nextval('public.integration_client_credentials_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -588,7 +588,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('integration_clients_id_seq'::regclass)",
+    "default_expression": "nextval('public.integration_clients_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -732,7 +732,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('integration_idempotency_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.integration_idempotency_records_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -930,7 +930,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('integration_proof_writes_id_seq'::regclass)",
+    "default_expression": "nextval('public.integration_proof_writes_id_seq'::regclass)",
     "acl": []
   },
   {

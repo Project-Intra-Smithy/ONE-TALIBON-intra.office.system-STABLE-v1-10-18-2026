@@ -176,7 +176,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_assignments_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_assignments_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -311,7 +311,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_disposals_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_disposals_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -473,7 +473,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_events_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -608,7 +608,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_inventory_scans_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_inventory_scans_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -761,7 +761,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_inventory_sessions_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_inventory_sessions_id_seq'::regclass)",
     "acl": []
   },
   {

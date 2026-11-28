@@ -113,7 +113,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('leave_credit_accounts_id_seq'::regclass)",
+    "default_expression": "nextval('public.leave_credit_accounts_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -230,7 +230,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('leave_credit_transactions_id_seq'::regclass)",
+    "default_expression": "nextval('public.leave_credit_transactions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -347,7 +347,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('leave_requests_id_seq'::regclass)",
+    "default_expression": "nextval('public.leave_requests_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -527,7 +527,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('leave_types_id_seq'::regclass)",
+    "default_expression": "nextval('public.leave_types_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -653,7 +653,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('legislative_agenda_items_id_seq'::regclass)",
+    "default_expression": "nextval('public.legislative_agenda_items_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -815,7 +815,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('legislative_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.legislative_records_id_seq'::regclass)",
     "acl": []
   },
   {

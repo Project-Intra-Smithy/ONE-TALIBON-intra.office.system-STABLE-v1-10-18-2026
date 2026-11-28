@@ -1,22 +1,22 @@
 [
   {
-    "object": "constraint audit_logs_integration_client_id_foreign on table audit_logs",
-    "reference": "index integration_clients_pkey",
+    "object": "constraint audit_logs_integration_client_id_foreign on table public.audit_logs",
+    "reference": "index public.integration_clients_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint audit_logs_pkey on table audit_logs",
-    "reference": "column id of table audit_logs",
+    "object": "constraint audit_logs_pkey on table public.audit_logs",
+    "reference": "column id of table public.audit_logs",
     "deptype": "a"
   },
   {
     "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
-    "reference": "column custody_operation_id of table documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "n"
   },
   {
     "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
-    "reference": "column custody_ordinal of table documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "n"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
-    "reference": "column id of table documents",
+    "reference": "column id of table public.documents",
     "deptype": "n"
   },
   {
@@ -46,12 +46,12 @@
   },
   {
     "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
-    "reference": "column public_id of table documents",
+    "reference": "column public_id of table public.documents",
     "deptype": "n"
   },
   {
     "object": "constraint bindings_document_id_document_public_id_operation_id_ordin_fkey on table legacy_custody.bindings",
-    "reference": "index n03_document_binding_tuple",
+    "reference": "index public.n03_document_binding_tuple",
     "deptype": "n"
   },
   {
@@ -141,7 +141,7 @@
   },
   {
     "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
-    "reference": "column custody_operation_id of table audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
     "deptype": "n"
   },
   {
@@ -151,12 +151,12 @@
   },
   {
     "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
-    "reference": "column entity_id of table audit_logs",
+    "reference": "column entity_id of table public.audit_logs",
     "deptype": "n"
   },
   {
     "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
-    "reference": "column id of table audit_logs",
+    "reference": "column id of table public.audit_logs",
     "deptype": "n"
   },
   {
@@ -171,62 +171,62 @@
   },
   {
     "object": "constraint bindings_upload_audit_id_operation_id_document_id_fkey on table legacy_custody.bindings",
-    "reference": "index n03_audit_tuple",
+    "reference": "index public.n03_audit_tuple",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_created_by_user_id_foreign on table calendar_events",
-    "reference": "column created_by_user_id of table calendar_events",
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "column created_by_user_id of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "constraint calendar_events_created_by_user_id_foreign on table calendar_events",
-    "reference": "column id of table users",
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_created_by_user_id_foreign on table calendar_events",
-    "reference": "index users_pkey",
+    "object": "constraint calendar_events_created_by_user_id_foreign on table public.calendar_events",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_department_id_foreign on table calendar_events",
-    "reference": "column department_id of table calendar_events",
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "column department_id of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "constraint calendar_events_department_id_foreign on table calendar_events",
-    "reference": "column id of table departments",
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_department_id_foreign on table calendar_events",
-    "reference": "index departments_pkey",
+    "object": "constraint calendar_events_department_id_foreign on table public.calendar_events",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_event_key_unique on table calendar_events",
-    "reference": "column event_key of table calendar_events",
+    "object": "constraint calendar_events_event_key_unique on table public.calendar_events",
+    "reference": "column event_key of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "constraint calendar_events_pkey on table calendar_events",
-    "reference": "column id of table calendar_events",
+    "object": "constraint calendar_events_pkey on table public.calendar_events",
+    "reference": "column id of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "constraint calendar_events_user_id_foreign on table calendar_events",
-    "reference": "column id of table users",
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint calendar_events_user_id_foreign on table calendar_events",
-    "reference": "column user_id of table calendar_events",
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "column user_id of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "constraint calendar_events_user_id_foreign on table calendar_events",
-    "reference": "index users_pkey",
+    "object": "constraint calendar_events_user_id_foreign on table public.calendar_events",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
@@ -236,12 +236,12 @@
   },
   {
     "object": "constraint classification_events_actor_user_id_fkey on table legacy_custody.classification_events",
-    "reference": "column id of table users",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
     "object": "constraint classification_events_actor_user_id_fkey on table legacy_custody.classification_events",
-    "reference": "index users_pkey",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
@@ -251,12 +251,12 @@
   },
   {
     "object": "constraint classification_events_audit_log_id_fkey on table legacy_custody.classification_events",
-    "reference": "column id of table audit_logs",
+    "reference": "column id of table public.audit_logs",
     "deptype": "n"
   },
   {
     "object": "constraint classification_events_audit_log_id_fkey on table legacy_custody.classification_events",
-    "reference": "index audit_logs_pkey",
+    "reference": "index public.audit_logs_pkey",
     "deptype": "n"
   },
   {
@@ -271,12 +271,12 @@
   },
   {
     "object": "constraint classification_events_correspondence_event_id_fkey on table legacy_custody.classification_events",
-    "reference": "column id of table correspondence_events",
+    "reference": "column id of table public.correspondence_events",
     "deptype": "n"
   },
   {
     "object": "constraint classification_events_correspondence_event_id_fkey on table legacy_custody.classification_events",
-    "reference": "index correspondence_events_pkey",
+    "reference": "index public.correspondence_events_pkey",
     "deptype": "n"
   },
   {
@@ -286,12 +286,12 @@
   },
   {
     "object": "constraint classification_events_correspondence_record_id_fkey on table legacy_custody.classification_events",
-    "reference": "column id of table correspondence_records",
+    "reference": "column id of table public.correspondence_records",
     "deptype": "n"
   },
   {
     "object": "constraint classification_events_correspondence_record_id_fkey on table legacy_custody.classification_events",
-    "reference": "index correspondence_records_pkey",
+    "reference": "index public.correspondence_records_pkey",
     "deptype": "n"
   },
   {
@@ -321,7 +321,7 @@
   },
   {
     "object": "constraint classification_events_office_id_fkey on table legacy_custody.classification_events",
-    "reference": "column id of table departments",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
@@ -331,7 +331,7 @@
   },
   {
     "object": "constraint classification_events_office_id_fkey on table legacy_custody.classification_events",
-    "reference": "index departments_pkey",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
@@ -351,23 +351,23 @@
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column actor_user_id of table correspondence_events",
-    "deptype": "n"
-  },
-  {
-    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
     "reference": "column actor_user_id of table legacy_custody.command_results",
     "deptype": "a"
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column correlation_id of table correspondence_events",
+    "reference": "column actor_user_id of table public.correspondence_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
     "reference": "column correlation_id of table legacy_custody.command_results",
     "deptype": "a"
+  },
+  {
+    "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
+    "reference": "column correlation_id of table public.correspondence_events",
+    "deptype": "n"
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
@@ -381,12 +381,12 @@
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column correspondence_record_id of table correspondence_events",
+    "reference": "column correspondence_record_id of table public.correspondence_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column event of table correspondence_events",
+    "reference": "column event of table public.correspondence_events",
     "deptype": "n"
   },
   {
@@ -396,7 +396,7 @@
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column id of table correspondence_events",
+    "reference": "column id of table public.correspondence_events",
     "deptype": "n"
   },
   {
@@ -406,12 +406,12 @@
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column n03_municipal_actor of table correspondence_events",
+    "reference": "column n03_municipal_actor of table public.correspondence_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "column office_department_id of table correspondence_events",
+    "reference": "column office_department_id of table public.correspondence_events",
     "deptype": "n"
   },
   {
@@ -421,7 +421,7 @@
   },
   {
     "object": "constraint command_results_correspondence_event_id_correspondence_id__fkey on table legacy_custody.command_results",
-    "reference": "index n03_correspondence_event_tuple",
+    "reference": "index public.n03_correspondence_event_tuple",
     "deptype": "n"
   },
   {
@@ -431,12 +431,12 @@
   },
   {
     "object": "constraint command_results_correspondence_id_fkey on table legacy_custody.command_results",
-    "reference": "column id of table correspondence_records",
+    "reference": "column id of table public.correspondence_records",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_correspondence_id_fkey on table legacy_custody.command_results",
-    "reference": "index correspondence_records_pkey",
+    "reference": "index public.correspondence_records_pkey",
     "deptype": "n"
   },
   {

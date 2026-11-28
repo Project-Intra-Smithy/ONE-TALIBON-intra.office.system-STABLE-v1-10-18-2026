@@ -113,7 +113,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('calendar_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.calendar_events_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -462,7 +462,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('correspondence_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.correspondence_events_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -874,7 +874,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('correspondence_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.correspondence_records_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",

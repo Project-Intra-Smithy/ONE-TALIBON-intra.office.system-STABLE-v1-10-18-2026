@@ -436,7 +436,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('ops009_origin_delivery_exception_actions_id_seq'::regclass)",
+    "default_expression": "nextval('public.ops009_origin_delivery_exception_actions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -515,7 +515,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('ops009_origin_delivery_exceptions_id_seq'::regclass)",
+    "default_expression": "nextval('public.ops009_origin_delivery_exceptions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -732,7 +732,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('outbox_messages_id_seq'::regclass)",
+    "default_expression": "nextval('public.outbox_messages_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -1011,7 +1011,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('payroll_entries_id_seq'::regclass)",
+    "default_expression": "nextval('public.payroll_entries_id_seq'::regclass)",
     "acl": []
   }
 ]

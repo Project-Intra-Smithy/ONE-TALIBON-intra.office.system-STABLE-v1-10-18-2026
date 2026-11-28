@@ -12,7 +12,7 @@ Laravel13.44.1 path resolution was inspected in Application.php, LoadEnvironment
 
 ## PG16 catalog inventory (N79-01)
 
-Supported canonical schemas, tables/indexes/sequences/columns/row types, routines, constraints, explicit and internal RI triggers, policies, dependencies, ACL/default ACL/grant options, ownership, managed roles/memberships/SET paths/startup settings and effective permissions are compared to the independently derived policy contract. Built-in pg_catalog/information_schema schema/routine/relation/type security is also compared. allow_system_table_mods must remain off; normal-OID definitions in system schemas are rejected. Trusted stock PG16 binaries and bootstrap-owned built-ins are the implementation trust boundary; hostile root/server-binary replacement is outside it.
+Supported canonical schemas, tables/indexes/sequences/columns/row types, routines, constraints, explicit and internal RI triggers, policies, dependencies, ACL/default ACL/grant options, ownership, managed roles/memberships/SET paths/startup settings and effective permissions are compared to the independently derived policy contract. Built-in pg_catalog/information_schema schema/routine/relation/view-option/view-definition/rewrite-rule/type security is also compared under controlled `search_path=pg_catalog`. allow_system_table_mods must remain off; normal-OID definitions in system schemas are rejected. Trusted stock PG16 binaries and bootstrap-owned built-ins are the implementation trust boundary; hostile root/server-binary replacement is outside it.
 
 The stock language owner/ACL/trust/handler/validator configuration and plpgsql extension owner/namespace/version/configuration are independently derived sections too. Unexpected reserved `pg_` namespaces refuse; only pg_catalog, pg_toast and PostgreSQL's numbered temporary namespace families are recognized. This prevents arbitrary application objects from hiding behind the catalog's reserved-name exclusions.
 
@@ -31,7 +31,7 @@ The stock language owner/ACL/trust/handler/validator configuration and plpgsql e
 | pg_type domain/enum/range/multirange | Reject custom type families; canonical row/array types remain in the policy inventory. |
 | pg_partitioned_table / pg_inherits | Reject partitioned or inherited relation topology; no arbitrary parent/child adoption. |
 | pg_aggregate / pg_statistic_ext | Reject user aggregates and extended statistics definitions. |
-| pg_tablespace references | Reject target use of non-default tablespaces; unrelated unused cluster tablespaces are untouched. |
+| pg_tablespace references | Reject target use of non-default tablespaces, including `pg_database.dattablespace` (requiring `pg_default`) and explicit `pg_class.reltablespace` references; unrelated unused cluster tablespaces are untouched. |
 | pg_rewrite / temporary objects | Reject target rewrite rules and preexisting temporary executable/relation state. Migration-owned temporary proof objects are transaction-local and dropped by the canonical migrations. |
 | system relation/routine/type normal-OID additions | Reject application definitions hidden in pg_catalog or information_schema. |
 

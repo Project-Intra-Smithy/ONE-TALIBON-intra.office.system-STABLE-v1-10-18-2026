@@ -77,7 +77,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employee_health_access_grants_id_seq'::regclass)",
+    "default_expression": "nextval('public.employee_health_access_grants_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -212,7 +212,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employee_health_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.employee_health_records_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -419,7 +419,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employee_movement_tasks_id_seq'::regclass)",
+    "default_expression": "nextval('public.employee_movement_tasks_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -626,7 +626,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employee_movements_id_seq'::regclass)",
+    "default_expression": "nextval('public.employee_movements_id_seq'::regclass)",
     "acl": []
   },
   {

@@ -50,7 +50,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('planning_maps_id_seq'::regclass)",
+    "default_expression": "nextval('public.planning_maps_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -444,7 +444,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('platform_notifications_id_seq'::regclass)",
+    "default_expression": "nextval('public.platform_notifications_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -738,7 +738,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('portal_presence_sessions_id_seq'::regclass)",
+    "default_expression": "nextval('public.portal_presence_sessions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -981,7 +981,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('ppa_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.ppa_records_id_seq'::regclass)",
     "acl": []
   },
   {

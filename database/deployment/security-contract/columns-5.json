@@ -235,7 +235,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('departments_id_seq'::regclass)",
+    "default_expression": "nextval('public.departments_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -522,7 +522,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('designated_planning_staff_id_seq'::regclass)",
+    "default_expression": "nextval('public.designated_planning_staff_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -738,7 +738,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('development_plans_id_seq'::regclass)",
+    "default_expression": "nextval('public.development_plans_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -1035,7 +1035,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('document_links_id_seq'::regclass)",
+    "default_expression": "nextval('public.document_links_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",

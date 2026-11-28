@@ -1,57 +1,57 @@
 [
   {
-    "object": "default value for column requests_per_minute of table integration_clients",
-    "reference": "column requests_per_minute of table integration_clients",
+    "object": "default value for column requests_per_minute of table public.integration_clients",
+    "reference": "column requests_per_minute of table public.integration_clients",
     "deptype": "a"
   },
   {
-    "object": "default value for column requires_acknowledgement of table memoranda",
-    "reference": "column requires_acknowledgement of table memoranda",
+    "object": "default value for column requires_acknowledgement of table public.memoranda",
+    "reference": "column requires_acknowledgement of table public.memoranda",
     "deptype": "a"
   },
   {
-    "object": "default value for column requires_acknowledgement of table platform_notifications",
-    "reference": "column requires_acknowledgement of table platform_notifications",
+    "object": "default value for column requires_acknowledgement of table public.platform_notifications",
+    "reference": "column requires_acknowledgement of table public.platform_notifications",
     "deptype": "a"
   },
   {
-    "object": "default value for column role of table users",
-    "reference": "column role of table users",
+    "object": "default value for column role of table public.users",
+    "reference": "column role of table public.users",
     "deptype": "a"
   },
   {
-    "object": "default value for column scope of table calendar_events",
-    "reference": "column scope of table calendar_events",
+    "object": "default value for column scope of table public.calendar_events",
+    "reference": "column scope of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "default value for column sealed_at of table plan_document_origin_receipts",
-    "reference": "column sealed_at of table plan_document_origin_receipts",
+    "object": "default value for column sealed_at of table public.plan_document_origin_receipts",
+    "reference": "column sealed_at of table public.plan_document_origin_receipts",
     "deptype": "a"
   },
   {
-    "object": "default value for column sections_complete of table development_plans",
-    "reference": "column sections_complete of table development_plans",
+    "object": "default value for column sections_complete of table public.development_plans",
+    "reference": "column sections_complete of table public.development_plans",
     "deptype": "a"
   },
   {
-    "object": "default value for column sections_total of table development_plans",
-    "reference": "column sections_total of table development_plans",
+    "object": "default value for column sections_total of table public.development_plans",
+    "reference": "column sections_total of table public.development_plans",
     "deptype": "a"
   },
   {
-    "object": "default value for column session_version of table users",
-    "reference": "column session_version of table users",
+    "object": "default value for column session_version of table public.users",
+    "reference": "column session_version of table public.users",
     "deptype": "a"
   },
   {
-    "object": "default value for column sort_order of table departments",
-    "reference": "column sort_order of table departments",
+    "object": "default value for column sort_order of table public.departments",
+    "reference": "column sort_order of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "default value for column source of table attendance_logs",
-    "reference": "column source of table attendance_logs",
+    "object": "default value for column source of table public.attendance_logs",
+    "reference": "column source of table public.attendance_logs",
     "deptype": "a"
   },
   {
@@ -60,153 +60,153 @@
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table asset_disposals",
-    "reference": "column status of table asset_disposals",
+    "object": "default value for column status of table public.asset_disposals",
+    "reference": "column status of table public.asset_disposals",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table asset_inventory_sessions",
-    "reference": "column status of table asset_inventory_sessions",
+    "object": "default value for column status of table public.asset_inventory_sessions",
+    "reference": "column status of table public.asset_inventory_sessions",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table asset_maintenance_records",
-    "reference": "column status of table asset_maintenance_records",
+    "object": "default value for column status of table public.asset_maintenance_records",
+    "reference": "column status of table public.asset_maintenance_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table assets",
-    "reference": "column status of table assets",
+    "object": "default value for column status of table public.assets",
+    "reference": "column status of table public.assets",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table calendar_events",
-    "reference": "column status of table calendar_events",
+    "object": "default value for column status of table public.calendar_events",
+    "reference": "column status of table public.calendar_events",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table development_plans",
-    "reference": "column status of table development_plans",
+    "object": "default value for column status of table public.development_plans",
+    "reference": "column status of table public.development_plans",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table dtr_periods",
-    "reference": "column status of table dtr_periods",
+    "object": "default value for column status of table public.dtr_periods",
+    "reference": "column status of table public.dtr_periods",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table employee_development_records",
-    "reference": "column status of table employee_development_records",
+    "object": "default value for column status of table public.employee_development_records",
+    "reference": "column status of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table employee_health_records",
-    "reference": "column status of table employee_health_records",
+    "object": "default value for column status of table public.employee_health_records",
+    "reference": "column status of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table employee_movement_tasks",
-    "reference": "column status of table employee_movement_tasks",
+    "object": "default value for column status of table public.employee_movement_tasks",
+    "reference": "column status of table public.employee_movement_tasks",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table employee_movements",
-    "reference": "column status of table employee_movements",
+    "object": "default value for column status of table public.employee_movements",
+    "reference": "column status of table public.employee_movements",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table leave_requests",
-    "reference": "column status of table leave_requests",
+    "object": "default value for column status of table public.leave_requests",
+    "reference": "column status of table public.leave_requests",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table legislative_agenda_items",
-    "reference": "column status of table legislative_agenda_items",
+    "object": "default value for column status of table public.legislative_agenda_items",
+    "reference": "column status of table public.legislative_agenda_items",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table legislative_records",
-    "reference": "column status of table legislative_records",
+    "object": "default value for column status of table public.legislative_records",
+    "reference": "column status of table public.legislative_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table legislative_sessions",
-    "reference": "column status of table legislative_sessions",
+    "object": "default value for column status of table public.legislative_sessions",
+    "reference": "column status of table public.legislative_sessions",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table memoranda",
-    "reference": "column status of table memoranda",
+    "object": "default value for column status of table public.memoranda",
+    "reference": "column status of table public.memoranda",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table offboarding_cases",
-    "reference": "column status of table offboarding_cases",
+    "object": "default value for column status of table public.offboarding_cases",
+    "reference": "column status of table public.offboarding_cases",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table offboarding_tasks",
-    "reference": "column status of table offboarding_tasks",
+    "object": "default value for column status of table public.offboarding_tasks",
+    "reference": "column status of table public.offboarding_tasks",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table onboarding_cases",
-    "reference": "column status of table onboarding_cases",
+    "object": "default value for column status of table public.onboarding_cases",
+    "reference": "column status of table public.onboarding_cases",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table onboarding_tasks",
-    "reference": "column status of table onboarding_tasks",
+    "object": "default value for column status of table public.onboarding_tasks",
+    "reference": "column status of table public.onboarding_tasks",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table payroll_entries",
-    "reference": "column status of table payroll_entries",
+    "object": "default value for column status of table public.payroll_entries",
+    "reference": "column status of table public.payroll_entries",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table payroll_periods",
-    "reference": "column status of table payroll_periods",
+    "object": "default value for column status of table public.payroll_periods",
+    "reference": "column status of table public.payroll_periods",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table performance_records",
-    "reference": "column status of table performance_records",
+    "object": "default value for column status of table public.performance_records",
+    "reference": "column status of table public.performance_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table planning_maps",
-    "reference": "column status of table planning_maps",
+    "object": "default value for column status of table public.planning_maps",
+    "reference": "column status of table public.planning_maps",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table ppa_records",
-    "reference": "column status of table ppa_records",
+    "object": "default value for column status of table public.ppa_records",
+    "reference": "column status of table public.ppa_records",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table transactions",
-    "reference": "column status of table transactions",
+    "object": "default value for column status of table public.transactions",
+    "reference": "column status of table public.transactions",
     "deptype": "a"
   },
   {
-    "object": "default value for column status of table travel_orders",
-    "reference": "column status of table travel_orders",
+    "object": "default value for column status of table public.travel_orders",
+    "reference": "column status of table public.travel_orders",
     "deptype": "a"
   },
   {
-    "object": "default value for column storage_disk of table documents",
-    "reference": "column storage_disk of table documents",
+    "object": "default value for column storage_disk of table public.documents",
+    "reference": "column storage_disk of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "default value for column storage_disk of table planning_attachments",
-    "reference": "column storage_disk of table planning_attachments",
+    "object": "default value for column storage_disk of table public.planning_attachments",
+    "reference": "column storage_disk of table public.planning_attachments",
     "deptype": "a"
   },
   {
-    "object": "default value for column tracks_balance of table leave_types",
-    "reference": "column tracks_balance of table leave_types",
+    "object": "default value for column tracks_balance of table public.leave_types",
+    "reference": "column tracks_balance of table public.leave_types",
     "deptype": "a"
   },
   {
@@ -240,8 +240,8 @@
     "deptype": "i"
   },
   {
-    "object": "default value for column transaction_type of table transactions",
-    "reference": "column transaction_type of table transactions",
+    "object": "default value for column transaction_type of table public.transactions",
+    "reference": "column transaction_type of table public.transactions",
     "deptype": "a"
   },
   {
@@ -275,13 +275,13 @@
     "deptype": "i"
   },
   {
-    "object": "default value for column trusted of table plan_custody_scan_evidence",
-    "reference": "column trusted of table plan_custody_scan_evidence",
+    "object": "default value for column trusted of table public.plan_custody_scan_evidence",
+    "reference": "column trusted of table public.plan_custody_scan_evidence",
     "deptype": "a"
   },
   {
-    "object": "default value for column verification_status of table asset_inventory_scans",
-    "reference": "column verification_status of table asset_inventory_scans",
+    "object": "default value for column verification_status of table public.asset_inventory_scans",
+    "reference": "column verification_status of table public.asset_inventory_scans",
     "deptype": "a"
   },
   {
@@ -290,94 +290,14 @@
     "deptype": "a"
   },
   {
-    "object": "default value for column visibility of table planning_attachments",
-    "reference": "column visibility of table planning_attachments",
+    "object": "default value for column visibility of table public.planning_attachments",
+    "reference": "column visibility of table public.planning_attachments",
     "deptype": "a"
   },
   {
-    "object": "default value for column withholding_tax of table payroll_entries",
-    "reference": "column withholding_tax of table payroll_entries",
+    "object": "default value for column withholding_tax of table public.payroll_entries",
+    "reference": "column withholding_tax of table public.payroll_entries",
     "deptype": "a"
-  },
-  {
-    "object": "function kirion_plan_custody_append_only_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_custody_append_only_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_custody_generation_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_custody_generation_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_custody_scan_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_custody_scan_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_document_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_document_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_generic_link_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_generic_link_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_origin_receipt_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_origin_receipt_guard()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_stamp_origin()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_stamp_origin()",
-    "reference": "schema public",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_typed_binding_guard()",
-    "reference": "language plpgsql",
-    "deptype": "n"
-  },
-  {
-    "object": "function kirion_plan_typed_binding_guard()",
-    "reference": "schema public",
-    "deptype": "n"
   },
   {
     "object": "function legacy_custody.command_complete()",
@@ -460,42 +380,122 @@
     "deptype": "n"
   },
   {
-    "object": "function ops009_deny_exception_mutation()",
+    "object": "function public.kirion_plan_custody_append_only_guard()",
     "reference": "language plpgsql",
     "deptype": "n"
   },
   {
-    "object": "function ops009_deny_exception_mutation()",
+    "object": "function public.kirion_plan_custody_append_only_guard()",
     "reference": "schema public",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_close_notice()",
+    "object": "function public.kirion_plan_custody_generation_guard()",
     "reference": "language plpgsql",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_close_notice()",
+    "object": "function public.kirion_plan_custody_generation_guard()",
     "reference": "schema public",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_delivery_action()",
+    "object": "function public.kirion_plan_custody_scan_guard()",
     "reference": "language plpgsql",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_delivery_action()",
+    "object": "function public.kirion_plan_custody_scan_guard()",
     "reference": "schema public",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_delivery_exception()",
+    "object": "function public.kirion_plan_document_guard()",
     "reference": "language plpgsql",
     "deptype": "n"
   },
   {
-    "object": "function ops009_guard_delivery_exception()",
+    "object": "function public.kirion_plan_document_guard()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_generic_link_guard()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_generic_link_guard()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_origin_receipt_guard()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_origin_receipt_guard()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_stamp_origin()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_stamp_origin()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_typed_binding_guard()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.kirion_plan_typed_binding_guard()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_deny_exception_mutation()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_deny_exception_mutation()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_close_notice()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_close_notice()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_delivery_action()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_delivery_action()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_delivery_exception()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function public.ops009_guard_delivery_exception()",
     "reference": "schema public",
     "deptype": "n"
   }

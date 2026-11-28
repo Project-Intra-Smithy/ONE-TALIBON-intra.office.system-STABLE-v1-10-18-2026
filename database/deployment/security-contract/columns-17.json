@@ -196,7 +196,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('transaction_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.transaction_events_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -620,7 +620,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('transactions_id_seq'::regclass)",
+    "default_expression": "nextval('public.transactions_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -1134,7 +1134,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('travel_order_employee_id_seq'::regclass)",
+    "default_expression": "nextval('public.travel_order_employee_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -1339,7 +1339,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('travel_order_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.travel_order_events_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",

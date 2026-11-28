@@ -1,137 +1,137 @@
 [
   {
-    "object": "constraint migrations_pkey on table migrations",
-    "reference": "column id of table migrations",
+    "object": "constraint migrations_pkey on table public.migrations",
+    "reference": "column id of table public.migrations",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_document on table audit_logs",
-    "reference": "column custody_operation_id of table audit_logs",
+    "object": "constraint n03_audit_document on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_document on table audit_logs",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_audit_document on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_document on table audit_logs",
-    "reference": "column entity_id of table audit_logs",
+    "object": "constraint n03_audit_document on table public.audit_logs",
+    "reference": "column entity_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_document on table audit_logs",
-    "reference": "column id of table documents",
+    "object": "constraint n03_audit_document on table public.audit_logs",
+    "reference": "column id of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_document on table audit_logs",
-    "reference": "index n03_document_op_unique",
+    "object": "constraint n03_audit_document on table public.audit_logs",
+    "reference": "index public.n03_document_op_unique",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column action of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column action of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column action of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column action of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column actor_department_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column actor_department_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column actor_department_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column actor_department_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column actor_user_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column actor_user_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column actor_user_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column actor_user_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column correlation_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column correlation_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column correlation_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column correlation_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column custody_operation_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column custody_operation_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column entity_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column entity_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column entity_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column entity_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column entity_type of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column entity_type of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column entity_type of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column entity_type of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column integration_client_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column integration_client_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column integration_client_id of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column integration_client_id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column outcome of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column outcome of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_marked on table audit_logs",
-    "reference": "column outcome of table audit_logs",
+    "object": "constraint n03_audit_marked on table public.audit_logs",
+    "reference": "column outcome of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_audit_tuple on table audit_logs",
-    "reference": "column custody_operation_id of table audit_logs",
+    "object": "constraint n03_audit_tuple on table public.audit_logs",
+    "reference": "column custody_operation_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_tuple on table audit_logs",
-    "reference": "column entity_id of table audit_logs",
+    "object": "constraint n03_audit_tuple on table public.audit_logs",
+    "reference": "column entity_id of table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_audit_tuple on table audit_logs",
-    "reference": "column id of table audit_logs",
+    "object": "constraint n03_audit_tuple on table public.audit_logs",
+    "reference": "column id of table public.audit_logs",
     "deptype": "a"
   },
   {
@@ -190,103 +190,103 @@
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column actor_user_id of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column actor_user_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column correlation_id of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column correlation_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column correspondence_record_id of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column correspondence_record_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column event of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column event of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column id of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column n03_municipal_actor of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column n03_municipal_actor of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_correspondence_event_tuple on table correspondence_events",
-    "reference": "column office_department_id of table correspondence_events",
+    "object": "constraint n03_correspondence_event_tuple on table public.correspondence_events",
+    "reference": "column office_department_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_binding_tuple on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_document_binding_tuple on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_binding_tuple on table documents",
-    "reference": "column custody_ordinal of table documents",
+    "object": "constraint n03_document_binding_tuple on table public.documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_binding_tuple on table documents",
-    "reference": "column id of table documents",
+    "object": "constraint n03_document_binding_tuple on table public.documents",
+    "reference": "column id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_binding_tuple on table documents",
-    "reference": "column public_id of table documents",
+    "object": "constraint n03_document_binding_tuple on table public.documents",
+    "reference": "column public_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_item on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_document_item on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_item on table documents",
-    "reference": "column custody_ordinal of table documents",
+    "object": "constraint n03_document_item on table public.documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_item on table documents",
+    "object": "constraint n03_document_item on table public.documents",
     "reference": "column operation_id of table legacy_custody.operation_items",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_document_item on table documents",
+    "object": "constraint n03_document_item on table public.documents",
     "reference": "column ordinal of table legacy_custody.operation_items",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_document_item on table documents",
+    "object": "constraint n03_document_item on table public.documents",
     "reference": "index legacy_custody.operation_items_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_document_item_unique on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_document_item_unique on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_item_unique on table documents",
-    "reference": "column custody_ordinal of table documents",
+    "object": "constraint n03_document_item_unique on table public.documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_op_unique on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_document_op_unique on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_document_op_unique on table documents",
-    "reference": "column id of table documents",
+    "object": "constraint n03_document_op_unique on table public.documents",
+    "reference": "column id of table public.documents",
     "deptype": "a"
   },
   {
@@ -315,173 +315,173 @@
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column created_by_user_id of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column created_by_user_id of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column document_id of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column document_id of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column id of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column id of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column linkable_id of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column linkable_id of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column linkable_type of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column linkable_type of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_link_tuple on table document_links",
-    "reference": "column relationship of table document_links",
+    "object": "constraint n03_link_tuple on table public.document_links",
+    "reference": "column relationship of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column checksum_sha256 of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column checksum_sha256 of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column checksum_sha256 of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column checksum_sha256 of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_mode of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_mode of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_mode of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_mode of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_operation_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_operation_id of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_ordinal of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column custody_ordinal of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column custody_ordinal of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column mime_type of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column mime_type of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column mime_type of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column mime_type of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column owner_department_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column owner_department_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column owner_department_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column owner_department_id of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column security_domain of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column security_domain of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column security_domain of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column security_domain of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column size_bytes of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column size_bytes of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column size_bytes of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column size_bytes of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column storage_disk of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column storage_disk of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column storage_disk of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column storage_disk of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column storage_path of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column storage_path of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column storage_path of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column storage_path of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column uploaded_by_user_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column uploaded_by_user_id of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_mode_check on table documents",
-    "reference": "column uploaded_by_user_id of table documents",
+    "object": "constraint n03_mode_check on table public.documents",
+    "reference": "column uploaded_by_user_id of table public.documents",
     "deptype": "n"
   },
   {
-    "object": "constraint n03_public_complete on table audit_logs",
-    "reference": "table audit_logs",
+    "object": "constraint n03_public_complete on table public.audit_logs",
+    "reference": "table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_public_complete on table audit_logs",
-    "reference": "trigger n03_public_complete on table audit_logs",
+    "object": "constraint n03_public_complete on table public.audit_logs",
+    "reference": "trigger n03_public_complete on table public.audit_logs",
     "deptype": "i"
   },
   {
-    "object": "constraint n03_public_complete on table documents",
-    "reference": "table documents",
+    "object": "constraint n03_public_complete on table public.documents",
+    "reference": "table public.documents",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_public_complete on table documents",
-    "reference": "trigger n03_public_complete on table documents",
+    "object": "constraint n03_public_complete on table public.documents",
+    "reference": "trigger n03_public_complete on table public.documents",
     "deptype": "i"
   },
   {
-    "object": "constraint n03_public_link_complete on table document_links",
-    "reference": "table document_links",
+    "object": "constraint n03_public_link_complete on table public.document_links",
+    "reference": "table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "constraint n03_public_link_complete on table document_links",
-    "reference": "trigger n03_public_link_complete on table document_links",
+    "object": "constraint n03_public_link_complete on table public.document_links",
+    "reference": "trigger n03_public_link_complete on table public.document_links",
     "deptype": "i"
   },
   {

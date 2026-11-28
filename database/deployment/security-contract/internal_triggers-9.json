@@ -1,7 +1,7 @@
 [
   {
     "relation": "public.users",
-    "constraint_relation": "transaction_events",
+    "constraint_relation": "public.transaction_events",
     "conname": "transaction_events_actor_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -11,7 +11,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "transaction_events",
+    "constraint_relation": "public.transaction_events",
     "conname": "transaction_events_actor_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_restrict_del\"()",
@@ -21,7 +21,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "transactions",
+    "constraint_relation": "public.transactions",
     "conname": "transactions_assigned_to_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -31,7 +31,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "transactions",
+    "constraint_relation": "public.transactions",
     "conname": "transactions_assigned_to_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_setnull_del\"()",
@@ -41,7 +41,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "transactions",
+    "constraint_relation": "public.transactions",
     "conname": "transactions_created_by_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -51,7 +51,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "transactions",
+    "constraint_relation": "public.transactions",
     "conname": "transactions_created_by_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_restrict_del\"()",
@@ -61,7 +61,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_order_events",
+    "constraint_relation": "public.travel_order_events",
     "conname": "travel_order_events_actor_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -71,7 +71,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_order_events",
+    "constraint_relation": "public.travel_order_events",
     "conname": "travel_order_events_actor_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_setnull_del\"()",
@@ -81,7 +81,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_orders",
+    "constraint_relation": "public.travel_orders",
     "conname": "travel_orders_recorded_by_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -91,7 +91,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_orders",
+    "constraint_relation": "public.travel_orders",
     "conname": "travel_orders_recorded_by_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_setnull_del\"()",
@@ -101,7 +101,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_orders",
+    "constraint_relation": "public.travel_orders",
     "conname": "travel_orders_status_updated_by_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -111,7 +111,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "travel_orders",
+    "constraint_relation": "public.travel_orders",
     "conname": "travel_orders_status_updated_by_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_setnull_del\"()",
@@ -121,7 +121,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "users",
+    "constraint_relation": "public.users",
     "conname": "users_suspended_by_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_check_upd\"()",
@@ -131,7 +131,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "users",
+    "constraint_relation": "public.users",
     "conname": "users_suspended_by_user_id_foreign",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -141,7 +141,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "users",
+    "constraint_relation": "public.users",
     "conname": "users_suspended_by_user_id_foreign",
     "tgtype": 5,
     "function": "\"RI_FKey_check_ins\"()",
@@ -151,7 +151,7 @@
   },
   {
     "relation": "public.users",
-    "constraint_relation": "users",
+    "constraint_relation": "public.users",
     "conname": "users_suspended_by_user_id_foreign",
     "tgtype": 9,
     "function": "\"RI_FKey_setnull_del\"()",

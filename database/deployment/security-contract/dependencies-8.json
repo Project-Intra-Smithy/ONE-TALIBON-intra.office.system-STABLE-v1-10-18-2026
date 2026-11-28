@@ -120,43 +120,43 @@
     "deptype": "n"
   },
   {
-    "object": "constraint operational_items_department_id_foreign on table operational_items",
-    "reference": "column department_id of table operational_items",
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "column department_id of table public.operational_items",
     "deptype": "a"
   },
   {
-    "object": "constraint operational_items_department_id_foreign on table operational_items",
-    "reference": "column id of table departments",
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
-    "object": "constraint operational_items_department_id_foreign on table operational_items",
-    "reference": "index departments_pkey",
+    "object": "constraint operational_items_department_id_foreign on table public.operational_items",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint operational_items_pkey on table operational_items",
-    "reference": "column id of table operational_items",
+    "object": "constraint operational_items_pkey on table public.operational_items",
+    "reference": "column id of table public.operational_items",
     "deptype": "a"
   },
   {
-    "object": "constraint operational_items_reference_no_unique on table operational_items",
-    "reference": "column reference_no of table operational_items",
+    "object": "constraint operational_items_reference_no_unique on table public.operational_items",
+    "reference": "column reference_no of table public.operational_items",
     "deptype": "a"
   },
   {
-    "object": "constraint operational_items_responsible_employee_id_foreign on table operational_items",
-    "reference": "column id of table employees",
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "column id of table public.employees",
     "deptype": "n"
   },
   {
-    "object": "constraint operational_items_responsible_employee_id_foreign on table operational_items",
-    "reference": "column responsible_employee_id of table operational_items",
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "column responsible_employee_id of table public.operational_items",
     "deptype": "a"
   },
   {
-    "object": "constraint operational_items_responsible_employee_id_foreign on table operational_items",
-    "reference": "index employees_pkey",
+    "object": "constraint operational_items_responsible_employee_id_foreign on table public.operational_items",
+    "reference": "index public.employees_pkey",
     "deptype": "n"
   },
   {
@@ -166,12 +166,12 @@
   },
   {
     "object": "constraint operations_actor_user_id_fkey on table legacy_custody.operations",
-    "reference": "column id of table users",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
     "object": "constraint operations_actor_user_id_fkey on table legacy_custody.operations",
-    "reference": "index users_pkey",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
@@ -281,7 +281,7 @@
   },
   {
     "object": "constraint operations_office_id_fkey on table legacy_custody.operations",
-    "reference": "column id of table departments",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
@@ -291,7 +291,7 @@
   },
   {
     "object": "constraint operations_office_id_fkey on table legacy_custody.operations",
-    "reference": "index departments_pkey",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
@@ -345,158 +345,158 @@
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column audit_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column audit_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column id of table audit_logs",
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.audit_logs",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table ops009_close_audit_bindings",
-    "reference": "index audit_logs_pkey",
+    "object": "constraint ops009_close_audit_bindings_audit_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.audit_logs_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
     "reference": "column operation_id of table legacy_custody.operations",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column operation_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column operation_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_operation_id_fkey on table public.ops009_close_audit_bindings",
     "reference": "index legacy_custody.operations_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_operation_id_key on table ops009_close_audit_bindings",
-    "reference": "column operation_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_operation_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column operation_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_pkey on table ops009_close_audit_bindings",
-    "reference": "column audit_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_pkey on table public.ops009_close_audit_bindings",
+    "reference": "column audit_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column id of table transaction_events",
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.transaction_events",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column transaction_event_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_event_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table ops009_close_audit_bindings",
-    "reference": "index transaction_events_pkey",
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.transaction_events_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_event_id_key on table ops009_close_audit_bindings",
-    "reference": "column transaction_event_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_transaction_event_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_event_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column id of table transactions",
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column id of table public.transactions",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table ops009_close_audit_bindings",
-    "reference": "column transaction_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table ops009_close_audit_bindings",
-    "reference": "index transactions_pkey",
+    "object": "constraint ops009_close_audit_bindings_transaction_id_fkey on table public.ops009_close_audit_bindings",
+    "reference": "index public.transactions_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_close_audit_bindings_transaction_id_key on table ops009_close_audit_bindings",
-    "reference": "column transaction_id of table ops009_close_audit_bindings",
+    "object": "constraint ops009_close_audit_bindings_transaction_id_key on table public.ops009_close_audit_bindings",
+    "reference": "column transaction_id of table public.ops009_close_audit_bindings",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_integrity on table audit_logs",
-    "reference": "table audit_logs",
+    "object": "constraint ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "table public.audit_logs",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_close_audit_integrity on table audit_logs",
-    "reference": "trigger ops009_close_audit_integrity on table audit_logs",
+    "object": "constraint ops009_close_audit_integrity on table public.audit_logs",
+    "reference": "trigger ops009_close_audit_integrity on table public.audit_logs",
     "deptype": "i"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column actor_department_id of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column actor_department_id of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column id of table departments",
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "index departments_pkey",
+    "object": "constraint ops009_origin_delivery_exception_actio_actor_department_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table ops009_origin_delivery_exception_actions",
-    "reference": "column action of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table ops009_origin_delivery_exception_actions",
-    "reference": "column exception_id of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_action_exception_id_action_key on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column exception_id of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table ops009_origin_delivery_exception_actions",
-    "reference": "column action of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table ops009_origin_delivery_exception_actions",
-    "reference": "column action of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_actions_action_check on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column action of table public.ops009_origin_delivery_exception_actions",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column actor_user_id of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column actor_user_id of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column id of table users",
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "index users_pkey",
+    "object": "constraint ops009_origin_delivery_exception_actions_actor_user_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column exception_id of table ops009_origin_delivery_exception_actions",
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column exception_id of table public.ops009_origin_delivery_exception_actions",
     "deptype": "a"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "column id of table ops009_origin_delivery_exceptions",
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "column id of table public.ops009_origin_delivery_exceptions",
     "deptype": "n"
   },
   {
-    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table ops009_origin_delivery_exception_actions",
-    "reference": "index ops009_origin_delivery_exceptions_pkey",
+    "object": "constraint ops009_origin_delivery_exception_actions_exception_id_fkey on table public.ops009_origin_delivery_exception_actions",
+    "reference": "index public.ops009_origin_delivery_exceptions_pkey",
     "deptype": "n"
   }
 ]

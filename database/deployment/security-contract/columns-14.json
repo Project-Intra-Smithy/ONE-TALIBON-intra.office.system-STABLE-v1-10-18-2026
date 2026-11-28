@@ -171,7 +171,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_document_bindings_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_document_bindings_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -328,7 +328,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_editions_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_editions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -436,7 +436,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_families_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_families_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -553,7 +553,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('planning_attachment_reconciliations_id_seq'::regclass)",
+    "default_expression": "nextval('public.planning_attachment_reconciliations_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -661,7 +661,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('planning_attachments_id_seq'::regclass)",
+    "default_expression": "nextval('public.planning_attachments_id_seq'::regclass)",
     "acl": []
   },
   {

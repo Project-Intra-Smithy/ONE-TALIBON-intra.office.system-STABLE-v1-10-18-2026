@@ -4,6 +4,7 @@
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -47,13 +48,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_timezone_abbrevs",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -103,13 +106,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": " SELECT abbrev,\n    utc_offset,\n    is_dst\n   FROM pg_timezone_abbrevs() pg_timezone_abbrevs(abbrev, utc_offset, is_dst);"
   },
   {
     "name": "pg_catalog.pg_timezone_names",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -159,13 +164,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": " SELECT name,\n    abbrev,\n    utc_offset,\n    is_dst\n   FROM pg_timezone_names() pg_timezone_names(name, abbrev, utc_offset, is_dst);"
   },
   {
     "name": "pg_catalog.pg_transform",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -215,13 +222,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_transform_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -265,13 +274,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_transform_type_lang_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -315,13 +326,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_trigger",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -371,13 +384,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_trigger_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -421,13 +436,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_trigger_tgconstraint_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -471,13 +488,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_trigger_tgrelid_tgname_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -521,13 +540,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_config",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -577,13 +598,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_config_cfgname_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -627,13 +650,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_config_map",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -683,13 +708,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_config_map_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -733,13 +760,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_config_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -783,13 +812,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_dict",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -839,13 +870,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_dict_dictname_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -889,13 +922,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_dict_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -939,13 +974,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_parser",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -995,13 +1032,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_parser_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1045,13 +1084,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_parser_prsname_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1095,13 +1136,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_template",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1151,13 +1194,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_template_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1201,13 +1246,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_ts_template_tmplname_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1251,13 +1298,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_type",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1307,13 +1356,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_type_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1357,13 +1408,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_type_typname_nsp_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1407,13 +1460,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_user",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1463,13 +1518,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": " SELECT usename,\n    usesysid,\n    usecreatedb,\n    usesuper,\n    userepl,\n    usebypassrls,\n    '********'::text AS passwd,\n    valuntil,\n    useconfig\n   FROM pg_shadow;"
   },
   {
     "name": "pg_catalog.pg_user_mapping",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1513,13 +1570,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_user_mapping_oid_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1563,13 +1622,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_user_mapping_user_server_index",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1613,13 +1674,15 @@
         "UPDATE",
         false
       ]
-    ]
+    ],
+    "definition": null
   },
   {
     "name": "pg_catalog.pg_user_mappings",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1669,13 +1732,15 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": " SELECT u.oid AS umid,\n    s.oid AS srvid,\n    s.srvname,\n    u.umuser,\n        CASE\n            WHEN u.umuser = 0::oid THEN 'public'::name\n            ELSE a.rolname\n        END AS usename,\n        CASE\n            WHEN u.umuser <> 0::oid AND a.rolname = CURRENT_USER AND (pg_has_role(s.srvowner, 'USAGE'::text) OR has_server_privilege(s.oid, 'USAGE'::text)) OR u.umuser = 0::oid AND pg_has_role(s.srvowner, 'USAGE'::text) OR ( SELECT pg_authid.rolsuper\n               FROM pg_authid\n              WHERE pg_authid.rolname = CURRENT_USER) THEN u.umoptions\n            ELSE NULL::text[]\n        END AS umoptions\n   FROM pg_user_mapping u\n     JOIN pg_foreign_server s ON u.umserver = s.oid\n     LEFT JOIN pg_authid a ON a.oid = u.umuser;"
   },
   {
     "name": "pg_catalog.pg_views",
     "owner": "@bootstrap",
     "relrowsecurity": false,
     "relforcerowsecurity": false,
+    "reloptions": null,
     "acl": [
       [
         "@bootstrap",
@@ -1725,6 +1790,7 @@
         "SELECT",
         false
       ]
-    ]
+    ],
+    "definition": " SELECT n.nspname AS schemaname,\n    c.relname AS viewname,\n    pg_get_userbyid(c.relowner) AS viewowner,\n    pg_get_viewdef(c.oid) AS definition\n   FROM pg_class c\n     LEFT JOIN pg_namespace n ON n.oid = c.relnamespace\n  WHERE c.relkind = 'v'::\"char\";"
   }
 ]

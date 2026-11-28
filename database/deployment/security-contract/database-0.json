@@ -1,6 +1,7 @@
 [
   {
     "owner": "@bootstrap",
+    "tablespace": "pg_default",
     "acl": [
       [
         "@bootstrap",

@@ -11,7 +11,7 @@
   },
   {
     "object": "constraint command_results_transaction_event_id_transaction_id_actor__fkey on table legacy_custody.command_results",
-    "reference": "column action of table transaction_events",
+    "reference": "column action of table public.transaction_events",
     "deptype": "n"
   },
   {
@@ -21,7 +21,7 @@
   },
   {
     "object": "constraint command_results_transaction_event_id_transaction_id_actor__fkey on table legacy_custody.command_results",
-    "reference": "column actor_user_id of table transaction_events",
+    "reference": "column actor_user_id of table public.transaction_events",
     "deptype": "n"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "object": "constraint command_results_transaction_event_id_transaction_id_actor__fkey on table legacy_custody.command_results",
-    "reference": "column id of table transaction_events",
+    "reference": "column id of table public.transaction_events",
     "deptype": "n"
   },
   {
@@ -46,17 +46,17 @@
   },
   {
     "object": "constraint command_results_transaction_event_id_transaction_id_actor__fkey on table legacy_custody.command_results",
-    "reference": "column transaction_id of table transaction_events",
+    "reference": "column transaction_id of table public.transaction_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_transaction_event_id_transaction_id_actor__fkey on table legacy_custody.command_results",
-    "reference": "index n03_transaction_event_tuple",
+    "reference": "index public.n03_transaction_event_tuple",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_transaction_id_fkey on table legacy_custody.command_results",
-    "reference": "column id of table transactions",
+    "reference": "column id of table public.transactions",
     "deptype": "n"
   },
   {
@@ -66,7 +66,7 @@
   },
   {
     "object": "constraint command_results_transaction_id_fkey on table legacy_custody.command_results",
-    "reference": "index transactions_pkey",
+    "reference": "index public.transactions_pkey",
     "deptype": "n"
   },
   {
@@ -76,12 +76,12 @@
   },
   {
     "object": "constraint command_results_travel_event_id_travel_id_actor_user_id_ev_fkey on table legacy_custody.command_results",
-    "reference": "column actor_user_id of table travel_order_events",
+    "reference": "column actor_user_id of table public.travel_order_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_travel_event_id_travel_id_actor_user_id_ev_fkey on table legacy_custody.command_results",
-    "reference": "column event of table travel_order_events",
+    "reference": "column event of table public.travel_order_events",
     "deptype": "n"
   },
   {
@@ -91,7 +91,7 @@
   },
   {
     "object": "constraint command_results_travel_event_id_travel_id_actor_user_id_ev_fkey on table legacy_custody.command_results",
-    "reference": "column id of table travel_order_events",
+    "reference": "column id of table public.travel_order_events",
     "deptype": "n"
   },
   {
@@ -106,17 +106,17 @@
   },
   {
     "object": "constraint command_results_travel_event_id_travel_id_actor_user_id_ev_fkey on table legacy_custody.command_results",
-    "reference": "column travel_order_id of table travel_order_events",
+    "reference": "column travel_order_id of table public.travel_order_events",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_travel_event_id_travel_id_actor_user_id_ev_fkey on table legacy_custody.command_results",
-    "reference": "index n03_travel_event_tuple",
+    "reference": "index public.n03_travel_event_tuple",
     "deptype": "n"
   },
   {
     "object": "constraint command_results_travel_id_fkey on table legacy_custody.command_results",
-    "reference": "column id of table travel_orders",
+    "reference": "column id of table public.travel_orders",
     "deptype": "n"
   },
   {
@@ -126,7 +126,7 @@
   },
   {
     "object": "constraint command_results_travel_id_fkey on table legacy_custody.command_results",
-    "reference": "index travel_orders_pkey",
+    "reference": "index public.travel_orders_pkey",
     "deptype": "n"
   },
   {
@@ -315,188 +315,188 @@
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_actor_user_id_foreign on table correspondence_events",
-    "reference": "column actor_user_id of table correspondence_events",
+    "object": "constraint correspondence_events_actor_user_id_foreign on table public.correspondence_events",
+    "reference": "column actor_user_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_events_actor_user_id_foreign on table correspondence_events",
-    "reference": "column id of table users",
+    "object": "constraint correspondence_events_actor_user_id_foreign on table public.correspondence_events",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_actor_user_id_foreign on table correspondence_events",
-    "reference": "index users_pkey",
+    "object": "constraint correspondence_events_actor_user_id_foreign on table public.correspondence_events",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_correspondence_record_id_foreign on table correspondence_events",
-    "reference": "column correspondence_record_id of table correspondence_events",
+    "object": "constraint correspondence_events_correspondence_record_id_foreign on table public.correspondence_events",
+    "reference": "column correspondence_record_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_events_correspondence_record_id_foreign on table correspondence_events",
-    "reference": "column id of table correspondence_records",
+    "object": "constraint correspondence_events_correspondence_record_id_foreign on table public.correspondence_events",
+    "reference": "column id of table public.correspondence_records",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_correspondence_record_id_foreign on table correspondence_events",
-    "reference": "index correspondence_records_pkey",
+    "object": "constraint correspondence_events_correspondence_record_id_foreign on table public.correspondence_events",
+    "reference": "index public.correspondence_records_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table correspondence_events",
-    "reference": "column id of table integration_clients",
+    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table public.correspondence_events",
+    "reference": "column id of table public.integration_clients",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table correspondence_events",
-    "reference": "column integration_client_actor_id of table correspondence_events",
+    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table public.correspondence_events",
+    "reference": "column integration_client_actor_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table correspondence_events",
-    "reference": "index integration_clients_pkey",
+    "object": "constraint correspondence_events_integration_client_actor_id_foreign on table public.correspondence_events",
+    "reference": "index public.integration_clients_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_office_department_id_foreign on table correspondence_events",
-    "reference": "column id of table departments",
+    "object": "constraint correspondence_events_office_department_id_foreign on table public.correspondence_events",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_office_department_id_foreign on table correspondence_events",
-    "reference": "column office_department_id of table correspondence_events",
+    "object": "constraint correspondence_events_office_department_id_foreign on table public.correspondence_events",
+    "reference": "column office_department_id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_events_office_department_id_foreign on table correspondence_events",
-    "reference": "index departments_pkey",
+    "object": "constraint correspondence_events_office_department_id_foreign on table public.correspondence_events",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_events_pkey on table correspondence_events",
-    "reference": "column id of table correspondence_events",
+    "object": "constraint correspondence_events_pkey on table public.correspondence_events",
+    "reference": "column id of table public.correspondence_events",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table correspondence_records",
-    "reference": "column action_started_by_user_id of table correspondence_records",
+    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column action_started_by_user_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table correspondence_records",
-    "reference": "column id of table users",
+    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table correspondence_records",
-    "reference": "index users_pkey",
+    "object": "constraint correspondence_records_action_started_by_user_id_foreign on table public.correspondence_records",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_classified_by_user_id_foreign on table correspondence_records",
-    "reference": "column classified_by_user_id of table correspondence_records",
+    "object": "constraint correspondence_records_classified_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column classified_by_user_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_classified_by_user_id_foreign on table correspondence_records",
-    "reference": "column id of table users",
+    "object": "constraint correspondence_records_classified_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_classified_by_user_id_foreign on table correspondence_records",
-    "reference": "index users_pkey",
+    "object": "constraint correspondence_records_classified_by_user_id_foreign on table public.correspondence_records",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_external_reference_no_unique on table correspondence_records",
-    "reference": "column external_reference_no of table correspondence_records",
+    "object": "constraint correspondence_records_external_reference_no_unique on table public.correspondence_records",
+    "reference": "column external_reference_no of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_municipal_reference_no_unique on table correspondence_records",
-    "reference": "column municipal_reference_no of table correspondence_records",
+    "object": "constraint correspondence_records_municipal_reference_no_unique on table public.correspondence_records",
+    "reference": "column municipal_reference_no of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_pkey on table correspondence_records",
-    "reference": "column id of table correspondence_records",
+    "object": "constraint correspondence_records_pkey on table public.correspondence_records",
+    "reference": "column id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_public_id_unique on table correspondence_records",
-    "reference": "column public_id of table correspondence_records",
+    "object": "constraint correspondence_records_public_id_unique on table public.correspondence_records",
+    "reference": "column public_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_receiving_department_id_foreign on table correspondence_records",
-    "reference": "column id of table departments",
+    "object": "constraint correspondence_records_receiving_department_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.departments",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_receiving_department_id_foreign on table correspondence_records",
-    "reference": "column receiving_department_id of table correspondence_records",
+    "object": "constraint correspondence_records_receiving_department_id_foreign on table public.correspondence_records",
+    "reference": "column receiving_department_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_receiving_department_id_foreign on table correspondence_records",
-    "reference": "index departments_pkey",
+    "object": "constraint correspondence_records_receiving_department_id_foreign on table public.correspondence_records",
+    "reference": "index public.departments_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table correspondence_records",
-    "reference": "column id of table integration_client_credentials",
+    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table public.correspondence_records",
+    "reference": "column id of table public.integration_client_credentials",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table correspondence_records",
-    "reference": "column receiving_integration_client_credential_id of table correspondence_records",
+    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table public.correspondence_records",
+    "reference": "column receiving_integration_client_credential_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table correspondence_records",
-    "reference": "index integration_client_credentials_pkey",
+    "object": "constraint correspondence_records_receiving_integration_client_credential_ on table public.correspondence_records",
+    "reference": "index public.integration_client_credentials_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table correspondence_records",
-    "reference": "column id of table integration_clients",
+    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.integration_clients",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table correspondence_records",
-    "reference": "column receiving_integration_client_id of table correspondence_records",
+    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table public.correspondence_records",
+    "reference": "column receiving_integration_client_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table correspondence_records",
-    "reference": "index integration_clients_pkey",
+    "object": "constraint correspondence_records_receiving_integration_client_id_foreign on table public.correspondence_records",
+    "reference": "index public.integration_clients_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_registered_by_user_id_foreign on table correspondence_records",
-    "reference": "column id of table users",
+    "object": "constraint correspondence_records_registered_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_registered_by_user_id_foreign on table correspondence_records",
-    "reference": "column registered_by_user_id of table correspondence_records",
+    "object": "constraint correspondence_records_registered_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column registered_by_user_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "constraint correspondence_records_registered_by_user_id_foreign on table correspondence_records",
-    "reference": "index users_pkey",
+    "object": "constraint correspondence_records_registered_by_user_id_foreign on table public.correspondence_records",
+    "reference": "index public.users_pkey",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_routed_by_user_id_foreign on table correspondence_records",
-    "reference": "column id of table users",
+    "object": "constraint correspondence_records_routed_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column id of table public.users",
     "deptype": "n"
   },
   {
-    "object": "constraint correspondence_records_routed_by_user_id_foreign on table correspondence_records",
-    "reference": "column routed_by_user_id of table correspondence_records",
+    "object": "constraint correspondence_records_routed_by_user_id_foreign on table public.correspondence_records",
+    "reference": "column routed_by_user_id of table public.correspondence_records",
     "deptype": "a"
   }
 ]

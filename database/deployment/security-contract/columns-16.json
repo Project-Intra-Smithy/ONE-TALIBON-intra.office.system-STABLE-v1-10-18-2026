@@ -257,7 +257,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('prototype_messages_id_seq'::regclass)",
+    "default_expression": "nextval('public.prototype_messages_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -437,7 +437,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('staff_activation_invitations_id_seq'::regclass)",
+    "default_expression": "nextval('public.staff_activation_invitations_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -626,7 +626,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('task_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.task_events_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -761,7 +761,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('tasks_id_seq'::regclass)",
+    "default_expression": "nextval('public.tasks_id_seq'::regclass)",
     "acl": []
   },
   {

@@ -1,149 +1,5 @@
 [
   {
-    "name": "kirion_plan_custody_append_only_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_append_only_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody evidence is append-only' USING ERRCODE = '23514';\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_custody_generation_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_generation_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody generation metadata is immutable' USING ERRCODE = '23514';\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_custody_scan_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_scan_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    generation record;\nBEGIN\n    SELECT sha256, size_bytes, custody_state INTO generation\n      FROM public.plan_custody_generations\n     WHERE id = NEW.plan_custody_generation_id;\n    IF NOT FOUND\n       OR generation.custody_state IS DISTINCT FROM 'QUARANTINED'\n       OR generation.sha256 IS DISTINCT FROM NEW.scanned_sha256\n       OR generation.size_bytes IS DISTINCT FROM NEW.scanned_size_bytes\n    THEN\n        RAISE EXCEPTION 'scanner evidence must pin the quarantined generation digest and size'\n            USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_document_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_document_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF TG_OP = 'DELETE' THEN\n        IF OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n        THEN\n            RAISE EXCEPTION 'sealed Plan document cannot be deleted' USING ERRCODE = '23514';\n        END IF;\n        RETURN OLD;\n    END IF;\n    IF TG_OP = 'UPDATE' AND (\n        OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n    ) THEN\n        IF to_jsonb(NEW) IS DISTINCT FROM to_jsonb(OLD) THEN\n            RAISE EXCEPTION 'sealed Plan document is immutable' USING ERRCODE = '23514';\n        END IF;\n        RETURN NEW;\n    END IF;\n    IF NEW.security_domain = 'EVER_PLAN' AND EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires zero generic document links' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_generic_link_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_generic_link_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    affected_id bigint;\n    candidate record;\nBEGIN\n    -- A generic Document must never attach to a Plan-family/edition morph,\n    -- even when it has not been sealed as EVER_PLAN. Review custom aliases at G1.\n    IF TG_OP IN ('INSERT', 'UPDATE') AND (\n        right(NEW.linkable_type, 11) = 'PlanEdition'\n        OR right(NEW.linkable_type, 10) = 'PlanFamily'\n        OR lower(NEW.linkable_type) IN ('plan_edition', 'plan_family', 'planedition', 'planfamily')\n    ) THEN\n        RAISE EXCEPTION 'Plan associations must use typed bindings only' USING ERRCODE = '23514';\n    END IF;\n\n    FOR affected_id IN\n        SELECT DISTINCT doc_id FROM (\n            SELECT CASE WHEN TG_OP IN ('UPDATE','DELETE') THEN OLD.document_id ELSE NULL END AS doc_id\n            UNION ALL\n            SELECT CASE WHEN TG_OP IN ('INSERT','UPDATE') THEN NEW.document_id ELSE NULL END\n        ) AS ids WHERE doc_id IS NOT NULL ORDER BY doc_id\n    LOOP\n        SELECT id, security_domain INTO candidate FROM public.documents\n            WHERE id = affected_id FOR UPDATE;\n        IF FOUND AND (candidate.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = affected_id))\n        THEN\n            RAISE EXCEPTION 'generic document link forbidden for sealed Plan' USING ERRCODE = '23514';\n        END IF;\n    END LOOP;\n    IF TG_OP = 'DELETE' THEN\n        RETURN OLD;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_origin_receipt_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_origin_receipt_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'Plan origin is append-only' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN' OR EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires a sealed isolated document' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_stamp_origin()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_stamp_origin()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF NEW.security_domain = 'EVER_PLAN' THEN\n        INSERT INTO public.plan_document_origin_receipts (document_id, origin)\n        VALUES (NEW.id, 'EVER_PLAN') ON CONFLICT (document_id) DO NOTHING;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
-    "name": "kirion_plan_typed_binding_guard()",
-    "owner": "kirion_g1b_owner",
-    "prosecdef": false,
-    "proleakproof": false,
-    "proconfig": "{\"search_path=pg_catalog, public\"}",
-    "provolatile": "v",
-    "proparallel": "u",
-    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_typed_binding_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'typed Plan association cannot be mutated by ordinary DML' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN'\n        OR NOT EXISTS (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = NEW.document_id)\n        OR EXISTS (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'typed binding requires exclusive sealed Plan provenance' USING ERRCODE = '23514';\n    END IF;\n    IF NEW.binding_state IS DISTINCT FROM 'QUARANTINED' THEN\n        RAISE EXCEPTION 'protected Plan publication remains disabled' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
-    "acl": [
-      [
-        "kirion_g1b_owner",
-        "kirion_g1b_owner",
-        "EXECUTE",
-        false
-      ]
-    ]
-  },
-  {
     "name": "legacy_custody.command_complete()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
@@ -336,7 +192,151 @@
     ]
   },
   {
-    "name": "ops009_deny_exception_mutation()",
+    "name": "public.kirion_plan_custody_append_only_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_append_only_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody evidence is append-only' USING ERRCODE = '23514';\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_custody_generation_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_generation_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    RAISE EXCEPTION 'Plan custody generation metadata is immutable' USING ERRCODE = '23514';\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_custody_scan_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_custody_scan_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    generation record;\nBEGIN\n    SELECT sha256, size_bytes, custody_state INTO generation\n      FROM public.plan_custody_generations\n     WHERE id = NEW.plan_custody_generation_id;\n    IF NOT FOUND\n       OR generation.custody_state IS DISTINCT FROM 'QUARANTINED'\n       OR generation.sha256 IS DISTINCT FROM NEW.scanned_sha256\n       OR generation.size_bytes IS DISTINCT FROM NEW.scanned_size_bytes\n    THEN\n        RAISE EXCEPTION 'scanner evidence must pin the quarantined generation digest and size'\n            USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_document_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_document_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF TG_OP = 'DELETE' THEN\n        IF OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n        THEN\n            RAISE EXCEPTION 'sealed Plan document cannot be deleted' USING ERRCODE = '23514';\n        END IF;\n        RETURN OLD;\n    END IF;\n    IF TG_OP = 'UPDATE' AND (\n        OLD.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = OLD.id)\n    ) THEN\n        IF to_jsonb(NEW) IS DISTINCT FROM to_jsonb(OLD) THEN\n            RAISE EXCEPTION 'sealed Plan document is immutable' USING ERRCODE = '23514';\n        END IF;\n        RETURN NEW;\n    END IF;\n    IF NEW.security_domain = 'EVER_PLAN' AND EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires zero generic document links' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_generic_link_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_generic_link_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    affected_id bigint;\n    candidate record;\nBEGIN\n    -- A generic Document must never attach to a Plan-family/edition morph,\n    -- even when it has not been sealed as EVER_PLAN. Review custom aliases at G1.\n    IF TG_OP IN ('INSERT', 'UPDATE') AND (\n        right(NEW.linkable_type, 11) = 'PlanEdition'\n        OR right(NEW.linkable_type, 10) = 'PlanFamily'\n        OR lower(NEW.linkable_type) IN ('plan_edition', 'plan_family', 'planedition', 'planfamily')\n    ) THEN\n        RAISE EXCEPTION 'Plan associations must use typed bindings only' USING ERRCODE = '23514';\n    END IF;\n\n    FOR affected_id IN\n        SELECT DISTINCT doc_id FROM (\n            SELECT CASE WHEN TG_OP IN ('UPDATE','DELETE') THEN OLD.document_id ELSE NULL END AS doc_id\n            UNION ALL\n            SELECT CASE WHEN TG_OP IN ('INSERT','UPDATE') THEN NEW.document_id ELSE NULL END\n        ) AS ids WHERE doc_id IS NOT NULL ORDER BY doc_id\n    LOOP\n        SELECT id, security_domain INTO candidate FROM public.documents\n            WHERE id = affected_id FOR UPDATE;\n        IF FOUND AND (candidate.security_domain = 'EVER_PLAN' OR EXISTS\n            (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = affected_id))\n        THEN\n            RAISE EXCEPTION 'generic document link forbidden for sealed Plan' USING ERRCODE = '23514';\n        END IF;\n    END LOOP;\n    IF TG_OP = 'DELETE' THEN\n        RETURN OLD;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_origin_receipt_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_origin_receipt_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'Plan origin is append-only' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN' OR EXISTS\n        (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'Plan origin requires a sealed isolated document' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_stamp_origin()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_stamp_origin()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nBEGIN\n    IF NEW.security_domain = 'EVER_PLAN' THEN\n        INSERT INTO public.plan_document_origin_receipts (document_id, origin)\n        VALUES (NEW.id, 'EVER_PLAN') ON CONFLICT (document_id) DO NOTHING;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.kirion_plan_typed_binding_guard()",
+    "owner": "kirion_g1b_owner",
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": "{\"search_path=pg_catalog, public\"}",
+    "provolatile": "v",
+    "proparallel": "u",
+    "definition": "CREATE OR REPLACE FUNCTION public.kirion_plan_typed_binding_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog', 'public'\nAS $function$\nDECLARE\n    domain_value text;\nBEGIN\n    IF TG_OP <> 'INSERT' THEN\n        RAISE EXCEPTION 'typed Plan association cannot be mutated by ordinary DML' USING ERRCODE = '23514';\n    END IF;\n    SELECT security_domain INTO domain_value FROM public.documents\n        WHERE id = NEW.document_id FOR UPDATE;\n    IF domain_value IS DISTINCT FROM 'EVER_PLAN'\n        OR NOT EXISTS (SELECT 1 FROM public.plan_document_origin_receipts WHERE document_id = NEW.document_id)\n        OR EXISTS (SELECT 1 FROM public.document_links WHERE document_id = NEW.document_id)\n    THEN\n        RAISE EXCEPTION 'typed binding requires exclusive sealed Plan provenance' USING ERRCODE = '23514';\n    END IF;\n    IF NEW.binding_state IS DISTINCT FROM 'QUARANTINED' THEN\n        RAISE EXCEPTION 'protected Plan publication remains disabled' USING ERRCODE = '23514';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.ops009_deny_exception_mutation()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -354,7 +354,7 @@
     ]
   },
   {
-    "name": "ops009_guard_close_notice()",
+    "name": "public.ops009_guard_close_notice()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -372,7 +372,7 @@
     ]
   },
   {
-    "name": "ops009_guard_delivery_action()",
+    "name": "public.ops009_guard_delivery_action()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -390,7 +390,7 @@
     ]
   },
   {
-    "name": "ops009_guard_delivery_exception()",
+    "name": "public.ops009_guard_delivery_exception()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -408,7 +408,7 @@
     ]
   },
   {
-    "name": "ops009_verify_close_audit()",
+    "name": "public.ops009_verify_close_audit()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -426,7 +426,7 @@
     ]
   },
   {
-    "name": "planning_ppa_identifiers_immutable()",
+    "name": "public.planning_ppa_identifiers_immutable()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,
@@ -444,7 +444,7 @@
     ]
   },
   {
-    "name": "planning_reconciliation_immutable()",
+    "name": "public.planning_reconciliation_immutable()",
     "owner": "kirion_g1b_owner",
     "prosecdef": false,
     "proleakproof": false,

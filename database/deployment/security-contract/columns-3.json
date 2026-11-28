@@ -50,7 +50,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_maintenance_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_maintenance_records_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -185,7 +185,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('asset_reconciliations_id_seq'::regclass)",
+    "default_expression": "nextval('public.asset_reconciliations_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -365,7 +365,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('assets_id_seq'::regclass)",
+    "default_expression": "nextval('public.assets_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -608,7 +608,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('attendance_logs_id_seq'::regclass)",
+    "default_expression": "nextval('public.attendance_logs_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -970,7 +970,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('audit_logs_id_seq'::regclass)",
+    "default_expression": "nextval('public.audit_logs_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",

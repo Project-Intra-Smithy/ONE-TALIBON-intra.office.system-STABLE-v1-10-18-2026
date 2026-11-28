@@ -1,502 +1,502 @@
 [
   {
-    "object": "index dtr_daily_summaries_pkey",
-    "reference": "constraint dtr_daily_summaries_pkey on table dtr_daily_summaries",
+    "object": "index public.calendar_events_user_id_starts_at_index",
+    "reference": "column starts_at of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.calendar_events_user_id_starts_at_index",
+    "reference": "column user_id of table public.calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_correlation_id_index",
+    "reference": "column correlation_id of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_correspondence_record_id_occurred_at_inde",
+    "reference": "column correspondence_record_id of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_correspondence_record_id_occurred_at_inde",
+    "reference": "column occurred_at of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_event_index",
+    "reference": "column event of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_occurred_at_index",
+    "reference": "column occurred_at of table public.correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.correspondence_events_pkey",
+    "reference": "constraint correspondence_events_pkey on table public.correspondence_events",
     "deptype": "i"
   },
   {
-    "object": "index dtr_daily_summaries_source_status_index",
-    "reference": "column source_status of table dtr_daily_summaries",
+    "object": "index public.correspondence_records_classification_index",
+    "reference": "column classification of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index dtr_daily_summaries_work_date_index",
-    "reference": "column work_date of table dtr_daily_summaries",
-    "deptype": "a"
-  },
-  {
-    "object": "index dtr_periods_period_end_index",
-    "reference": "column period_end of table dtr_periods",
-    "deptype": "a"
-  },
-  {
-    "object": "index dtr_periods_period_start_index",
-    "reference": "column period_start of table dtr_periods",
-    "deptype": "a"
-  },
-  {
-    "object": "index dtr_periods_period_start_period_end_unique",
-    "reference": "constraint dtr_periods_period_start_period_end_unique on table dtr_periods",
+    "object": "index public.correspondence_records_external_reference_no_unique",
+    "reference": "constraint correspondence_records_external_reference_no_unique on table public.correspondence_records",
     "deptype": "i"
   },
   {
-    "object": "index dtr_periods_pkey",
-    "reference": "constraint dtr_periods_pkey on table dtr_periods",
-    "deptype": "i"
-  },
-  {
-    "object": "index dtr_periods_status_index",
-    "reference": "column status of table dtr_periods",
+    "object": "index public.correspondence_records_lifecycle_state_index",
+    "reference": "column lifecycle_state of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_development_records_employee_id_record_type_index",
-    "reference": "column employee_id of table employee_development_records",
+    "object": "index public.correspondence_records_municipal_reference_no_unique",
+    "reference": "constraint correspondence_records_municipal_reference_no_unique on table public.correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.correspondence_records_originating_external_reference_index",
+    "reference": "column originating_external_reference of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_development_records_employee_id_record_type_index",
-    "reference": "column record_type of table employee_development_records",
+    "object": "index public.correspondence_records_pkey",
+    "reference": "constraint correspondence_records_pkey on table public.correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.correspondence_records_public_id_unique",
+    "reference": "constraint correspondence_records_public_id_unique on table public.correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.correspondence_records_received_at_index",
+    "reference": "column received_at of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_development_records_expires_at_index",
-    "reference": "column expires_at of table employee_development_records",
+    "object": "index public.correspondence_records_receiving_department_id_lifecycle_state_",
+    "reference": "column lifecycle_state of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_development_records_pkey",
-    "reference": "constraint employee_development_records_pkey on table employee_development_records",
-    "deptype": "i"
-  },
-  {
-    "object": "index employee_development_records_record_type_index",
-    "reference": "column record_type of table employee_development_records",
+    "object": "index public.correspondence_records_receiving_department_id_lifecycle_state_",
+    "reference": "column receiving_department_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_development_records_status_index",
-    "reference": "column status of table employee_development_records",
+    "object": "index public.correspondence_records_receiving_integration_client_id_lifecycl",
+    "reference": "column lifecycle_state of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_access_grants_expires_at_index",
-    "reference": "column expires_at of table employee_health_access_grants",
+    "object": "index public.correspondence_records_receiving_integration_client_id_lifecycl",
+    "reference": "column receiving_integration_client_id of table public.correspondence_records",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_access_grants_pkey",
-    "reference": "constraint employee_health_access_grants_pkey on table employee_health_access_grants",
+    "object": "index public.correspondence_records_workflow_transaction_id_unique",
+    "reference": "constraint correspondence_records_workflow_transaction_id_unique on table public.correspondence_records",
     "deptype": "i"
   },
   {
-    "object": "index employee_health_access_grants_revoked_at_index",
-    "reference": "column revoked_at of table employee_health_access_grants",
+    "object": "index public.correspondence_reference_counters_pkey",
+    "reference": "constraint correspondence_reference_counters_pkey on table public.correspondence_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.departments_branch_index",
+    "reference": "column branch of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_records_employee_id_record_type_index",
-    "reference": "column employee_id of table employee_health_records",
+    "object": "index public.departments_code_unique",
+    "reference": "constraint departments_code_unique on table public.departments",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.departments_is_active_index",
+    "reference": "column is_active of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_records_employee_id_record_type_index",
-    "reference": "column record_type of table employee_health_records",
+    "object": "index public.departments_is_routable_index",
+    "reference": "column is_routable of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_records_pkey",
-    "reference": "constraint employee_health_records_pkey on table employee_health_records",
-    "deptype": "i"
-  },
-  {
-    "object": "index employee_health_records_record_type_index",
-    "reference": "column record_type of table employee_health_records",
+    "object": "index public.departments_office_type_index",
+    "reference": "column office_type of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_records_status_index",
-    "reference": "column status of table employee_health_records",
+    "object": "index public.departments_pkey",
+    "reference": "constraint departments_pkey on table public.departments",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.departments_sort_order_index",
+    "reference": "column sort_order of table public.departments",
     "deptype": "a"
   },
   {
-    "object": "index employee_health_records_valid_until_index",
-    "reference": "column valid_until of table employee_health_records",
+    "object": "index public.designated_planning_staff_pkey",
+    "reference": "constraint designated_planning_staff_pkey on table public.designated_planning_staff",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.designated_planning_staff_user_id_revoked_at_index",
+    "reference": "column revoked_at of table public.designated_planning_staff",
     "deptype": "a"
   },
   {
-    "object": "index employee_movement_tasks_due_at_index",
-    "reference": "column due_at of table employee_movement_tasks",
+    "object": "index public.designated_planning_staff_user_id_revoked_at_index",
+    "reference": "column user_id of table public.designated_planning_staff",
     "deptype": "a"
   },
   {
-    "object": "index employee_movement_tasks_employee_movement_id_task_key_unique",
-    "reference": "constraint employee_movement_tasks_employee_movement_id_task_key_unique on table employee_movement_tasks",
+    "object": "index public.development_plans_code_unique",
+    "reference": "constraint development_plans_code_unique on table public.development_plans",
     "deptype": "i"
   },
   {
-    "object": "index employee_movement_tasks_is_required_index",
-    "reference": "column is_required of table employee_movement_tasks",
+    "object": "index public.development_plans_pkey",
+    "reference": "constraint development_plans_pkey on table public.development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.development_plans_plan_key_unique",
+    "reference": "constraint development_plans_plan_key_unique on table public.development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.document_links_linkable_type_linkable_id_index",
+    "reference": "column linkable_id of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "index employee_movement_tasks_pkey",
-    "reference": "constraint employee_movement_tasks_pkey on table employee_movement_tasks",
-    "deptype": "i"
-  },
-  {
-    "object": "index employee_movement_tasks_status_index",
-    "reference": "column status of table employee_movement_tasks",
+    "object": "index public.document_links_linkable_type_linkable_id_index",
+    "reference": "column linkable_type of table public.document_links",
     "deptype": "a"
   },
   {
-    "object": "index employee_movements_effective_date_index",
-    "reference": "column effective_date of table employee_movements",
+    "object": "index public.document_links_pkey",
+    "reference": "constraint document_links_pkey on table public.document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.document_links_unique",
+    "reference": "constraint document_links_unique on table public.document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.documents_classification_index",
+    "reference": "column classification of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "index employee_movements_movement_type_index",
-    "reference": "column movement_type of table employee_movements",
+    "object": "index public.documents_document_type_index",
+    "reference": "column document_type of table public.documents",
     "deptype": "a"
   },
   {
-    "object": "index employee_movements_pkey",
-    "reference": "constraint employee_movements_pkey on table employee_movements",
+    "object": "index public.documents_pkey",
+    "reference": "constraint documents_pkey on table public.documents",
     "deptype": "i"
   },
   {
-    "object": "index employee_movements_status_index",
-    "reference": "column status of table employee_movements",
+    "object": "index public.documents_public_id_unique",
+    "reference": "constraint documents_public_id_unique on table public.documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.dtr_daily_employee_date_unique",
+    "reference": "constraint dtr_daily_employee_date_unique on table public.dtr_daily_summaries",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.dtr_daily_summaries_employee_id_work_date_index",
+    "reference": "column employee_id of table public.dtr_daily_summaries",
     "deptype": "a"
   },
   {
-    "object": "index employees_biometric_external_id_index",
-    "reference": "column biometric_external_id of table employees",
+    "object": "index public.dtr_daily_summaries_employee_id_work_date_index",
+    "reference": "column work_date of table public.dtr_daily_summaries",
     "deptype": "a"
   },
   {
-    "object": "index employees_contract_end_date_index",
-    "reference": "column contract_end_date of table employees",
+    "object": "index public.dtr_daily_summaries_pkey",
+    "reference": "constraint dtr_daily_summaries_pkey on table public.dtr_daily_summaries",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.dtr_daily_summaries_source_status_index",
+    "reference": "column source_status of table public.dtr_daily_summaries",
     "deptype": "a"
   },
   {
-    "object": "index employees_employee_number_unique",
-    "reference": "constraint employees_employee_number_unique on table employees",
-    "deptype": "i"
-  },
-  {
-    "object": "index employees_employment_status_index",
-    "reference": "column employment_status of table employees",
+    "object": "index public.dtr_daily_summaries_work_date_index",
+    "reference": "column work_date of table public.dtr_daily_summaries",
     "deptype": "a"
   },
   {
-    "object": "index employees_employment_type_index",
-    "reference": "column employment_type of table employees",
+    "object": "index public.dtr_periods_period_end_index",
+    "reference": "column period_end of table public.dtr_periods",
     "deptype": "a"
   },
   {
-    "object": "index employees_pkey",
-    "reference": "constraint employees_pkey on table employees",
-    "deptype": "i"
-  },
-  {
-    "object": "index employees_user_id_unique",
-    "reference": "constraint employees_user_id_unique on table employees",
-    "deptype": "i"
-  },
-  {
-    "object": "index employees_work_email_index",
-    "reference": "column work_email of table employees",
+    "object": "index public.dtr_periods_period_start_index",
+    "reference": "column period_start of table public.dtr_periods",
     "deptype": "a"
   },
   {
-    "object": "index health_grant_lookup_idx",
-    "reference": "column employee_id of table employee_health_access_grants",
+    "object": "index public.dtr_periods_period_start_period_end_unique",
+    "reference": "constraint dtr_periods_period_start_period_end_unique on table public.dtr_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.dtr_periods_pkey",
+    "reference": "constraint dtr_periods_pkey on table public.dtr_periods",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.dtr_periods_status_index",
+    "reference": "column status of table public.dtr_periods",
     "deptype": "a"
   },
   {
-    "object": "index health_grant_lookup_idx",
-    "reference": "column revoked_at of table employee_health_access_grants",
+    "object": "index public.employee_development_records_employee_id_record_type_index",
+    "reference": "column employee_id of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "index health_grant_lookup_idx",
-    "reference": "column user_id of table employee_health_access_grants",
+    "object": "index public.employee_development_records_employee_id_record_type_index",
+    "reference": "column record_type of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "index initial_admin_bootstraps_pkey",
-    "reference": "constraint initial_admin_bootstraps_pkey on table initial_admin_bootstraps",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_client_credentials_expires_at_index",
-    "reference": "column expires_at of table integration_client_credentials",
+    "object": "index public.employee_development_records_expires_at_index",
+    "reference": "column expires_at of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "index integration_client_credentials_integration_client_id_revoked_at",
-    "reference": "column integration_client_id of table integration_client_credentials",
+    "object": "index public.employee_development_records_pkey",
+    "reference": "constraint employee_development_records_pkey on table public.employee_development_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.employee_development_records_record_type_index",
+    "reference": "column record_type of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "index integration_client_credentials_integration_client_id_revoked_at",
-    "reference": "column revoked_at of table integration_client_credentials",
+    "object": "index public.employee_development_records_status_index",
+    "reference": "column status of table public.employee_development_records",
     "deptype": "a"
   },
   {
-    "object": "index integration_client_credentials_pkey",
-    "reference": "constraint integration_client_credentials_pkey on table integration_client_credentials",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_client_credentials_public_id_unique",
-    "reference": "constraint integration_client_credentials_public_id_unique on table integration_client_credentials",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_client_credentials_revoked_at_index",
-    "reference": "column revoked_at of table integration_client_credentials",
+    "object": "index public.employee_health_access_grants_expires_at_index",
+    "reference": "column expires_at of table public.employee_health_access_grants",
     "deptype": "a"
   },
   {
-    "object": "index integration_clients_is_active_index",
-    "reference": "column is_active of table integration_clients",
+    "object": "index public.employee_health_access_grants_pkey",
+    "reference": "constraint employee_health_access_grants_pkey on table public.employee_health_access_grants",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.employee_health_access_grants_revoked_at_index",
+    "reference": "column revoked_at of table public.employee_health_access_grants",
     "deptype": "a"
   },
   {
-    "object": "index integration_clients_pkey",
-    "reference": "constraint integration_clients_pkey on table integration_clients",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_clients_public_id_unique",
-    "reference": "constraint integration_clients_public_id_unique on table integration_clients",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_idempotency_records_pkey",
-    "reference": "constraint integration_idempotency_records_pkey on table integration_idempotency_records",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_idempotency_records_status_index",
-    "reference": "column status of table integration_idempotency_records",
+    "object": "index public.employee_health_records_employee_id_record_type_index",
+    "reference": "column employee_id of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "index integration_idempotency_scope_unique",
-    "reference": "constraint integration_idempotency_scope_unique on table integration_idempotency_records",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_proof_writes_pkey",
-    "reference": "constraint integration_proof_writes_pkey on table integration_proof_writes",
-    "deptype": "i"
-  },
-  {
-    "object": "index integration_proof_writes_public_id_unique",
-    "reference": "constraint integration_proof_writes_public_id_unique on table integration_proof_writes",
-    "deptype": "i"
-  },
-  {
-    "object": "index leave_credit_accounts_employee_id_leave_type_id_unique",
-    "reference": "constraint leave_credit_accounts_employee_id_leave_type_id_unique on table leave_credit_accounts",
-    "deptype": "i"
-  },
-  {
-    "object": "index leave_credit_accounts_pkey",
-    "reference": "constraint leave_credit_accounts_pkey on table leave_credit_accounts",
-    "deptype": "i"
-  },
-  {
-    "object": "index leave_credit_transactions_created_at_index",
-    "reference": "column created_at of table leave_credit_transactions",
+    "object": "index public.employee_health_records_employee_id_record_type_index",
+    "reference": "column record_type of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "index leave_credit_transactions_pkey",
-    "reference": "constraint leave_credit_transactions_pkey on table leave_credit_transactions",
+    "object": "index public.employee_health_records_pkey",
+    "reference": "constraint employee_health_records_pkey on table public.employee_health_records",
     "deptype": "i"
   },
   {
-    "object": "index leave_requests_employee_id_status_index",
-    "reference": "column employee_id of table leave_requests",
+    "object": "index public.employee_health_records_record_type_index",
+    "reference": "column record_type of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "index leave_requests_employee_id_status_index",
-    "reference": "column status of table leave_requests",
+    "object": "index public.employee_health_records_status_index",
+    "reference": "column status of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "index leave_requests_pkey",
-    "reference": "constraint leave_requests_pkey on table leave_requests",
-    "deptype": "i"
-  },
-  {
-    "object": "index leave_requests_status_index",
-    "reference": "column status of table leave_requests",
+    "object": "index public.employee_health_records_valid_until_index",
+    "reference": "column valid_until of table public.employee_health_records",
     "deptype": "a"
   },
   {
-    "object": "index leave_types_code_unique",
-    "reference": "constraint leave_types_code_unique on table leave_types",
-    "deptype": "i"
-  },
-  {
-    "object": "index leave_types_is_active_index",
-    "reference": "column is_active of table leave_types",
+    "object": "index public.employee_movement_tasks_due_at_index",
+    "reference": "column due_at of table public.employee_movement_tasks",
     "deptype": "a"
   },
   {
-    "object": "index leave_types_pkey",
-    "reference": "constraint leave_types_pkey on table leave_types",
+    "object": "index public.employee_movement_tasks_employee_movement_id_task_key_unique",
+    "reference": "constraint employee_movement_tasks_employee_movement_id_task_key_unique on table public.employee_movement_tasks",
     "deptype": "i"
   },
   {
-    "object": "index legacy_custody.bindings_generation_id_key",
-    "reference": "constraint bindings_generation_id_key on table legacy_custody.bindings",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.bindings_operation_id_ordinal_key",
-    "reference": "constraint bindings_operation_id_ordinal_key on table legacy_custody.bindings",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.bindings_pkey",
-    "reference": "constraint bindings_pkey on table legacy_custody.bindings",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.bindings_upload_audit_id_key",
-    "reference": "constraint bindings_upload_audit_id_key on table legacy_custody.bindings",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.classification_events_audit_log_id_key",
-    "reference": "constraint classification_events_audit_log_id_key on table legacy_custody.classification_events",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.classification_events_pkey",
-    "reference": "constraint classification_events_pkey on table legacy_custody.classification_events",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.command_results_pkey",
-    "reference": "constraint command_results_pkey on table legacy_custody.command_results",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.compensation_outcomes_pkey",
-    "reference": "constraint compensation_outcomes_pkey on table legacy_custody.compensation_outcomes",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.compensation_outcomes_tombstone_id_key",
-    "reference": "constraint compensation_outcomes_tombstone_id_key on table legacy_custody.compensation_outcomes",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.compensation_tombstones_generation_id_key",
-    "reference": "constraint compensation_tombstones_generation_id_key on table legacy_custody.compensation_tombstones",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.compensation_tombstones_pkey",
-    "reference": "constraint compensation_tombstones_pkey on table legacy_custody.compensation_tombstones",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.generations_namespace_id_locator_key",
-    "reference": "constraint generations_namespace_id_locator_key on table legacy_custody.generations",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.generations_namespace_id_provider_object_identity_key",
-    "reference": "constraint generations_namespace_id_provider_object_identity_key on table legacy_custody.generations",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.generations_operation_id_ordinal_generation_id_key",
-    "reference": "constraint generations_operation_id_ordinal_generation_id_key on table legacy_custody.generations",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.generations_pkey",
-    "reference": "constraint generations_pkey on table legacy_custody.generations",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.generations_staging_receipt_id_key",
-    "reference": "constraint generations_staging_receipt_id_key on table legacy_custody.generations",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.n03_classification_events_doc_occurred",
-    "reference": "column classification_event_id of table legacy_custody.classification_events",
+    "object": "index public.employee_movement_tasks_is_required_index",
+    "reference": "column is_required of table public.employee_movement_tasks",
     "deptype": "a"
   },
   {
-    "object": "index legacy_custody.n03_classification_events_doc_occurred",
-    "reference": "column document_id of table legacy_custody.classification_events",
-    "deptype": "a"
-  },
-  {
-    "object": "index legacy_custody.n03_classification_events_doc_occurred",
-    "reference": "column occurred_at of table legacy_custody.classification_events",
-    "deptype": "a"
-  },
-  {
-    "object": "index legacy_custody.n03_command_results_unique_correspondence_event",
-    "reference": "constraint n03_command_results_unique_correspondence_event on table legacy_custody.command_results",
+    "object": "index public.employee_movement_tasks_pkey",
+    "reference": "constraint employee_movement_tasks_pkey on table public.employee_movement_tasks",
     "deptype": "i"
   },
   {
-    "object": "index legacy_custody.n03_command_results_unique_transaction_event",
-    "reference": "constraint n03_command_results_unique_transaction_event on table legacy_custody.command_results",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.n03_command_results_unique_travel_event",
-    "reference": "constraint n03_command_results_unique_travel_event on table legacy_custody.command_results",
-    "deptype": "i"
-  },
-  {
-    "object": "index legacy_custody.n03_compensation_tombstones_operation",
-    "reference": "column operation_id of table legacy_custody.compensation_tombstones",
+    "object": "index public.employee_movement_tasks_status_index",
+    "reference": "column status of table public.employee_movement_tasks",
     "deptype": "a"
   },
   {
-    "object": "index legacy_custody.n03_generation_compensation_tuple",
-    "reference": "constraint n03_generation_compensation_tuple on table legacy_custody.generations",
+    "object": "index public.employee_movements_effective_date_index",
+    "reference": "column effective_date of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.employee_movements_movement_type_index",
+    "reference": "column movement_type of table public.employee_movements",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.employee_movements_pkey",
+    "reference": "constraint employee_movements_pkey on table public.employee_movements",
     "deptype": "i"
   },
   {
-    "object": "index legacy_custody.n03_generation_operation",
-    "reference": "column operation_id of table legacy_custody.generations",
+    "object": "index public.employee_movements_status_index",
+    "reference": "column status of table public.employee_movements",
     "deptype": "a"
   },
   {
-    "object": "index legacy_custody.n03_operation_event_operation",
-    "reference": "column operation_id of table legacy_custody.operation_events",
+    "object": "index public.employees_biometric_external_id_index",
+    "reference": "column biometric_external_id of table public.employees",
     "deptype": "a"
   },
   {
-    "object": "index legacy_custody.n03_watermark_checkpoints_ns_seq",
-    "reference": "column checkpoint_seq of table legacy_custody.watermark_checkpoints",
+    "object": "index public.employees_contract_end_date_index",
+    "reference": "column contract_end_date of table public.employees",
     "deptype": "a"
   },
   {
-    "object": "index legacy_custody.n03_watermark_checkpoints_ns_seq",
-    "reference": "column namespace_id of table legacy_custody.watermark_checkpoints",
-    "deptype": "a"
-  },
-  {
-    "object": "index legacy_custody.namespaces_backend_kind_provider_identity_key",
-    "reference": "constraint namespaces_backend_kind_provider_identity_key on table legacy_custody.namespaces",
+    "object": "index public.employees_employee_number_unique",
+    "reference": "constraint employees_employee_number_unique on table public.employees",
     "deptype": "i"
   },
   {
-    "object": "index legacy_custody.namespaces_backend_kind_root_claim_key",
-    "reference": "constraint namespaces_backend_kind_root_claim_key on table legacy_custody.namespaces",
+    "object": "index public.employees_employment_status_index",
+    "reference": "column employment_status of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.employees_employment_type_index",
+    "reference": "column employment_type of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.employees_pkey",
+    "reference": "constraint employees_pkey on table public.employees",
     "deptype": "i"
   },
   {
-    "object": "index legacy_custody.namespaces_pkey",
-    "reference": "constraint namespaces_pkey on table legacy_custody.namespaces",
+    "object": "index public.employees_user_id_unique",
+    "reference": "constraint employees_user_id_unique on table public.employees",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.employees_work_email_index",
+    "reference": "column work_email of table public.employees",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.health_grant_lookup_idx",
+    "reference": "column employee_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.health_grant_lookup_idx",
+    "reference": "column revoked_at of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.health_grant_lookup_idx",
+    "reference": "column user_id of table public.employee_health_access_grants",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.initial_admin_bootstraps_pkey",
+    "reference": "constraint initial_admin_bootstraps_pkey on table public.initial_admin_bootstraps",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.integration_client_credentials_expires_at_index",
+    "reference": "column expires_at of table public.integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.integration_client_credentials_integration_client_id_revoked_at",
+    "reference": "column integration_client_id of table public.integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.integration_client_credentials_integration_client_id_revoked_at",
+    "reference": "column revoked_at of table public.integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.integration_client_credentials_pkey",
+    "reference": "constraint integration_client_credentials_pkey on table public.integration_client_credentials",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.integration_client_credentials_public_id_unique",
+    "reference": "constraint integration_client_credentials_public_id_unique on table public.integration_client_credentials",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.integration_client_credentials_revoked_at_index",
+    "reference": "column revoked_at of table public.integration_client_credentials",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.integration_clients_is_active_index",
+    "reference": "column is_active of table public.integration_clients",
+    "deptype": "a"
+  },
+  {
+    "object": "index public.integration_clients_pkey",
+    "reference": "constraint integration_clients_pkey on table public.integration_clients",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.integration_clients_public_id_unique",
+    "reference": "constraint integration_clients_public_id_unique on table public.integration_clients",
+    "deptype": "i"
+  },
+  {
+    "object": "index public.integration_idempotency_records_pkey",
+    "reference": "constraint integration_idempotency_records_pkey on table public.integration_idempotency_records",
     "deptype": "i"
   }
 ]

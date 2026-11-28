@@ -701,26 +701,6 @@
   },
   {
     "relation": "legacy_custody.operation_items",
-    "constraint_relation": "documents",
-    "conname": "n03_document_item",
-    "tgtype": 17,
-    "function": "\"RI_FKey_noaction_upd\"()",
-    "tgenabled": "O",
-    "tgdeferrable": false,
-    "tginitdeferred": false
-  },
-  {
-    "relation": "legacy_custody.operation_items",
-    "constraint_relation": "documents",
-    "conname": "n03_document_item",
-    "tgtype": 9,
-    "function": "\"RI_FKey_restrict_del\"()",
-    "tgenabled": "O",
-    "tgdeferrable": false,
-    "tginitdeferred": false
-  },
-  {
-    "relation": "legacy_custody.operation_items",
     "constraint_relation": "legacy_custody.generations",
     "conname": "generations_operation_id_ordinal_generation_id_namespace_i_fkey",
     "tgtype": 17,
@@ -755,6 +735,26 @@
     "conname": "operation_items_operation_id_namespace_id_epoch_fkey",
     "tgtype": 5,
     "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "public.documents",
+    "conname": "n03_document_item",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "legacy_custody.operation_items",
+    "constraint_relation": "public.documents",
+    "conname": "n03_document_item",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
     "tgenabled": "O",
     "tgdeferrable": false,
     "tginitdeferred": false
@@ -941,7 +941,7 @@
   },
   {
     "relation": "legacy_custody.operations",
-    "constraint_relation": "ops009_close_audit_bindings",
+    "constraint_relation": "public.ops009_close_audit_bindings",
     "conname": "ops009_close_audit_bindings_operation_id_fkey",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -951,7 +951,7 @@
   },
   {
     "relation": "legacy_custody.operations",
-    "constraint_relation": "ops009_close_audit_bindings",
+    "constraint_relation": "public.ops009_close_audit_bindings",
     "conname": "ops009_close_audit_bindings_operation_id_fkey",
     "tgtype": 9,
     "function": "\"RI_FKey_restrict_del\"()",
@@ -961,7 +961,7 @@
   },
   {
     "relation": "legacy_custody.operations",
-    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "constraint_relation": "public.ops009_origin_delivery_exceptions",
     "conname": "ops009_origin_delivery_exceptions_operation_id_fkey",
     "tgtype": 17,
     "function": "\"RI_FKey_noaction_upd\"()",
@@ -971,7 +971,7 @@
   },
   {
     "relation": "legacy_custody.operations",
-    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "constraint_relation": "public.ops009_origin_delivery_exceptions",
     "conname": "ops009_origin_delivery_exceptions_operation_id_fkey",
     "tgtype": 9,
     "function": "\"RI_FKey_restrict_del\"()",

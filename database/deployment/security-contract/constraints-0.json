@@ -47,7 +47,7 @@
   {
     "name": "legacy_custody.bindings.bindings_document_id_document_public_id_operation_id_ordin_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (document_id, document_public_id, operation_id, ordinal) REFERENCES documents(id, public_id, custody_operation_id, custody_ordinal) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (document_id, document_public_id, operation_id, ordinal) REFERENCES public.documents(id, public_id, custody_operation_id, custody_ordinal) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.bindings.bindings_fence_no_check",
@@ -87,7 +87,7 @@
   {
     "name": "legacy_custody.bindings.bindings_upload_audit_id_operation_id_document_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (upload_audit_id, operation_id, document_id) REFERENCES audit_logs(id, custody_operation_id, entity_id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (upload_audit_id, operation_id, document_id) REFERENCES public.audit_logs(id, custody_operation_id, entity_id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.bindings.n03_command_complete",
@@ -97,12 +97,12 @@
   {
     "name": "legacy_custody.classification_events.classification_events_actor_user_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.classification_events.classification_events_audit_log_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (audit_log_id) REFERENCES audit_logs(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (audit_log_id) REFERENCES public.audit_logs(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.classification_events.classification_events_audit_log_id_key",
@@ -112,12 +112,12 @@
   {
     "name": "legacy_custody.classification_events.classification_events_correspondence_event_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (correspondence_event_id) REFERENCES correspondence_events(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (correspondence_event_id) REFERENCES public.correspondence_events(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.classification_events.classification_events_correspondence_record_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (correspondence_record_id) REFERENCES correspondence_records(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (correspondence_record_id) REFERENCES public.correspondence_records(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.classification_events.classification_events_document_id_fkey",
@@ -132,7 +132,7 @@
   {
     "name": "legacy_custody.classification_events.classification_events_office_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (office_id) REFERENCES departments(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (office_id) REFERENCES public.departments(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.classification_events.classification_events_pkey",
@@ -147,12 +147,12 @@
   {
     "name": "legacy_custody.command_results.command_results_correspondence_event_id_correspondence_id__fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (correspondence_event_id, correspondence_id, actor_user_id, event_action, office_id, correlation_id, municipal_actor) REFERENCES correspondence_events(id, correspondence_record_id, actor_user_id, event, office_department_id, correlation_id, n03_municipal_actor) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (correspondence_event_id, correspondence_id, actor_user_id, event_action, office_id, correlation_id, municipal_actor) REFERENCES public.correspondence_events(id, correspondence_record_id, actor_user_id, event, office_department_id, correlation_id, n03_municipal_actor) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.command_results_correspondence_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (correspondence_id) REFERENCES correspondence_records(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (correspondence_id) REFERENCES public.correspondence_records(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.command_results_fence_no_check",
@@ -177,22 +177,22 @@
   {
     "name": "legacy_custody.command_results.command_results_transaction_event_id_transaction_id_actor__fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (transaction_event_id, transaction_id, actor_user_id, event_action) REFERENCES transaction_events(id, transaction_id, actor_user_id, action) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (transaction_event_id, transaction_id, actor_user_id, event_action) REFERENCES public.transaction_events(id, transaction_id, actor_user_id, action) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.command_results_transaction_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES public.transactions(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.command_results_travel_event_id_travel_id_actor_user_id_ev_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (travel_event_id, travel_id, actor_user_id, event_action) REFERENCES travel_order_events(id, travel_order_id, actor_user_id, event) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (travel_event_id, travel_id, actor_user_id, event_action) REFERENCES public.travel_order_events(id, travel_order_id, actor_user_id, event) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.command_results_travel_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (travel_id) REFERENCES travel_orders(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (travel_id) REFERENCES public.travel_orders(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.command_results.n03_command_complete",
@@ -467,7 +467,7 @@
   {
     "name": "legacy_custody.operations.operations_actor_user_id_fkey",
     "convalidated": true,
-    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "legacy_custody.operations.operations_check",

@@ -185,7 +185,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('payroll_periods_id_seq'::regclass)",
+    "default_expression": "nextval('public.payroll_periods_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -347,7 +347,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('performance_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.performance_records_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -572,7 +572,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_custody_events_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_custody_events_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -698,7 +698,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_custody_generations_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_custody_generations_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -887,7 +887,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('plan_custody_scan_evidence_id_seq'::regclass)",
+    "default_expression": "nextval('public.plan_custody_scan_evidence_id_seq'::regclass)",
     "acl": []
   },
   {

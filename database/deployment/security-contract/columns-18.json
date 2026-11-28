@@ -71,7 +71,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('travel_orders_id_seq'::regclass)",
+    "default_expression": "nextval('public.travel_orders_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -449,7 +449,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('users_id_seq'::regclass)",
+    "default_expression": "nextval('public.users_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",

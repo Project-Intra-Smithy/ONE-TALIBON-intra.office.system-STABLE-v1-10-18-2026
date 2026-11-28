@@ -36,7 +36,7 @@ final class SupportedPg16
         'extended_statistics' => 'SELECT * FROM pg_statistic_ext',
         'transforms' => 'SELECT * FROM pg_transform',
         'user_access_methods' => 'SELECT * FROM pg_am WHERE oid>=16384',
-        'user_tablespaces' => "SELECT * FROM pg_tablespace WHERE spcname NOT IN ('pg_default','pg_global') AND oid IN (SELECT reltablespace FROM pg_class WHERE reltablespace<>0)",
+        'user_tablespaces' => "SELECT * FROM pg_tablespace WHERE spcname NOT IN ('pg_default','pg_global') AND (oid IN (SELECT reltablespace FROM pg_class WHERE reltablespace<>0) OR oid=(SELECT dattablespace FROM pg_database WHERE datname=current_database()))",
         'user_operators' => 'SELECT * FROM pg_operator WHERE oid>=16384',
         'user_opclasses' => 'SELECT * FROM pg_opclass WHERE oid>=16384',
         'user_opfamilies' => 'SELECT * FROM pg_opfamily WHERE oid>=16384',

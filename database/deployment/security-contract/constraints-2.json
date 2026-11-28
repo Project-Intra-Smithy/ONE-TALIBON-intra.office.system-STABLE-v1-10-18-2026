@@ -7,7 +7,7 @@
   {
     "name": "public.departments.departments_parent_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (parent_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (parent_department_id) REFERENCES public.departments(id) ON DELETE SET NULL"
   },
   {
     "name": "public.departments.departments_pkey",
@@ -17,17 +17,17 @@
   {
     "name": "public.designated_planning_staff.designated_planning_staff_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (department_id) REFERENCES public.departments(id) ON DELETE CASCADE"
   },
   {
     "name": "public.designated_planning_staff.designated_planning_staff_designated_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (designated_by_user_id) REFERENCES users(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (designated_by_user_id) REFERENCES public.users(id) ON DELETE CASCADE"
   },
   {
     "name": "public.designated_planning_staff.designated_planning_staff_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.designated_planning_staff.designated_planning_staff_pkey",
@@ -37,12 +37,12 @@
   {
     "name": "public.designated_planning_staff.designated_planning_staff_revoked_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (revoked_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (revoked_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.designated_planning_staff.designated_planning_staff_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE"
   },
   {
     "name": "public.development_plans.development_plans_code_unique",
@@ -52,12 +52,12 @@
   {
     "name": "public.development_plans.development_plans_created_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.development_plans.development_plans_lead_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (lead_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (lead_department_id) REFERENCES public.departments(id) ON DELETE SET NULL"
   },
   {
     "name": "public.development_plans.development_plans_pkey",
@@ -72,17 +72,17 @@
   {
     "name": "public.development_plans.development_plans_updated_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (updated_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (updated_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.document_links.document_links_created_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.document_links.document_links_document_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (document_id) REFERENCES public.documents(id) ON DELETE CASCADE"
   },
   {
     "name": "public.document_links.document_links_pkey",
@@ -107,7 +107,7 @@
   {
     "name": "public.documents.documents_owner_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (owner_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (owner_department_id) REFERENCES public.departments(id) ON DELETE SET NULL"
   },
   {
     "name": "public.documents.documents_pkey",
@@ -127,7 +127,7 @@
   {
     "name": "public.documents.documents_uploaded_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (uploaded_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (uploaded_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.documents.n03_document_binding_tuple",
@@ -167,12 +167,12 @@
   {
     "name": "public.dtr_daily_summaries.dtr_daily_summaries_dtr_period_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (dtr_period_id) REFERENCES dtr_periods(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (dtr_period_id) REFERENCES public.dtr_periods(id) ON DELETE CASCADE"
   },
   {
     "name": "public.dtr_daily_summaries.dtr_daily_summaries_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.dtr_daily_summaries.dtr_daily_summaries_pkey",
@@ -182,12 +182,12 @@
   {
     "name": "public.dtr_periods.dtr_periods_generated_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (generated_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (generated_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.dtr_periods.dtr_periods_locked_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (locked_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (locked_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.dtr_periods.dtr_periods_period_start_period_end_unique",
@@ -202,12 +202,12 @@
   {
     "name": "public.employee_development_records.employee_development_records_created_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employee_development_records.employee_development_records_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_development_records.employee_development_records_pkey",
@@ -217,12 +217,12 @@
   {
     "name": "public.employee_health_access_grants.employee_health_access_grants_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_health_access_grants.employee_health_access_grants_granted_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (granted_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (granted_by_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employee_health_access_grants.employee_health_access_grants_pkey",
@@ -232,22 +232,22 @@
   {
     "name": "public.employee_health_access_grants.employee_health_access_grants_revoked_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (revoked_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (revoked_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_health_access_grants.employee_health_access_grants_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_health_records.employee_health_records_created_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employee_health_records.employee_health_records_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_health_records.employee_health_records_pkey",
@@ -257,12 +257,12 @@
   {
     "name": "public.employee_movement_tasks.employee_movement_tasks_completed_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_movement_tasks.employee_movement_tasks_employee_movement_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_movement_id) REFERENCES employee_movements(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_movement_id) REFERENCES public.employee_movements(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_movement_tasks.employee_movement_tasks_employee_movement_id_task_key_unique",
@@ -272,7 +272,7 @@
   {
     "name": "public.employee_movement_tasks.employee_movement_tasks_owner_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (owner_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (owner_department_id) REFERENCES public.departments(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_movement_tasks.employee_movement_tasks_pkey",
@@ -282,22 +282,22 @@
   {
     "name": "public.employee_movements.employee_movements_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.employee_movements.employee_movements_from_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (from_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (from_department_id) REFERENCES public.departments(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_movements.employee_movements_initiated_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (initiated_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (initiated_by_user_id) REFERENCES public.users(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employee_movements.employee_movements_new_supervisor_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (new_supervisor_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (new_supervisor_employee_id) REFERENCES public.employees(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_movements.employee_movements_pkey",
@@ -307,17 +307,17 @@
   {
     "name": "public.employee_movements.employee_movements_previous_supervisor_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (previous_supervisor_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (previous_supervisor_employee_id) REFERENCES public.employees(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employee_movements.employee_movements_to_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (to_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (to_department_id) REFERENCES public.departments(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employees.employees_department_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (department_id) REFERENCES public.departments(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.employees.employees_employee_number_unique",
@@ -332,12 +332,12 @@
   {
     "name": "public.employees.employees_supervisor_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (supervisor_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (supervisor_employee_id) REFERENCES public.employees(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employees.employees_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.employees.employees_user_id_unique",
@@ -352,17 +352,17 @@
   {
     "name": "public.initial_admin_bootstraps.initial_admin_bootstraps_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.integration_client_credentials.integration_client_credentials_integration_client_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (integration_client_id) REFERENCES integration_clients(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (integration_client_id) REFERENCES public.integration_clients(id) ON DELETE CASCADE"
   },
   {
     "name": "public.integration_client_credentials.integration_client_credentials_issued_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (issued_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (issued_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.integration_client_credentials.integration_client_credentials_pkey",
@@ -377,7 +377,7 @@
   {
     "name": "public.integration_clients.integration_clients_created_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.integration_clients.integration_clients_pkey",
@@ -392,12 +392,12 @@
   {
     "name": "public.integration_idempotency_records.integration_idempotency_records_integration_client_credential_i",
     "convalidated": true,
-    "definition": "FOREIGN KEY (integration_client_credential_id) REFERENCES integration_client_credentials(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (integration_client_credential_id) REFERENCES public.integration_client_credentials(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.integration_idempotency_records.integration_idempotency_records_integration_client_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (integration_client_id) REFERENCES integration_clients(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (integration_client_id) REFERENCES public.integration_clients(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.integration_idempotency_records.integration_idempotency_records_pkey",
@@ -412,12 +412,12 @@
   {
     "name": "public.integration_proof_writes.integration_proof_writes_integration_client_credential_id_forei",
     "convalidated": true,
-    "definition": "FOREIGN KEY (integration_client_credential_id) REFERENCES integration_client_credentials(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (integration_client_credential_id) REFERENCES public.integration_client_credentials(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.integration_proof_writes.integration_proof_writes_integration_client_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (integration_client_id) REFERENCES integration_clients(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (integration_client_id) REFERENCES public.integration_clients(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.integration_proof_writes.integration_proof_writes_pkey",
@@ -432,7 +432,7 @@
   {
     "name": "public.leave_credit_accounts.leave_credit_accounts_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.leave_credit_accounts.leave_credit_accounts_employee_id_leave_type_id_unique",
@@ -442,7 +442,7 @@
   {
     "name": "public.leave_credit_accounts.leave_credit_accounts_leave_type_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (leave_type_id) REFERENCES leave_types(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (leave_type_id) REFERENCES public.leave_types(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.leave_credit_accounts.leave_credit_accounts_pkey",
@@ -452,12 +452,12 @@
   {
     "name": "public.leave_credit_transactions.leave_credit_transactions_actor_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.leave_credit_transactions.leave_credit_transactions_leave_credit_account_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (leave_credit_account_id) REFERENCES leave_credit_accounts(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (leave_credit_account_id) REFERENCES public.leave_credit_accounts(id) ON DELETE CASCADE"
   },
   {
     "name": "public.leave_credit_transactions.leave_credit_transactions_pkey",
@@ -467,12 +467,12 @@
   {
     "name": "public.leave_requests.leave_requests_employee_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+    "definition": "FOREIGN KEY (employee_id) REFERENCES public.employees(id) ON DELETE CASCADE"
   },
   {
     "name": "public.leave_requests.leave_requests_leave_type_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (leave_type_id) REFERENCES leave_types(id) ON DELETE RESTRICT"
+    "definition": "FOREIGN KEY (leave_type_id) REFERENCES public.leave_types(id) ON DELETE RESTRICT"
   },
   {
     "name": "public.leave_requests.leave_requests_pkey",
@@ -482,7 +482,7 @@
   {
     "name": "public.leave_requests.leave_requests_reviewed_by_user_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (reviewed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (reviewed_by_user_id) REFERENCES public.users(id) ON DELETE SET NULL"
   },
   {
     "name": "public.leave_types.leave_types_code_unique",
@@ -497,6 +497,6 @@
   {
     "name": "public.legislative_agenda_items.legislative_agenda_items_legislative_record_id_foreign",
     "convalidated": true,
-    "definition": "FOREIGN KEY (legislative_record_id) REFERENCES legislative_records(id) ON DELETE SET NULL"
+    "definition": "FOREIGN KEY (legislative_record_id) REFERENCES public.legislative_records(id) ON DELETE SET NULL"
   }
 ]

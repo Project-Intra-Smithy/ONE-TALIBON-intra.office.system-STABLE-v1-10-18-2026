@@ -327,7 +327,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('documents_id_seq'::regclass)",
+    "default_expression": "nextval('public.documents_id_seq'::regclass)",
     "acl": [
       [
         "kirion_g1b_owner",
@@ -968,7 +968,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('dtr_daily_summaries_id_seq'::regclass)",
+    "default_expression": "nextval('public.dtr_daily_summaries_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -1130,7 +1130,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('dtr_periods_id_seq'::regclass)",
+    "default_expression": "nextval('public.dtr_periods_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -1328,7 +1328,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('employee_development_records_id_seq'::regclass)",
+    "default_expression": "nextval('public.employee_development_records_id_seq'::regclass)",
     "acl": []
   },
   {

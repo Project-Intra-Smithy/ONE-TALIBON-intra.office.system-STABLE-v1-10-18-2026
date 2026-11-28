@@ -176,7 +176,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('offboarding_cases_id_seq'::regclass)",
+    "default_expression": "nextval('public.offboarding_cases_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -329,7 +329,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('offboarding_tasks_id_seq'::regclass)",
+    "default_expression": "nextval('public.offboarding_tasks_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -509,7 +509,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('onboarding_cases_id_seq'::regclass)",
+    "default_expression": "nextval('public.onboarding_cases_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -698,7 +698,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('onboarding_tasks_id_seq'::regclass)",
+    "default_expression": "nextval('public.onboarding_tasks_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -896,7 +896,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('operational_items_id_seq'::regclass)",
+    "default_expression": "nextval('public.operational_items_id_seq'::regclass)",
     "acl": []
   }
 ]

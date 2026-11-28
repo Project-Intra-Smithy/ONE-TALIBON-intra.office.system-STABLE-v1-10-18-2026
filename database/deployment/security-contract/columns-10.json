@@ -149,7 +149,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('legislative_sessions_id_seq'::regclass)",
+    "default_expression": "nextval('public.legislative_sessions_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -320,7 +320,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('memo_recipients_id_seq'::regclass)",
+    "default_expression": "nextval('public.memo_recipients_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -491,7 +491,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('memoranda_id_seq'::regclass)",
+    "default_expression": "nextval('public.memoranda_id_seq'::regclass)",
     "acl": []
   },
   {
@@ -653,7 +653,7 @@
     "attnotnull": true,
     "attidentity": "",
     "attgenerated": "",
-    "default_expression": "nextval('migrations_id_seq'::regclass)",
+    "default_expression": "nextval('public.migrations_id_seq'::regclass)",
     "acl": []
   },
   {
