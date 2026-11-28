@@ -128,7 +128,7 @@ final class PersistentInstaller
                 $security = app(PersistentSecurity::class);
                 $authority = $security->authority($target);
                 if ($installed) {
-                    app(SecurityCatalog::class)->verify($target['bootstrap_role']);
+                    app(SecurityCatalog::class)->verify($target['bootstrap_role'], $security->restrictiveDefaults($target, true));
                     $rows = DB::select('SELECT * FROM deployment_control.installations');
                     $row = count($rows) === 1 ? (array) $rows[0] : null;
                     if ($row !== null) {
