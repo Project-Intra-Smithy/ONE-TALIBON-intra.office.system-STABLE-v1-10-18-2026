@@ -1,0 +1,63 @@
+name: R4 Supplemental N79-01 Evidence Probe (Linux PG16.16)
+on:
+  push:
+    branches: [evidence/ot-persistent-r4-d55228cb-linux-probe]
+permissions:
+  contents: read
+jobs:
+  supplemental-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout external probe
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: probe-repo
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Checkout frozen PR82 candidate d55228cb
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: d55228cba9fca025a5b8bcf9494df5da879b7995
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - name: Install locked Composer dependencies in frozen candidate
+        working-directory: candidate
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: candidate/.nvmrc
+          cache: npm
+          cache-dependency-path: candidate/package-lock.json
+      - name: Build frozen candidate assets
+        working-directory: candidate
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Install PostgreSQL 16 (16.16)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-16
+      - name: Run external supplemental N79-01 probe (16 cells, Linux PG16.16)
+        run: |
+          python3 -I -S probe-repo/.forge/evidence/ot-vps-operational-qa-r1/d55228cb/supplemental/probe.py \
+            --source "$PWD/candidate" \
+            --pg-bin /usr/lib/postgresql/16/bin \
+            --output "$RUNNER_TEMP/supplemental" \
+            --platform linux
+      - name: Upload redacted supplemental Linux receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: r4-supplemental-linux-d55228cb
+          path: ${{ runner.temp }}/supplemental/supplemental-linux.json
+          if-no-files-found: error
